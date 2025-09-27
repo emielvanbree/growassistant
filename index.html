@@ -152,8 +152,42 @@
         .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 2px 4px rgba(0,0,0,.05); overflow:hidden; transition: background 0.3s, border-color 0.3s;}
         .card-h{ padding:14px; display:flex; flex-direction: column; gap: 12px; align-items:flex-start;}
         
+        /* --- NIEUW: STIJLEN VOOR INKLAPPEN --- */
+        .btn-collapse {
+            appearance: none;
+            background: transparent;
+            border: none;
+            padding: 4px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-left: auto; /* Duwt de knop naar rechts */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-collapse:hover { background: var(--pill); }
+        .btn-collapse svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--muted);
+            transition: transform 0.3s ease;
+        }
+        /* Draai de pijl omhoog als de kaart is ingeklapt */
+        .card.is-collapsed .btn-collapse svg {
+            transform: rotate(-180deg);
+        }
+        /* Verberg elementen als de kaart is ingeklapt */
+        .card.is-collapsed .row-strain,
+        .card.is-collapsed .row-info,
+        .card.is-collapsed .card-b {
+            display: none;
+        }
+        /* -------------------------------------- */
+        
         /* MOBIELVRIENDELIJKE AANPASSINGEN */
-        .row-name{ display: flex; gap: 8px; width: 100%; }
+        .row-name{ display: flex; gap: 8px; width: 100%; align-items: center; }
         .row-name input{ flex: 1; border:none; outline:none; font-size:16px; font-weight:600; background: transparent; color: var(--fg); min-width: 150px; }
         .row-strain{ display: flex; gap: 8px; align-items: center; width: 100%; }
         .row-strain select { max-width: 100%; } /* Laat select de volledige breedte pakken */
@@ -599,11 +633,15 @@
             try {
                 const raw = localStorage.getItem(LS_KEY);
                 let loadedState = raw ? JSON.parse(raw) : { plants:[], viewArchived:false };
-                // Zorg ervoor dat elke plant de nieuwe acknowledgedActions eigenschap heeft
+                // Zorg ervoor dat elke plant de nieuwe eigenschappen heeft
                 if(loadedState.plants) {
                     loadedState.plants.forEach(p => {
                         if (!p.acknowledgedActions) {
                             p.acknowledgedActions = [];
+                        }
+                        // TOEGEVOEGD: Zorg dat de 'isCollapsed' eigenschap bestaat
+                        if (typeof p.isCollapsed === 'undefined') {
+                            p.isCollapsed = false;
                         }
                     });
                 }
@@ -816,11 +854,21 @@
                 archived: false,
                 notes: "",
                 photos: [],
-                acknowledgedActions: [], // Toegevoegd voor persistentie
+                acknowledgedActions: [],
+                isCollapsed: false, // TOEGEVOEGD: Standaard uitgeklapt
                 schedule: { ...RQS_STRAINS['Onbekend/Algemeen'].schedule }
             };
             state.plants.unshift(newPlant);
             saveAndRender();
+        }
+        
+        // --- NIEUW: FUNCTIE OM KAART IN/UIT TE KLAPPEN ---
+        function toggleCollapse(plantId) {
+            const plant = getPlant(plantId);
+            if (plant) {
+                plant.isCollapsed = !plant.isCollapsed;
+                saveAndRender();
+            }
         }
 
         const saveAndRender = () => { saveState(state); render(); };
@@ -832,15 +880,19 @@
             grid.innerHTML = activePlants.map(plant => {
                 let ageDays = daysBetween(plant.planted_at, new Date());
                 if (ageDays < 0) {
-                    ageDays = 0; // GEWIJZIGD: Voorkom negatieve leeftijd
+                    ageDays = 0;
                 }
                 const ageWeeks = Math.floor(ageDays / 7);
                 const ageRemDays = ageDays % 7;
+                // TOEGEVOEGD: class 'is-collapsed' als de plant is ingeklapt
                 return `
-                <div class="card" id="card_${plant.id}">
+                <div class="card ${plant.isCollapsed ? 'is-collapsed' : ''}" id="card_${plant.id}">
                     <div class="card-h">
                         <div class="row-name">
                             <input type="text" value="${plant.name}" onchange="updatePlant('${plant.id}', {name:this.value})"/>
+                            <button class="btn-collapse" onclick="toggleCollapse('${plant.id}')" aria-label="Details in/uitklappen">
+                                <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>
+                            </button>
                         </div>
                         <div class="row-strain">
                              <select onchange="handleStrainChange('${plant.id}', this.value)">
@@ -896,9 +948,12 @@
             archivedSection.style.display = state.viewArchived && archivedPlants.length > 0 ? 'block' : 'none';
 
             activePlants.forEach(p => {
-                const activeTab = document.querySelector(`#card_${p.id} .tab.active`);
-                if (activeTab) {
-                    switchTab(activeTab, p.id)
+                const cardElement = document.getElementById(`card_${p.id}`);
+                if (cardElement && !p.isCollapsed) {
+                    const activeTab = cardElement.querySelector('.tab.active');
+                    if (activeTab) {
+                        switchTab(activeTab, p.id)
+                    }
                 }
             });
         }
