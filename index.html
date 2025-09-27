@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoflower Grow Assistant</title>
+    <style>
+        /*
+         * Kleurenpalet Groeicyclus Cannabis
+         * Aarde Bruin: #4D3A31 (fg/dark-fg)
+         * Vegetatieve Groen: #38761D (main-text/dark-main-text)
+         * Limoen Groen: #A9C439 (cta)
+         * Zaailing Groen: #90B47A (muted/line)
+         * Licht Grijs: #F5F5F5 (bg/pill)
+         */
+        :root{
+            /* Light Mode */
+            --bg: #F5F5F5;
+            --fg: #4D3A31; /* Hoofdtitels/Headers - Aarde Bruin */
+            --main-text: #38761D; /* Body Tekst - Vegetatieve Groen */
+            --muted: #90B47A; /* Secundaire Tekst - Zaailing Groen */
+            --card: #FFFFFF;
+            --line: #90B47A; /* Randen/Lijnen - Zaailing Groen */
+            --pill: #F5F5F5; /* Tabs/Pills Achtergrond - Licht Grijs */
+            --cta: #A9C439; /* Primaire Knoppen - Limoen Groen */
+            --cta-hover: #7D932A; /* Limoen Groen - Donkerder */
+            --danger: #CC0000; /* Fouten/Verwijderen */
+            --radius: 18px;
+        }
+        /* Dark Mode */
+        .dark {
+            --bg: #1A1A1A; /* Dark background */
+            --fg: #F5F5F5; /* Light text (titles) */
+            --main-text: #A9C439; /* Body text (Limoen Groen) */
+            --muted: #90B47A; /* Muted green */
+            --card: #282828; /* Dark card background */
+            --line: #3A3A3A; /* Darker borders */
+            --pill: #212121; /* Pill/Tab background */
+            --cta: #A9C439;
+            --cta-hover: #C5E358;
+            --danger: #FF6666;
+            color: var(--main-text);
+        }
+        /* Basis en Typografie */
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+            background:var(--bg);
+            color:var(--main-text);
+            transition: background 0.3s, color 0.3s;
+        }
+        h1{font-size:24px; margin:0; font-weight:700; color:var(--fg); transition: color 0.3s;}
+        .section-title{font-weight:600; margin:16px 0 8px; color:var(--fg)}
+        .hint{font-size:12px; color:var(--muted)}
+        /* Dark Mode Specifieke Stijlen */
+        .dark .header-content h1 { color: var(--fg); }
+        .dark header { background: rgba(26, 26, 26, .9); border-bottom-color: var(--line); }
+        .dark .empty { background: var(--card); border-color: var(--line); }
+        /* Header (Sticky & Mobiel Vriendelijk) */
+        header{
+            position:sticky;
+            top:0;
+            z-index:10;
+            background:rgba(245, 245, 245, .9);
+            backdrop-filter:saturate(1.2) blur(6px);
+            border-bottom:1px solid var(--line);
+            transition: background 0.3s, border-bottom-color 0.3s;
+        }
+        .container{max-width:1080px; margin:0 auto; padding:12px 16px}
+        .header-content{
+            display:flex;
+            flex-wrap: wrap;
+            gap: 12px 8px;
+            align-items:center;
+            padding: 8px 0;
+        }
+
+        .header-content h1{flex-basis: 100%; font-size: 20px;}
+        .header-actions{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center; /* Zorgt voor verticale uitlijning */
+            margin-left:auto;
+        }
+        @media (min-width: 600px){
+            .header-content h1{flex-basis: auto;}
+            .header-actions{margin-left:auto; flex-grow:1; justify-content: flex-end;}
+        }
+        /* Knoppen & Formulieren */
+        button, .btn, .tab.active{
+            appearance:none;
+            border:1px solid var(--line);
+            padding:8px 12px;
+            border-radius:16px;
+            box-shadow:0 1px 0 rgba(0,0,0,.04);
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--fg);
+            background: #fff;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+
+        /* Dark Mode Knoppen */
+        .dark button, .dark .btn, .dark .tab {
+            background: var(--card);
+            border-color: var(--line);
+            color: var(--main-text);
+        }
+        .dark button:hover, .dark .btn:hover { background: #333; color: var(--fg); }
+        /* Primaire CTA knoppen */
+        #btnAdd, #btnAdd2{
+            background:var(--cta);
+            border-color: var(--cta);
+            color: #fff;
+            font-weight: 600;
+        }
+        #btnAdd:hover, #btnAdd2:hover{
+            background:var(--cta-hover);
+            border-color: var(--cta-hover);
+        }
+        /* Input Velden */
+        input[type="date"], input[type="number"], input[type="text"], textarea, select{
+            border:1px solid var(--line);
+            border-radius:10px;
+            padding:6px 10px;
+            color: var(--main-text);
+            background: #fff;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+            width: 100%; /* MOBIELVRIENDELIJK: Maak velden standaard volledig breed */
+        }
+        /* Dark Mode Input Velden */
+        .dark input[type="date"], .dark input[type="number"], .dark input[type="text"], .dark textarea, .dark select {
+            background: #333;
+            color: var(--fg);
+            border-color: #555;
+        }
+
+        /* Dark Mode Tabs */
+        .dark .tab.active {
+            background: var(--pill);
+            border-color: var(--line);
+            color: var(--fg);
+        }
+        /* Overige Layout Stijlen (ongewijzigd) */
+        .field-group{ display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 14px; color: var(--main-text); }
+        .field-group input[type="number"] { width: 64px; text-align: center; }
+        main.container{padding:20px 16px 40px}
+        .grid{display:grid; grid-template-columns:1fr; gap:20px}
+        @media (min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
+        .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 2px 4px rgba(0,0,0,.05); overflow:hidden; transition: background 0.3s, border-color 0.3s;}
+        .card-h{ padding:14px; display:flex; flex-direction: column; gap: 12px; align-items:flex-start;}
+        
+        /* MOBIELVRIENDELIJKE AANPASSINGEN */
+        .row-name{ display: flex; gap: 8px; width: 100%; }
+        .row-name input{ flex: 1; border:none; outline:none; font-size:16px; font-weight:600; background: transparent; color: var(--fg); min-width: 150px; }
+        .row-strain{ display: flex; gap: 8px; align-items: center; width: 100%; }
+        .row-strain select { max-width: 100%; } /* Laat select de volledige breedte pakken */
+        .row-info{ 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px 12px; 
+            align-items: center; 
+            font-size: 13px; 
+            color: var(--muted); 
+            width: 100%;
+            justify-content: space-between; /* Verdeelt ruimte tussen info en knoppen */
+        }
+        .row-info label{ display: flex; gap: 6px; align-items: center; flex-wrap: wrap;}
+        .row-info input[type="date"] { width: auto; min-width: 135px; } /* Geef de date-picker een vaste basisgrootte */
+        .row-info span:not(.pill) { white-space: nowrap; }
+        .row-info .action-buttons {
+            display: flex; 
+            gap: 8px;
+            flex-shrink: 0; /* Voorkom dat de knoppen zelf krimpen */
+        }
+        
+        @media (min-width: 601px) {
+             /* Herstel de desktop layout met knoppen helemaal rechts */
+            .row-info { justify-content: flex-start; }
+            .row-info .action-buttons { margin-left: auto; }
+        }
+
+        @media (max-width: 600px) { 
+            /* Op mobiel, forceer de knoppenbalk naar een nieuwe, volledige regel */
+            .row-info .action-buttons {
+                margin-left: 0; 
+                flex-basis: 100%; 
+                justify-content: flex-start;
+            } 
+        }
+
+        .actions-bar { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; min-height: 40px; }
+        .action-item { display: flex; justify-content: space-between; align-items: center; width: 100%; background: #fff; border: 2px solid var(--cta); color: var(--cta); font-weight: 600; padding: 6px 12px; border-radius: 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.08); transition: all .2s; }
+        .action-item:hover { background: rgba(169, 196, 57, 0.1); }
+        .action-item .action-date { font-size: 11px; font-weight: 400; color: var(--muted); padding-left: 10px; }
+        .dark .action-item { background: #333; }
+        .dark .action-item:hover { background: rgba(169, 196, 57, 0.2); }
+        .action-item.feed { border-color: #FFA500; color: #FFA500; }
+        .action-item.flush { border-color: #00BFFF; color: #00BFFF; }
+        .action-item.harvest { border-color: var(--cta); background: var(--cta); color: #fff; }
+        .dark .action-item.harvest { background: var(--cta-hover); border-color: var(--cta-hover); }
+
+        .pill{font-size:12px; background:var(--pill); border:1px solid var(--line); color:var(--main-text); padding:2px 8px; border-radius:999px}
+        .tabs{display:flex; gap:6px; background:var(--pill); border-radius:999px; padding:4px; margin-top: 8px; flex-basis: 100%;}
+        @media (min-width: 500px){.tabs{flex-basis: auto; margin-top: 0;}}
+        .tab{font-size:13px; padding:6px 10px; border-radius:999px; border:1px solid transparent; background:transparent; color: var(--main-text);}
+        .tab.active{background:#fff; border-color:var(--line); box-shadow:0 1px 0 rgba(0,0,0,.04); color: var(--fg); font-weight: 600;}
+        .card-b{border-top:1px solid var(--line); padding:14px}
+        .uploader{display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:var(--pill); border:1px solid var(--line); border-radius:14px; transition: background 0.3s, border-color 0.3s;}
+        .uploader input[type="file"]{flex-basis: 100%;}
+        .uploader label, .uploader input[type="text"]{flex-shrink: 0; width: auto;} /* Zorg dat uploader-labels niet de volle breedte pakken */
+        .uploader button{margin-left: auto; background: var(--cta); border-color: var(--cta); color: #fff;}
+        .uploader button:hover{background: var(--cta-hover); border-color: var(--cta-hover);}
+        figure{margin:0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#fff}
+        figure img{display:block; width:100%; height:auto; max-height:300px; object-fit:cover}
+        figcaption{padding:10px; display:flex; justify-content:space-between; gap:10px; font-size:14px; flex-wrap: wrap;}
+        figcaption button{margin-top: 5px;}
+        .muted{color:var(--muted)}
+        .danger{color:var(--danger); border-color: var(--danger) !important;}
+        .danger:hover{background: rgba(204, 0, 0, 0.1) !important;}
+        .dark .danger:hover{background: rgba(255, 102, 102, 0.1) !important;}
+        .empty{border:2px dashed var(--line); border-radius:var(--radius); padding:32px; text-align:center; background:#fff}
+        .archived{opacity:.6}
+        a{color: var(--cta);}
+        /* Dark Mode Toggle Stijl */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--cta);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .dark .slider { background-color: #555; }
+        .dark input:checked + .slider { background-color: var(--cta-hover); }
+
+        /* --- STIJLEN VOOR PROGRESSIEBALK --- */
+        .progress-wrapper {
+            width: 100%;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--line);
+        }
+        .progress-bar-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+        .progress-bar {
+            display: flex;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-segment {
+            height: 100%;
+        }
+        .progress-marker {
+            position: absolute;
+            top: -6px;
+            width: 3px;
+            height: 24px;
+            background-color: var(--danger);
+            border-radius: 2px;
+            transform: translateX(-1.5px);
+            z-index: 5;
+            box-shadow: 0 0 5px var(--danger);
+        }
+        .progress-marker-label {
+            position: absolute;
+            top: -28px;
+            font-size: 11px;
+            font-weight: bold;
+            background: var(--danger);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 5;
+        }
+        .progress-date-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--muted);
+            padding: 0 2px 4px 2px;
+        }
+        .progress-phase-labels-container {
+            display: flex;
+            font-size: 11px;
+            padding: 0;
+            color: var(--main-text);
+        }
+        .progress-phase-label {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 3px;
+            font-weight: 500;
+        }
+
+        /* --- STIJLEN VOOR POPUP (MODAL) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid var(--line);
+        }
+        .dark .modal-content {
+            background: var(--card);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--fg);
+        }
+        .modal-content p {
+            line-height: 1.6;
+            color: var(--main-text);
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--muted);
+        }
+        #btnHelp {
+            background: transparent;
+            border: none;
+            padding: 4px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #btnHelp:hover {
+            background: var(--pill);
+        }
+        #btnHelp svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--main-text);
+        }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #25D366;
+            color: white !important;
+            padding: 10px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1DA851;
+        }
+        .btn-whatsapp svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1 id="appTitle">Autoflower Grow Assistant</h1>
+            <div class="header-actions">
+                <select id="langSelect" style="border-radius: 16px; font-size: 14px; padding: 8px 10px; width: auto;">
+                    <option value="nl">Nederlands</option>
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                </select>
+                <div class="toggle-container">
+                    <label id="darkModeLabel">Dark Mode</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="btnAdd" data-i18n="newPlant">+ Nieuwe plant</button>
+                <label class="row hint" style="gap:6px;">
+                    <input id="chkArchived" type="checkbox"/> <span data-i18n="showArchived">Toon gearchiveerden</span>
+                </label>
+                <button id="btnHelp" aria-label="Help & Info">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <div id="empty" class="empty" style="display:none;">
+            <h2 style="margin:0; font-size:18px; color: var(--fg);" data-i18n="emptyTitle">Nog geen plantjes</h2>
+            <p class="muted" data-i18n="emptyText">Voeg je eerste plant toe en begin met tracken – foto’s, weken, en herinneringen.</p>
+            <button id="btnAdd2" data-i18n="newPlant">+ Nieuwe plant</button>
+        </div>
+        <div id="grid" class="grid"></div>
+        <section id="archivedSection" style="display:none; margin-top:24px;">
+            <div class="section-title" data-i18n="archivedTitle">Gearchiveerd</div>
+            <div id="archivedGrid" class="grid archived"></div>
+        </section>
+    </main>
+
+    <div id="helpModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 id="helpTitle" data-i18n="helpTitle">Privacy & Informatie</h2>
+            <p id="helpText" data-i18n="helpText">
+                Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.
+            </p>
+            <a id="whatsappBtn" href="https://wa.me/31655793636" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.46 3.48 1.34 4.94L2.05 22l5.25-1.42c1.4.78 2.96 1.21 4.59 1.21h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m.01 1.66c4.56 0 8.26 3.7 8.26 8.26 0 4.56-3.7 8.26-8.26 8.26h-.01c-1.47 0-2.89-.39-4.14-1.1L4.65 19.35l1.19-3.23c-.79-1.25-1.22-2.7-1.22-4.21 0-4.56 3.7-8.26 8.26-8.26M9.27 7.93c-.14-.23-.29-.24-.42-.24-.12 0-.27 0-.42.01-.15.01-.37.21-.57.42-.2.2-.72.7-.72 1.73s.74 2.01.84 2.15c.1.15 1.45 2.29 3.53 3.12.55.22.99.36 1.34.46.59.18 1.13.15 1.55.09.48-.06 1.4-.68 1.6-1.36.2-.68.2-1.25.14-1.36-.06-.11-.21-.18-.42-.32-.21-.15-1.25-.62-1.45-.69-.2-.07-.35-.11-.5.11-.15.22-.55.69-.68.83-.12.15-.24.16-.44.1-.2-.05-1.02-.37-1.94-1.2-.72-.65-1.2-1.45-1.34-1.7-.14-.25-.02-.38.09-.5.1-.11.22-.27.34-.41.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.38s-.5-.6-.68-.82z"/></svg>
+                <span data-i18n="contactDeveloper">Contact ontwikkelaar</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Taaldefinitie
+        const TRANSLATIONS = {
+            nl: {
+                appName: "Autoflower Grow Assistant", newPlant: "+ Nieuwe plant", showArchived: "Toon gearchiveerden", emptyTitle: "Nog geen plantjes", emptyText: "Voeg je eerste plant toe en begin met tracken – foto’s, weken, en herinneringen.", archivedTitle: "Gearchiveerd", plant: "Plant", archivedCycle: "Archiveer cyclus", unarchive: "Deblokkeren", delete: "Verwijderen", planted: "Geplant:", age: "Leeftijd:", weeks: "wk", days: "d", timeline: "Tijdlijn", reminders: "Herinneringen", notes: "Notities", date: "Datum:", noteOptional: "Opmerking (optioneel)", uploadPhoto: "Upload foto", noPhotos: "Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.", remove: "Verwijder", water: "💧 Water", feed: "🥦 Voeding", startFlush: "💦 START FLUSH", harvest: "🪴 OOGSTEN", week: "Week", every: "Elke", daysPlural: "dagen", startInWeek: "Start in week", frequency: "Frequentie: elke", flushStartWeek: "Flush starten in week", targetHarvestWeek: "Doel oogstweek", strainGuideline: "Soort Richtlijn:", adjustNote: "Pas frequentie aan op potmaat, substraat en klimaat.", notesPlaceholder: "Notities over water, EC/PPM, pH, training, etc.", alertPhoto: "Kies eerst een foto.", alertDelete: "Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).", alertMax: "Maximaal 12 plantjes ondersteund.", alertImport: "Kan bestand niet lezen:", darkMode: "Dark Mode", seedling: "Zaailing", vegetative: "Vegetatief", flowering: "Bloei", flush: "Spoelen", helpTitle: "Privacy & Informatie", helpText: "Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.", contactDeveloper: "Contact ontwikkelaar", simulateCycle: "Simuleer cyclus", stopSimulation: "Stop simulatie", today: "Vandaag"
+            },
+            en: {
+                appName: "Autoflower Grow Assistant", newPlant: "+ New Plant", showArchived: "Show Archived", emptyTitle: "No Plants Yet", emptyText: "Add your first plant and start tracking – photos, weeks, and reminders.", archivedTitle: "Archived", plant: "Plant", archivedCycle: "Archive Cycle", unarchive: "Unarchive", delete: "Delete", planted: "Planted:", age: "Age:", weeks: "wks", days: "d", timeline: "Timeline", reminders: "Reminders", notes: "Notes", date: "Date:", noteOptional: "Note (optional)", uploadPhoto: "Upload Photo", noPhotos: "No photos yet – add your first Week 0 photo above.", remove: "Remove", water: "💧 Water", feed: "🥦 Feed", startFlush: "💦 START FLUSH", harvest: "🪴 HARVEST", week: "Week", every: "Every", daysPlural: "days", startInWeek: "Start in Week", frequency: "Frequency: every", flushStartWeek: "Start Flush in Week", targetHarvestWeek: "Target Harvest Week", strainGuideline: "Strain Guideline:", adjustNote: "Adjust frequency based on pot size, substrate, and climate.", notesPlaceholder: "Notes on watering, EC/PPM, pH, training, etc.", alertPhoto: "Please select a photo first.", alertDelete: "Delete? This cannot be undone (all photos will be deleted).", alertMax: "Maximum of 12 plants supported.", alertImport: "Cannot read file:", darkMode: "Dark Mode", seedling: "Seedling", vegetative: "Vegetative", flowering: "Flowering", flush: "Flush", helpTitle: "Privacy & Information", helpText: "Your privacy and data security are guaranteed. This is a 100% frontend application, meaning all data you enter (plant names, dates, notes, photos) is stored exclusively on your own device in your browser's local storage. No data is sent to any server.", contactDeveloper: "Contact developer", simulateCycle: "Simulate Cycle", stopSimulation: "Stop Simulation", today: "Today"
+            },
+            de: {
+                appName: "Autoflower Grow Assistant", newPlant: "+ Neue Pflanze", showArchived: "Archivierte anzeigen", emptyTitle: "Noch keine Pflanzen", emptyText: "Fügen Sie Ihre erste Pflanze hinzu und beginnen Sie mit der Verfolgung – Fotos, Wochen und Erinnerungen.", archivedTitle: "Archiviert", plant: "Pflanze", archivedCycle: "Zyklus archivieren", unarchive: "Wiederherstellen", delete: "Löschen", planted: "Gepflanzt:", age: "Alter:", weeks: "Wo", days: "T", timeline: "Zeitachse", reminders: "Erinnerungen", notes: "Notizen", date: "Datum:", noteOptional: "Notiz (optional)", uploadPhoto: "Foto hochladen", noPhotos: "Noch keine Fotos – fügen Sie Ihr erstes Foto der Woche 0 oben hinzu.", remove: "Entfernen", water: "💧 Wasser", feed: "🥦 Nährstoffe", startFlush: "💦 SPÜLUNG STARTEN", harvest: "🪴 ERNTEN", week: "Woche", every: "Alle", daysPlural: "Tage", startInWeek: "Start in Woche", frequency: "Frequenz: alle", flushStartWeek: "Spülung starten in Woche", targetHarvestWeek: "Ziel Erntewoche", strainGuideline: "Sortenrichtlinie:", adjustNote: "Passen Sie die Häufigkeit an Topfgröße, Substrat und Klima an.", notesPlaceholder: "Notizen zu Bewässerung, EC/PPM, pH, Training, etc.", alertPhoto: "Bitte wählen Sie zuerst ein Foto aus.", alertDelete: "Löschen? Dies kann nicht rückgängig gemacht werden (alle Fotos werden gelöscht).", alertMax: "Maximal 12 Pflanzen werden unterstützt.", alertImport: "Datei kann nicht gelesen werden:", darkMode: "Dunkelmodus", seedling: "Keimling", vegetative: "Vegetativ", flowering: "Blüte", flush: "Spülen", helpTitle: "Datenschutz & Informationen", helpText: "Ihre Privatsphäre und Datensicherheit sind gewährleistet. Dies ist eine 100%ige Frontend-Anwendung, was bedeutet, dass alle von Ihnen eingegebenen Daten (Pflanzennamen, Daten, Notizen, Fotos) ausschließlich auf Ihrem eigenen Gerät im lokalen Speicher Ihres Browsers gespeichert werden. Es werden keine Daten an einen Server gesendet.", contactDeveloper: "Entwickler kontaktieren", simulateCycle: "Zyklus simulieren", stopSimulation: "Simulation stoppen", today: "Heute"
+            },
+            fr: {
+                appName: "Assistant de Culture Autofloraison", newPlant: "+ Nouvelle Plante", showArchived: "Afficher Archivé", emptyTitle: "Pas encore de Plantes", emptyText: "Ajoutez votre première plante et commencez le suivi – photos, semaines et rappels.", archivedTitle: "Archivé", plant: "Plante", archivedCycle: "Archiver Cycle", unarchive: "Désarchiver", delete: "Supprimer", planted: "Planté(e):", age: "Âge:", weeks: "sem", days: "j", timeline: "Chronologie", reminders: "Rappels", notes: "Notes", date: "Date:", noteOptional: "Note (optionnel)", uploadPhoto: "Télécharger photo", noPhotos: "Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.", remove: "Retirer", water: "💧 Eau", feed: "🥦 Engrais", startFlush: "💦 DÉBUT RINÇAGE", harvest: "🪴 RÉCOLTER", week: "Semaine", every: "Tous les", daysPlural: "jours", startInWeek: "Début Semaine", frequency: "Fréquence : tous les", flushStartWeek: "Début Rinçage Semaine", targetHarvestWeek: "Semaine de Récolte Cible", strainGuideline: "Ligne directrice de la souche:", adjustNote: "Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.", notesPlaceholder: "Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.", alertPhoto: "Veuillez d'abord sélectionner une photo.", alertDelete: "Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).", alertMax: "Maximum de 12 plantes prises en charge.", alertImport: "Impossible de lire le fichier :", darkMode: "Mode Sombre", seedling: "Germination", vegetative: "Végétatif", flowering: "Floraison", flush: "Rinçage", helpTitle: "Confidentialité & Informations", helpText: "Votre confidentialité et la sécurité de vos données sont garanties. Il s'agit d'une application 100% frontend, ce qui signifie que toutes les données que vous saisissez (noms de plantes, dates, notes, photos) sont stockées exclusivement sur votre propre appareil dans le stockage local de votre navigateur. Aucune donnée n'est envoyée à un serveur.", contactDeveloper: "Contacter le développeur", simulateCycle: "Simuler le cycle", stopSimulation: "Arrêter la simulation", today: "Aujourd'hui"
+            },
+            es: {
+                appName: "Asistente de Cultivo Autofloreciente", newPlant: "+ Nueva Planta", showArchived: "Mostrar Archivadas", emptyTitle: "Todavía no hay Plantas", emptyText: "Agrega tu primera planta y comienza a rastrear – fotos, semanas y recordatorios.", archivedTitle: "Archivadas", plant: "Planta", archivedCycle: "Archivar Ciclo", unarchive: "Desarchivar", delete: "Eliminar", planted: "Plantada:", age: "Edad:", weeks: "sem", days: "d", timeline: "Línea de Tiempo", reminders: "Recordatorios", notes: "Notas", date: "Fecha:", noteOptional: "Nota (opcional)", uploadPhoto: "Subir foto", noPhotos: "Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.", remove: "Quitar", water: "💧 Agua", feed: "🥦 Nutrientes", startFlush: "💦 INICIAR LAVADO", harvest: "🪴 COSECHAR", week: "Semana", every: "Cada", daysPlural: "días", startInWeek: "Iniciar Semana", frequency: "Frecuencia: cada", flushStartWeek: "Iniciar Lavado Semana", targetHarvestWeek: "Semana de Cosecha Objetivo", pautaDeLaCepa: "Pauta de la Cepa:", adjustNote: "Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.", notesPlaceholder: "Notas sobre riego, EC/PPM, pH, entrenamiento, etc.", alertPhoto: "Por favor, selecciona una foto primero.", alertDelete: "Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).", alertMax: "Máximo de 12 plantas admitidas.", alertImport: "No se puede leer el archivo:", darkMode: "Modo Oscuro", seedling: "Plántula", vegetative: "Vegetativo", flowering: "Floración", flush: "Lavado", helpTitle: "Privacidad & Información", helpText: "Su privacidad y seguridad de los datos están garantizadas. Esta es una aplicación 100% frontend, lo que significa que todos los datos que ingresa (nombres de plantas, fechas, notas, fotos) se almacenan exclusivamente en su propio dispositivo en el almacenamiento local de su navegador. No se envía ningún dato a ningún servidor.", contactDeveloper: "Contactar al desarrollador", simulateCycle: "Simular Ciclo", stopSimulation: "Detener Simulación", today: "Hoy"
+            }
+        };
+        // Staat voor taal en dark mode
+        let currentLang = localStorage.getItem('appLang') || 'nl';
+        let isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+        // Vertalingsfunctie
+        function t(key) {
+            return TRANSLATIONS[currentLang]?.[key] || `[${key}]`;
+        }
+        // Functie om de UI te vertalen
+        function translateUI() {
+            document.getElementById('appTitle').textContent = t('appName');
+            document.getElementById('darkModeLabel').textContent = t('darkMode');
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+            render();
+        }
+
+        // Functie om dark mode toe te passen
+        function setDarkMode(enabled) {
+            isDarkMode = enabled;
+            document.body.classList.toggle('dark', enabled);
+            document.getElementById('darkModeToggle').checked = enabled;
+            localStorage.setItem('isDarkMode', enabled);
+        }
+        // ===== Initialisatie Taal en Dark Mode =====
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('langSelect').value = currentLang;
+            document.getElementById('langSelect').onchange = (e) => {
+                currentLang = e.target.value;
+                localStorage.setItem('appLang', currentLang);
+                translateUI();
+            };
+            document.getElementById('darkModeToggle').onchange = (e) => {
+                setDarkMode(e.target.checked);
+            };
+            setDarkMode(isDarkMode);
+            translateUI();
+            setupModal();
+        });
+        // ===== Utilities & RQS STRAIN DATA =====
+        const uid = () => Math.random().toString(36).slice(2,10);
+        const todayISO = () => new Date().toISOString().slice(0,10);
+        const toISODate = d => new Date(d).toISOString().slice(0,10);
+        const fmtDate = d => new Date(d).toLocaleDateString(currentLang);
+        const fmtShortDate = (d) => new Date(d).toLocaleDateString(currentLang, { day: 'numeric', month: 'short' });
+
+        const daysBetween = (a,b) => Math.floor((new Date(b) - new Date(a)) / 86400000);
+        const weekNumberSince = (start, at) => Math.floor(daysBetween(start, at) / 7);
+        const addDays = (date, days)=>{ const d = new Date(date); d.setDate(d.getDate()+days); return d; };
+        
+        const RQS_STRAINS = {
+            'Quick One (RQS)': {
+                type: 'Autoflower (Indica)',
+                hint: { nl:'Cyclus: 8–9 weken totaal. Typische autoflower planning.', en:'Cycle: 8–9 weeks total. Typical autoflower schedule.', de:'Zyklus: 8–9 Wochen total. Typischer Autoflower-Zeitplan.', fr:'Cycle: 8–9 semaines au total. Programme autoflo typique.', es:'Ciclo: 8–9 semanas totales. Horario típico de autofloreciente.' },
+                schedule: { waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:8, targetHarvestWeek:9 }
+            },
+            'Royal Dwarf (RQS)': {
+                type: 'Autoflower (Dwarf)',
+                hint: { nl:'Cyclus: 9–10 weken totaal. Kan wat langer bloeien dan Quick One.', en:'Cycle: 9–10 weeks total. May flower slightly longer than Quick One.', de:'Zyklus: 9–10 Wochen total. Kann etwas länger blühen als Quick One.', fr:'Cycle: 9–10 semaines au total. Peut fleurir un peu plus longtemps que Quick One.', es:'Ciclo: 9–10 semanas totales. Puede florecer un poco más que Quick One.' },
+                schedule: { waterEveryDays:3, feedStartWeek:3, feedEveryDays:7, flushStartWeek:9, targetHarvestWeek:10 }
+            },
+            'Northern Light Auto (RQS)': {
+                type: 'Autoflower (Sterke Indica)',
+                hint: { nl:'Cyclus: 10–12 weken totaal. Vraagt mogelijk meer voeding in de bloei.', en:'Cycle: 10–12 weeks total. May require more nutrients during flowering.', de:'Zyklus: 10–12 Wochen total. Benötigt möglicherweise mehr Nährstoffe während der Blüte.', fr:'Cycle: 10–12 semaines au total. Peut nécessiter plus d\'engrais pendant la floraison.', es:'Ciclo: 10–12 semanas totales. Puede requerir más nutrientes durante la floración.' },
+                schedule: { waterEveryDays:2, feedStartWeek:4, feedEveryDays:5, flushStartWeek:10, targetHarvestWeek:12 }
+            },
+            'Shining Silver Haze (RQS)': {
+                type: 'Feminized (Sativa)',
+                hint: { nl:'Groeit lang door, afhankelijk van wanneer je de klok omzet naar 12/12. Bloeitijd 9–11 weken.', en:'Grows tall, depending on when you switch to 12/12. Flowering time 9–11 weeks.', de:'Wächst hoch, je nachdem, wann Sie auf 12/12 umstellen. Blütezeit 9–11 Wochen.', fr:'Pousse haut, selon le moment où vous passez à 12/12. Temps de floraison 9–11 semaines.', es:'Crece alta, dependiendo de cuándo cambies a 12/12. Tiempo de floración 9–11 semanas.' },
+                schedule: { waterEveryDays:3, feedStartWeek:1, feedEveryDays:7, flushStartWeek:15, targetHarvestWeek:17 }
+            },
+            'Fat Banana (RQS)': {
+                type: 'Feminized (Indica)',
+                hint: { nl:'Bloeitijd 7–9 weken. Snelle bloeier met stevige voedingseisen.', en:'Flowering time 7–9 weeks. Fast flowerer with strong nutrient demands.', de:'Blütezeit 7–9 Wochen. Schnelle Blüherin mit hohem Nährstoffbedarf.', fr:'Temps de floraison 7–9 semaines. Floraison rapide avec de fortes exigences en nutriments.', es:'Tiempo de floración 7–9 semanas. Floración rápida con altas demandas de nutrientes.' },
+                schedule: { waterEveryDays:2, feedStartWeek:1, feedEveryDays:5, flushStartWeek:11, targetHarvestWeek:13 }
+            },
+            'Onbekend/Algemeen': {
+                displayName: { nl: 'Onbekend/Algemeen', en: 'Unknown/Generic', de: 'Unbekannt/Allgemein', fr: 'Inconnu/Générique', es: 'Desconocido/Genérico' },
+                type: 'Gemiddeld/Algemeen',
+                hint: { nl:'Gebaseerd op een algemene autoflower-cyclus van 10 weken. Pas dit aan op je soort!', en:'Based on a general 10-week autoflower cycle. Adjust this according to your strain!', de:'Basiert auf einem allgemeinen 10-wöchigen Autoflower-Zyklus. Passen Sie dies an Ihre Sorte an!', fr:'Basé sur un cycle autoflo général de 10 semaines. Ajustez ceci en fonction de votre souche!', es:'Basado en un ciclo autofloreciente general de 10 semanas. ¡Ajusta esto según tu cepa!' },
+                schedule: { waterEveryDays:2, feedStartWeek:2, feedEveryDays:7, flushStartWeek:9, targetHarvestWeek:10 }
+            }
+        };
+        const getStrainHint = (strainKey) => RQS_STRAINS[strainKey]?.hint?.[currentLang] || RQS_STRAINS['Onbekend/Algemeen'].hint[currentLang];
+        const getStrainDisplayName = (strainKey) => RQS_STRAINS[strainKey]?.displayName?.[currentLang] || strainKey;
+        
+        // ===== Persistence & State Management =====
+        const LS_KEY = 'quickone_grow_tracker_v1_html';
+        let state = { plants:[], viewArchived:false };
+        let activeSimulations = {};
+
+        const loadState = () => {
+            try {
+                const raw = localStorage.getItem(LS_KEY);
+                let loadedState = raw ? JSON.parse(raw) : { plants:[], viewArchived:false };
+                // Zorg ervoor dat elke plant de nieuwe acknowledgedActions eigenschap heeft
+                if(loadedState.plants) {
+                    loadedState.plants.forEach(p => {
+                        if (!p.acknowledgedActions) {
+                            p.acknowledgedActions = [];
+                        }
+                    });
+                }
+                state = loadedState;
+            } catch(e){ 
+                console.warn("Kon staat niet laden, begin met een schone lei.", e);
+                state = { plants:[], viewArchived:false }; 
+            }
+        };
+        const saveState = (s) => {
+            try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch(e){ console.warn(e); }
+        };
+        loadState();
+        
+        const createActionId = (actionType, date) => `${actionType}-${toISODate(date)}`;
+
+        // --- FUNCTIE OM ALLE OPENSTAANDE ACTIES TE VINDEN ---
+        const getPendingActions = (plant, dateToCheck) => {
+            const pendingActions = [];
+            const startDate = new Date(plant.planted_at);
+            const today = dateToCheck;
+
+            if (today < startDate) return [];
+
+            for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
+                const ageInDays = daysBetween(startDate, d);
+                if (ageInDays < 0) continue;
+
+                const currentWeek = Math.floor(ageInDays / 7);
+                const s = plant.schedule;
+                let actionsForThisDay = [];
+
+                if (ageInDays > 0 && s.waterEveryDays > 0 && ageInDays % s.waterEveryDays === 0) {
+                    actionsForThisDay.push({ type: 'water', label: t('water'), date: new Date(d) });
+                }
+                if (currentWeek < s.flushStartWeek && currentWeek >= s.feedStartWeek) {
+                    const startFeedDays = s.feedStartWeek * 7;
+                    if (s.feedEveryDays > 0 && (ageInDays - startFeedDays) >= 0 && (ageInDays - startFeedDays) % s.feedEveryDays === 0) {
+                        actionsForThisDay.push({ type: 'feed', label: t('feed'), date: new Date(d) });
+                    }
+                }
+                if (currentWeek === s.flushStartWeek && ageInDays === s.flushStartWeek * 7) {
+                    actionsForThisDay.push({ type: 'flush', label: t('startFlush'), date: new Date(d) });
+                }
+                if (ageInDays === s.targetHarvestWeek * 7) {
+                    actionsForThisDay.push({ type: 'harvest', label: t('harvest'), date: new Date(d) });
+                }
+
+                actionsForThisDay.forEach(action => {
+                    const actionId = createActionId(action.type, action.date);
+                    if (!plant.acknowledgedActions.includes(actionId)) {
+                        pendingActions.push(action);
+                    }
+                });
+            }
+            return pendingActions;
+        }
+
+        // --- FUNCTIE OM DE ACTIEBALK TE RENDEREN ---
+        const renderActionsBar = (plant, overrideDate = null) => {
+            const dateToCheck = overrideDate || new Date();
+            const actions = getPendingActions(plant, dateToCheck);
+
+            if (actions.length === 0) {
+                return `<div class="actions-bar" id="actions_${plant.id}"></div>`;
+            }
+
+            const actionsHTML = actions.map(action => {
+                const actionId = createActionId(action.type, action.date);
+                return `<div class="action-item ${action.type}" onclick="acknowledgeAction('${plant.id}', '${actionId}')">
+                    <span>${action.label}</span>
+                    <span class="action-date">${fmtShortDate(action.date)}</span>
+                </div>`
+            }).join('');
+
+            return `<div class="actions-bar" id="actions_${plant.id}">${actionsHTML}</div>`;
+        }
+
+        function acknowledgeAction(plantId, actionId) {
+            const plant = getPlant(plantId);
+            if (plant && !plant.acknowledgedActions.includes(actionId)) {
+                plant.acknowledgedActions.push(actionId);
+                saveAndRender();
+            }
+        }
+
+        // --- FUNCTIE OM PROGRESSIEBALK TE MAKEN ---
+        const createProgressBarHTML = (plant, overrideDate = null) => {
+            const { planted_at, schedule } = plant;
+            if (!planted_at || !schedule || !schedule.targetHarvestWeek) return '';
+
+            const plantedDate = new Date(planted_at);
+            const today = overrideDate || new Date();
+
+            const seedlingEndWeek = 2;
+            const vegEndWeek = 4;
+            const flowerEndWeek = schedule.flushStartWeek || (schedule.targetHarvestWeek - 2);
+            const harvestWeek = schedule.targetHarvestWeek;
+
+            if (harvestWeek <= 0) return '';
+
+            const phases = [
+                { name: t('seedling'), duration: seedlingEndWeek, color: '#90B47A' },
+                { name: t('vegetative'), duration: vegEndWeek - seedlingEndWeek, color: '#38761D' },
+                { name: t('flowering'), duration: flowerEndWeek - vegEndWeek, color: '#A9C439' },
+                { name: t('flush'), duration: harvestWeek - flowerEndWeek, color: '#00BFFF' }
+            ].filter(p => p.duration > 0);
+
+            const segmentsHTML = phases.map(phase => {
+                const width = (phase.duration / harvestWeek) * 100;
+                return `<div class="progress-segment" style="width: ${width}%; background-color: ${phase.color};"></div>`;
+            }).join('');
+
+            const phaseLabelsHTML = phases.map(phase => {
+                const width = (phase.duration / harvestWeek) * 100;
+                return `<div class="progress-phase-label" style="width: ${width}%;">${phase.name}</div>`;
+            }).join('');
+
+            const harvestDate = addDays(new Date(planted_at), harvestWeek * 7);
+            const harvestDateString = harvestDate.toLocaleDateString(currentLang, { month: 'short', day: 'numeric' });
+            const dateLabelsHTML = `
+                <div class="progress-date-labels">
+                    <span>${fmtDate(planted_at)}</span>
+                    <span>${t('harvest')}: ${harvestDateString}</span>
+                </div>
+            `;
+
+            const totalDays = harvestWeek * 7;
+            const currentAgeInDays = daysBetween(planted_at, today);
+            let markerHTML = '';
+            if (currentAgeInDays >= 0 && currentAgeInDays <= totalDays) {
+                const markerPosition = (currentAgeInDays / totalDays) * 100;
+                
+                let labelStyle = `left: ${markerPosition}%; transform: translateX(-50%);`;
+                if (markerPosition < 8) {
+                    labelStyle = `left: 0; transform: translateX(0);`;
+                } else if (markerPosition > 92) {
+                    labelStyle = `left: 100%; transform: translateX(-100%);`;
+                }
+                
+                const markerLabel = overrideDate ? '' : `<div class="progress-marker-label" style="${labelStyle}">${t('today')}</div>`;
+
+                markerHTML = `
+                    ${markerLabel}
+                    <div class="progress-marker" style="left: ${markerPosition}%;"></div>
+                `;
+            }
+
+            return `
+                <div class="progress-wrapper" id="progress_${plant.id}">
+                    ${dateLabelsHTML}
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            ${segmentsHTML}
+                        </div>
+                        ${markerHTML}
+                    </div>
+                    <div class="progress-phase-labels-container">
+                        ${phaseLabelsHTML}
+                    </div>
+                </div>
+            `;
+        };
+
+        // ===== Modal Logic =====
+        function setupModal() {
+            const modal = document.getElementById('helpModal');
+            const btnOpen = document.getElementById('btnHelp');
+            const btnClose = modal.querySelector('.modal-close');
+
+            btnOpen.onclick = () => modal.style.display = 'flex';
+            btnClose.onclick = () => modal.style.display = 'none';
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        // ===== Core Logic =====
+        const grid = document.getElementById('grid');
+        const archivedGrid = document.getElementById('archivedGrid');
+        const empty = document.getElementById('empty');
+        const archivedSection = document.getElementById('archivedSection');
+        const chkArchived = document.getElementById('chkArchived');
+        document.getElementById('btnAdd').onclick = addPlant;
+        document.getElementById('btnAdd2').onclick = addPlant;
+        chkArchived.checked = state.viewArchived;
+        chkArchived.onchange = (e) => {
+            state.viewArchived = e.target.checked;
+            saveAndRender();
+        };
+
+        const getPlant = (id) => state.plants.find(p => p.id === id);
+        const updatePlant = (id, props) => {
+            const p = getPlant(id);
+            if (p) {
+                Object.assign(p, props);
+                saveAndRender();
+            }
+        };
+
+        function addPlant() {
+            if(state.plants.length >= 12){ alert(t('alertMax')); return; }
+            const newPlant = {
+                id: uid(),
+                name: `${t('plant')} ${state.plants.length+1}`,
+                strain: 'Onbekend/Algemeen',
+                planted_at: todayISO(),
+                archived: false,
+                notes: "",
+                photos: [],
+                acknowledgedActions: [], // Toegevoegd voor persistentie
+                schedule: { ...RQS_STRAINS['Onbekend/Algemeen'].schedule }
+            };
+            state.plants.unshift(newPlant);
+            saveAndRender();
+        }
+
+        const saveAndRender = () => { saveState(state); render(); };
+
+        function render() {
+            const activePlants = state.plants.filter(p => !p.archived);
+            const archivedPlants = state.plants.filter(p => p.archived);
+
+            grid.innerHTML = activePlants.map(plant => {
+                let ageDays = daysBetween(plant.planted_at, new Date());
+                if (ageDays < 0) {
+                    ageDays = 0; // GEWIJZIGD: Voorkom negatieve leeftijd
+                }
+                const ageWeeks = Math.floor(ageDays / 7);
+                const ageRemDays = ageDays % 7;
+                return `
+                <div class="card" id="card_${plant.id}">
+                    <div class="card-h">
+                        <div class="row-name">
+                            <input type="text" value="${plant.name}" onchange="updatePlant('${plant.id}', {name:this.value})"/>
+                        </div>
+                        <div class="row-strain">
+                             <select onchange="handleStrainChange('${plant.id}', this.value)">
+                                 ${Object.keys(RQS_STRAINS).map(s => `<option value="${s}" ${plant.strain === s ? 'selected' : ''}>${getStrainDisplayName(s)}</option>`).join('')}
+                             </select>
+                        </div>
+                        <div class="row-info">
+                            <label>
+                                <span class="muted">${t('planted')}</span>
+                                <input type="date" value="${plant.planted_at}" onchange="updatePlant('${plant.id}', {planted_at:this.value})"/>
+                            </label>
+                            <span class="pill">
+                                <b>${t('age')}</b> ${ageWeeks} ${t('weeks')} ${ageRemDays} ${t('days')}
+                            </span>
+                            <div class="action-buttons">
+                                <button class="btn-simulate" onclick="toggleCycleSimulation('${plant.id}')">${t('simulateCycle')}</button>
+                                <button onclick="updatePlant('${plant.id}', {archived:true})">${t('archivedCycle')}</button>
+                                <button class="danger" onclick="deletePlant('${plant.id}')">${t('delete')}</button>
+                            </div>
+                        </div>
+                        ${renderActionsBar(plant)}
+                        ${createProgressBarHTML(plant)}
+                    </div>
+                    <div class="card-b">
+                        <div class="tabs">
+                            <button class="tab active" data-tab="timeline" onclick="switchTab(this, '${plant.id}')">${t('timeline')}</button>
+                            <button class="tab" data-tab="reminders" onclick="switchTab(this, '${plant.id}')">${t('reminders')}</button>
+                            <button class="tab" data-tab="notes" onclick="switchTab(this, '${plant.id}')">${t('notes')}</button>
+                        </div>
+                        <div id="content_${plant.id}" style="margin-top: 12px;"></div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            archivedGrid.innerHTML = archivedPlants.map(plant => `
+                <div class="card" id="card_${plant.id}">
+                     <div class="card-h">
+                         <div class="row-name">
+                             <b>${plant.name}</b> (${getStrainDisplayName(plant.strain)})
+                         </div>
+                         <div class="row-info">
+                             <span>${t('planted')} ${fmtDate(plant.planted_at)}</span>
+                             <div class="action-buttons">
+                                 <button onclick="updatePlant('${plant.id}', {archived:false})">${t('unarchive')}</button>
+                                 <button class="danger" onclick="deletePlant('${plant.id}')">${t('delete')}</button>
+                             </div>
+                         </div>
+                     </div>
+                </div>`).join('');
+
+
+            empty.style.display = state.plants.length === 0 ? 'block' : 'none';
+            archivedSection.style.display = state.viewArchived && archivedPlants.length > 0 ? 'block' : 'none';
+
+            activePlants.forEach(p => {
+                const activeTab = document.querySelector(`#card_${p.id} .tab.active`);
+                if (activeTab) {
+                    switchTab(activeTab, p.id)
+                }
+            });
+        }
+
+        // ===== SIMULATIEFUNCTIE =====
+        function toggleCycleSimulation(plantId) {
+            const plant = getPlant(plantId);
+            const button = document.querySelector(`#card_${plantId} .btn-simulate`);
+            if (!button) return;
+
+            if (activeSimulations[plantId]) {
+                clearInterval(activeSimulations[plantId].intervalId);
+                delete activeSimulations[plantId];
+                button.textContent = t('simulateCycle');
+                saveAndRender(); 
+                return;
+            }
+
+            button.textContent = t('stopSimulation');
+            let simulatedDay = 0;
+            const totalDays = plant.schedule.targetHarvestWeek * 7;
+            const actionsContainer = document.getElementById(`actions_${plantId}`);
+            const progressContainer = document.getElementById(`progress_${plantId}`);
+
+            const intervalId = setInterval(() => {
+                if (simulatedDay > totalDays) {
+                    toggleCycleSimulation(plantId);
+                    return;
+                }
+
+                const simulatedDate = addDays(new Date(plant.planted_at), simulatedDay);
+                
+                if (actionsContainer) {
+                    const newActionsHTML = renderActionsBar(plant, simulatedDate).match(/<div class="actions-bar".*?>(.*)<\/div>/s);
+                    if(newActionsHTML) actionsContainer.innerHTML = newActionsHTML[1] || '';
+                }
+                if (progressContainer) {
+                    const newProgressHTML = createProgressBarHTML(plant, simulatedDate).match(/<div class="progress-wrapper".*?>(.*)<\/div>/s);
+                    if (newProgressHTML) progressContainer.innerHTML = newProgressHTML[1] || '';
+                }
+                
+                simulatedDay++;
+            }, 150); 
+
+            activeSimulations[plantId] = { intervalId: intervalId };
+        }
+
+
+        function handleStrainChange(plantId, strainKey){
+            const newSchedule = RQS_STRAINS[strainKey]?.schedule || RQS_STRAINS['Onbekend/Algemeen'].schedule;
+            updatePlant(plantId, { strain: strainKey, schedule: {...newSchedule} });
+        }
+
+        function deletePlant(id) {
+            if(confirm(t('alertDelete'))){
+                state.plants = state.plants.filter(p => p.id !== id);
+                saveAndRender();
+            }
+        }
+
+        function switchTab(el, plantId){
+            const card = el.closest('.card');
+            card.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            const tabName = el.getAttribute('data-tab');
+            const contentDiv = document.getElementById(`content_${plantId}`);
+            const plant = getPlant(plantId);
+
+            if(tabName === 'timeline') contentDiv.innerHTML = renderTimeline(plant);
+            if(tabName === 'notes') contentDiv.innerHTML = renderNotes(plant);
+            if(tabName === 'reminders') contentDiv.innerHTML = renderReminders(plant);
+        }
+
+        function renderTimeline(plant){
+            const photosByWeek = plant.photos.reduce((acc,p)=>{
+                const week = weekNumberSince(plant.planted_at, p.date);
+                if(!acc[week]) acc[week] = [];
+                acc[week].push(p);
+                return acc;
+            }, {});
+
+            return `
+                <div class="uploader">
+                     <label>${t('date')}</label>
+                     <input type="date" id="photo_date_${plant.id}" value="${todayISO()}"/>
+                     <label>${t('noteOptional')}</label>
+                     <input type="text" id="photo_note_${plant.id}" placeholder="W${weekNumberSince(plant.planted_at, todayISO())}, bloei gestart"/>
+                     <input type="file" id="photo_file_${plant.id}" accept="image/*"/>
+                     <button onclick="addPhoto('${plant.id}')">${t('uploadPhoto')}</button>
+                </div>
+                <div style="margin-top:16px;">
+                    ${Object.keys(photosByWeek).sort((a,b)=>a-b).map(week => `
+                        <div class="section-title" style="margin-top:0;">Week ${week}</div>
+                        <div class="grid" style="gap:12px; margin-bottom:12px;">
+                        ${photosByWeek[week].map(p => `
+                            <figure>
+                                <img src="${p.data}" alt="Week ${week}"/>
+                                <figcaption>
+                                    <div>
+                                        <div class="muted">${fmtDate(p.date)}</div>
+                                        <div>${p.note || ''}</div>
+                                    </div>
+                                    <button class="danger" style="padding:4px 8px; font-size:12px;" onclick="removePhoto('${plant.id}', '${p.id}')">${t('remove')}</button>
+                                </figcaption>
+                            </figure>
+                        `).join('')}
+                        </div>
+                    `).join('') || `<p class="muted" style="text-align:center;">${t('noPhotos')}</p>`}
+                </div>`;
+        }
+
+        function renderNotes(plant){
+            return `<textarea style="width:100%; min-height:120px;" onchange="updatePlant('${plant.id}', {notes: this.value})" placeholder="${t('notesPlaceholder')}">${plant.notes}</textarea>`;
+        }
+
+        function renderReminders(plant){
+            const s = plant.schedule;
+            return `
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div class="field-group">
+                        <span>${t('water')}</span>: <span>${t('every')}</span>
+                        <input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${plant.id}', 'waterEveryDays', this.value)"/>
+                        <span>${t('daysPlural')}</span>
+                    </div>
+                    <div class="field-group">
+                        <span>${t('feed')}</span>: <span>${t('startInWeek')}</span>
+                        <input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${plant.id}', 'feedStartWeek', this.value)"/>
+                        <span> | ${t('frequency')}</span>
+                        <input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${plant.id}', 'feedEveryDays', this.value)"/>
+                        <span>${t('daysPlural')}</span>
+                    </div>
+                     <div class="field-group">
+                         <span>${t('startFlush')}</span>: <span>${t('flushStartWeek')}</span>
+                         <input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${plant.id}', 'flushStartWeek', this.value)"/>
+                     </div>
+                     <div class="field-group">
+                         <span>${t('targetHarvestWeek')}</span>:
+                         <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${plant.id}', 'targetHarvestWeek', this.value)"/>
+                     </div>
+                    <div class="hint" style="margin-top:4px;"><b>${t('strainGuideline')}</b> ${getStrainHint(plant.strain)} <br/>${t('adjustNote')}</div>
+                </div>`;
+        }
+
+        function updateSchedule(plantId, key, value){
+            const plant = getPlant(plantId);
+            plant.schedule[key] = parseInt(value, 10);
+            saveAndRender();
+        }
+
+        function addPhoto(plantId){
+            const fileInput = document.getElementById(`photo_file_${plantId}`);
+            const date = document.getElementById(`photo_date_${plantId}`).value;
+            const note = document.getElementById(`photo_note_${plantId}`).value;
+            if(!fileInput.files[0]){ alert(t('alertPhoto')); return; }
+
+            const reader = new FileReader();
+            reader.onload = function(e){
+                const plant = getPlant(plantId);
+                plant.photos.push({ id:uid(), date, note, data: e.target.result });
+                plant.photos.sort((a,b) => new Date(a.date) - new Date(b.date));
+                saveAndRender();
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+        function removePhoto(plantId, photoId){
+            const plant = getPlant(plantId);
+            plant.photos = plant.photos.filter(p => p.id !== photoId);
+            saveAndRender();
+        }
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>
