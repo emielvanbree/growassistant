@@ -22,7 +22,7 @@ header{position:sticky;top:0;z-index:10;background:rgba(245,245,245,.9);backdrop
 #btnMenuToggle{display:none}
 @media (max-width:768px){
 #btnMenuToggle{display:flex}
-#menuContent{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:20;padding:12px;flex-direction:column;align-items:flex-start;gap:14px;width:260px}
+#menuContent{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:20;padding:12px;flex-direction:column;align-items:flex-end;gap:14px;width:260px}
 #menuContent.is-open{display:flex}
 }
 @media (min-width:769px){#menuContent{display:contents}}
@@ -325,7 +325,7 @@ return `<div class="progress-wrapper">
 }
 /* ==== Reminder info popup ==== */
 function showReminderInfo(plantId,actionType,iso){
-const plant=getPlant(id),phase=getPhaseForDate(plant,iso),copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
+const plant=getPlant(plantId),phase=getPhaseForDate(plant,iso),copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
 let html='';
 if(actionType==='feed'){html=(copy.feed&&copy.feed[phase])||'';const url=getRqsNutrientUrl(phase);if(url)html+=`<p style="margin-top:10px;"><a class="btn-affiliate" href="${url}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a></p>`;}
 else if(actionType==='water'){html=(copy.water&&copy.water[phase])||'';}
