@@ -1,121 +1,140 @@
 <!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kweekmaatje</title>
-  <style>
-    :root{
-      --bg:#F5F5F5; --fg:#4D3A31; --main-text:#38761D; --muted:#90B47A;
-      --card:#FFFFFF; --line:#90B47A; --pill:#F5F5F5; --cta:#A9C439; --cta-hover:#7D932A;
-      --danger:#CC0000; --radius:18px;
-      --seg-seed:#90B47A; --seg-veg:#38761D; --seg-flow:#A9C439; --seg-flush:#C8D29B;
-    }
-    .dark{
-      --bg:#1A1A1A; --fg:#F5F5F5; --main-text:#A9C439; --muted:#90B47A;
-      --card:#282828; --line:#3A3A3A; --pill:#212121; --cta:#A9C439; --cta-hover:#C5E358; --danger:#FF6666;
-      color:var(--main-text);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;background:var(--bg);color:var(--main-text)}
-    h1{font-size:24px;margin:0;font-weight:700;color:var(--fg)}
-    .section-title{font-weight:600;margin:16px 0 8px;color:var(--fg)}
-    .hint{font-size:12px;color:var(--muted)}
-    header{position:sticky;top:0;z-index:10;background:rgba(245,245,245,.9);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--line)}
-    .dark header{background:rgba(26,26,26,.9);border-bottom-color:var(--line)}
-    .container{max-width:1080px;margin:0 auto;padding:12px 16px}
-    .header-content{display:flex;gap:16px;align-items:center;padding:8px 0}
-    .header-actions{display:flex;gap:8px;align-items:center;margin-left:auto;position:relative}
-    #btnMenuToggle{display:none}
-    @media (max-width:768px){
-      #btnMenuToggle{display:flex}
-      #menuContent{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:20;padding:12px;flex-direction:column;align-items:flex-start;gap:14px;width:260px}
-      #menuContent.is-open{display:flex}
-    }
-    @media (min-width:769px){#menuContent{display:contents}}
-    button,.btn,.tab.active{appearance:none;border:1px solid var(--line);padding:8px 12px;border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.04);cursor:pointer;font-size:14px;color:var(--fg);background:#fff}
-    .btn-icon{background:transparent;border:none;padding:4px;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
-    .btn-icon:hover{background:var(--pill)}
-    .btn-icon svg{width:20px;height:20px;fill:var(--main-text)}
-    .dark button,.dark .btn,.dark .tab{background:var(--card);border-color:var(--line);color:var(--main-text)}
-    .tab{background:transparent;border-color:transparent}
-    .tab.active{background:#fff;border-color:var(--line);box-shadow:0 1px 0 rgba(0,0,0,.04);color:var(--fg);font-weight:600}
-    .dark .tab.active{background:#2b2b2b;border-color:#444;color:var(--fg)}
-    #btnAdd,#btnAdd2{background:var(--cta);border-color:var(--cta);color:#fff;font-weight:600}
-    #btnAdd:hover,#btnAdd2:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
-    input[type="date"],input[type="number"],input[type="text"],textarea,select{border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:var(--main-text);background:#fff;width:100%}
-    .dark input[type="date"],.dark input[type="number"],.dark input[type="text"],.dark textarea,.dark select{background:#333;color:var(--fg);border-color:#555}
-    main.container{padding:20px 16px 40px}
-    .grid{display:grid;grid-template-columns:1fr;gap:20px}
-    @media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 2px 4px rgba(0,0,0,.05);overflow:hidden}
-    .card-h{padding:14px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-    .btn-collapse{appearance:none;background:transparent;border:none;padding:4px;width:32px;height:32px;cursor:pointer;border-radius:50%;margin-left:auto;display:flex;align-items:center;justify-content:center}
-    .btn-collapse:hover{background:var(--pill)}
-    .btn-collapse svg{width:24px;height:24px;fill:var(--muted);transition:transform .3s ease}
-    .card.is-collapsed .btn-collapse svg{transform:rotate(-180deg)}
-    .card.is-collapsed .row-strain,.card.is-collapsed .row-info,.card.is-collapsed .card-b{display:none}
-    .row-name{display:flex;gap:8px;width:100%;align-items:center}
-    .row-name input{flex:1;border:none;outline:none;font-size:16px;font-weight:600;background:transparent;color:var(--fg);min-width:150px}
-    .row-strain{display:flex;gap:8px;align-items:center;width:100%}
-    .row-info{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13px;color:var(--muted);width:100%;justify-content:space-between}
-    .row-info label{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-    .row-info input[type="date"]{width:auto;min-width:135px}
-    .row-info .action-buttons{display:flex;gap:8px;flex-shrink:0}
-    .pill{font-size:12px;background:var(--pill);border:1px solid var(--line);color:var(--main-text);padding:2px 8px;border-radius:999px}
-    .tabs{display:flex;gap:6px;background:var(--pill);border-radius:999px;padding:4px;margin-top:8px;flex-basis:100%}
-    .card-b{border-top:1px solid var(--line);padding:14px}
-    .uploader{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--pill);border:1px solid var(--line);border-radius:14px}
-    figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
-    figure img{display:block;width:100%;height:auto;max-height:300px;object-fit:cover}
-    figcaption{padding:10px;display:flex;justify-content:space-between;gap:10px;font-size:14px;flex-wrap:wrap}
-    .muted{color:var(--muted)}
-    .danger{color:var(--danger);border-color:var(--danger)!important}
-    .danger:hover{background:rgba(204,0,0,.1)!important}
-    .empty{border:2px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;background:#fff}
-    .archived{opacity:.6}
-    .actions-bar{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:8px;min-height:40px}
-    .action-item{display:flex;align-items:center;justify-content:space-between;width:100%;background:#fff;border:2px solid var(--cta);color:var(--cta);font-weight:600;padding:6px 12px;border-radius:12px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08);gap:8px}
-    .action-item .left{display:flex;align-items:center;gap:10px}
-    .action-item .action-date{font-size:11px;font-weight:400;color:var(--muted);padding-left:10px}
-    .action-item.feed{border-color:#FFA500;color:#FFA500}
-    .action-item.flush{border-color:#00BFFF;color:#00BFFF}
-    .action-item.harvest{border-color:var(--cta);background:var(--cta);color:#fff}
-    .info-btn{margin-left:4px;font-weight:700;border:1px solid var(--line);border-radius:999px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--fg)}
-    .dark .info-btn{background:var(--card)}
-    .progress-wrapper{width:100%;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
-    .progress-date-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:0 2px 4px}
-    .progress-bar-container{position:relative;width:100%;margin-bottom:6px}
-    .progress-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#fff}
-    .progress-segment{height:100%}
-    .seg-seed{background:var(--seg-seed)} .seg-veg{background:var(--seg-veg)} .seg-flow{background:var(--seg-flow)} .seg-flush{background:var(--seg-flush)}
-    .progress-marker{position:absolute;top:-6px;width:3px;height:24px;background:#CC0000;border-radius:2px;transform:translateX(-1.5px);z-index:5;box-shadow:0 0 5px #CC0000}
-    .progress-marker-label{position:absolute;top:-26px;font-size:10px;font-weight:bold;background:#CC0000;color:#fff;padding:2px 4px;border-radius:4px;white-space:nowrap}
-    .progress-phase-labels-container{display:flex;font-size:11px;padding:0;color:var(--main-text);margin-top:2px}
-    .progress-phase-label{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;font-weight:500}
-    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
-    .modal-content{background:var(--card);padding:24px;border-radius:var(--radius);max-width:640px;width:90%;position:relative;box-shadow:0 5px 15px rgba(0,0,0,.3);border:1px solid var(--line)}
-    .modal-close{position:absolute;top:10px;right:10px;background:transparent;border:none;font-size:24px;line-height:1;cursor:pointer;color:var(--muted)}
-    .btn-affiliate{background:var(--cta);border-color:var(--cta);color:#fff!important;padding:6px 10px;border-radius:12px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-    .btn-affiliate:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
-    .btn-whatsapp{display:inline-flex;align-items:center;gap:10px;background-color:#25D366;color:#fff!important;padding:10px 16px;border-radius:16px;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
-    .btn-whatsapp:hover{background-color:#1DA851}
-    .btn-whatsapp svg{width:20px;height:20px;fill:#fff}
-    .toggle-container{display:flex;align-items:center;gap:8px;font-size:14px}
-    .toggle-switch{position:relative;display:inline-block;width:44px;height:24px}
-    .toggle-switch input{opacity:0;width:0;height:0}
-    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.3s;border-radius:24px}
-    .slider:before{position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background:#fff;transition:.3s;border-radius:50%}
-    .toggle-switch input:checked + .slider{background:var(--cta)}
-    .toggle-switch input:checked + .slider:before{transform:translateX(20px)}
-    .dark .slider{background:#555}
-    .dark .toggle-switch input:checked + .slider{background:var(--cta-hover)}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kweekmaatje</title>
+<style>
+/* ====== THEMA ====== */
+:root{
+  --bg:#F5F5F5;--fg:#4D3A31;--main:#38761D;--muted:#90B47A;
+  --card:#FFFFFF;--line:#90B47A;--pill:#F5F5F5;
+  --cta:#A9C439;--cta-hover:#7D932A;--danger:#CC0000;--radius:18px;
+  --seg-seed:#90B47A;--seg-veg:#38761D;--seg-flow:#A9C439;--seg-flush:#C8D29B;
+}
+.dark{
+  --bg:#1A1A1A;--fg:#F5F5F5;--main:#A9C439;--muted:#90B47A;
+  --card:#282828;--line:#3A3A3A;--pill:#212121;
+  --cta:#A9C439;--cta-hover:#C5E358;--danger:#FF6666;
+  color:var(--main);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;background:var(--bg);color:var(--main)}
+h1{margin:0;color:var(--fg);font-size:24px;display:flex;align-items:center;gap:8px}
+.app-logo{width:36px;height:36px;object-fit:contain;display:inline-block}
+.container{max-width:1080px;margin:0 auto;padding:12px 16px}
+
+/* Header */
+header{position:sticky;top:0;z-index:10;background:rgba(245,245,245,.9);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--line)}
+.dark header{background:rgba(26,26,26,.9);border-bottom-color:var(--line)}
+.header-content{display:flex;gap:16px;align-items:center}
+.header-actions{display:flex;gap:8px;align-items:center;margin-left:auto;position:relative}
+#btnMenuToggle{display:none}
+@media (max-width:768px){
+  #btnMenuToggle{display:flex}
+  #menuContent{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:20;padding:12px;flex-direction:column;align-items:flex-start;gap:14px;width:260px}
+  #menuContent.is-open{display:flex}
+}
+@media (min-width:769px){#menuContent{display:contents}}
+
+/* Buttons/inputs */
+button,.btn,.tab.active{appearance:none;border:1px solid var(--line);padding:8px 12px;border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.04);cursor:pointer;font-size:14px;color:var(--fg);background:#fff}
+.btn-icon{background:transparent;border:none;padding:4px;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.btn-icon:hover{background:var(--pill)}
+.btn-icon svg{width:20px;height:20px;fill:var(--main)}
+.dark button,.dark .btn,.dark .tab{background:var(--card);border-color:var(--line);color:var(--main)}
+.tab{background:transparent;border-color:transparent}
+.tab.active{background:#fff;border-color:var(--line);box-shadow:0 1px 0 rgba(0,0,0,.04);color:var(--fg);font-weight:600}
+.dark .tab.active{background:#2b2b2b;border-color:#444;color:var(--fg)} /* minder wit */
+#btnAdd,#btnAdd2{background:var(--cta);border-color:var(--cta);color:#fff;font-weight:600}
+#btnAdd:hover,#btnAdd2:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
+input[type="date"],input[type="number"],input[type="text"],textarea,select{border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:var(--main);background:#fff;width:100%}
+.dark input[type="date"],.dark input[type="number"],.dark input[type="text"],.dark textarea,.dark select{background:#333;color:var(--fg);border-color:#555}
+
+/* Layout/cards */
+main.container{padding:20px 16px 40px}
+.grid{display:grid;grid-template-columns:1fr;gap:20px}
+@media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 2px 4px rgba(0,0,0,.05);overflow:hidden}
+.card-h{padding:14px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.btn-collapse{appearance:none;background:transparent;border:none;padding:4px;width:32px;height:32px;cursor:pointer;border-radius:50%;margin-left:auto;display:flex;align-items:center;justify-content:center}
+.btn-collapse:hover{background:var(--pill)}
+.btn-collapse svg{width:24px;height:24px;fill:var(--muted);transition:transform .3s ease}
+.card.is-collapsed .btn-collapse svg{transform:rotate(-180deg)}
+.card.is-collapsed .row-strain,.card.is-collapsed .row-info,.card.is-collapsed .card-b{display:none}
+.row-name{display:flex;gap:8px;width:100%;align-items:center}
+.row-name input{flex:1;border:none;outline:none;font-size:16px;font-weight:600;background:transparent;color:var(--fg);min-width:150px}
+.row-strain{display:flex;gap:8px;align-items:center;width:100%}
+.row-info{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13px;color:var(--muted);width:100%;justify-content:space-between}
+.row-info label{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.row-info input[type="date"]{width:auto;min-width:135px}
+.row-info .action-buttons{display:flex;gap:8px;flex-shrink:0}
+.section-title{font-weight:600;margin:16px 0 8px;color:var(--fg)}
+.hint{font-size:12px;color:var(--muted)}
+.pill{font-size:12px;background:var(--pill);border:1px solid var(--line);color:var(--main);padding:2px 8px;border-radius:999px}
+.tabs{display:flex;gap:6px;background:var(--pill);border-radius:999px;padding:4px;margin-top:8px;flex-basis:100%}
+.card-b{border-top:1px solid var(--line);padding:14px}
+.uploader{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--pill);border:1px solid var(--line);border-radius:14px}
+figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+figure img{display:block;width:100%;height:auto;max-height:300px;object-fit:cover}
+figcaption{padding:10px;display:flex;justify-content:space-between;gap:10px;font-size:14px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.danger{color:var(--danger);border-color:var(--danger)!important}
+.danger:hover{background:rgba(204,0,0,.1)!important}
+.empty{border:2px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;background:#fff}
+.archived{opacity:.6}
+.actions-bar{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:8px;min-height:40px}
+.action-item{display:flex;align-items:center;justify-content:space-between;width:100%;background:#fff;border:2px solid var(--cta);color:var(--cta);font-weight:600;padding:6px 12px;border-radius:12px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08);gap:8px}
+.action-item .left{display:flex;align-items:center;gap:10px}
+.action-item .action-date{font-size:11px;font-weight:400;color:var(--muted);padding-left:10px}
+.action-item.feed{border-color:#FFA500;color:#FFA500}
+.action-item.flush{border-color:#00BFFF;color:#00BFFF}
+.action-item.harvest{border-color:var(--cta);background:var(--cta);color:#fff}
+.info-btn{margin-left:4px;font-weight:700;border:1px solid var(--line);border-radius:999px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--fg)}
+.dark .info-btn{background:var(--card)}
+
+/* Progress */
+.progress-wrapper{width:100%;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.progress-date-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:0 2px 4px}
+.progress-bar-container{position:relative;width:100%;margin-bottom:6px}
+.progress-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.progress-segment{height:100%}
+.seg-seed{background:var(--seg-seed)}.seg-veg{background:var(--seg-veg)}.seg-flow{background:var(--seg-flow)}.seg-flush{background:var(--seg-flush)}
+.progress-marker{position:absolute;top:-6px;width:3px;height:24px;background:#CC0000;border-radius:2px;transform:translateX(-1.5px);z-index:5;box-shadow:0 0 5px #CC0000}
+.progress-marker-label{position:absolute;top:-26px;font-size:10px;font-weight:bold;background:#CC0000;color:#fff;padding:2px 4px;border-radius:4px;white-space:nowrap}
+.progress-phase-labels-container{display:flex;font-size:11px;padding:0;color:var(--main);margin-top:2px}
+.progress-phase-label{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;font-weight:500}
+
+/* Modals */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
+.modal-content{background:var(--card);padding:24px;border-radius:var(--radius);max-width:640px;width:90%;position:relative;box-shadow:0 5px 15px rgba(0,0,0,.3);border:1px solid var(--line)}
+.modal-close{position:absolute;top:10px;right:10px;background:transparent;border:none;font-size:24px;line-height:1;cursor:pointer;color:var(--muted)}
+
+/* Misc */
+.btn-affiliate{background:var(--cta);border-color:var(--cta);color:#fff!important;padding:6px 10px;border-radius:12px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-affiliate:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
+.btn-whatsapp{display:inline-flex;align-items:center;gap:10px;background-color:#25D366;color:#fff!important;padding:10px 16px;border-radius:16px;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
+.btn-whatsapp:hover{background-color:#1DA851}
+.btn-whatsapp svg{width:20px;height:20px;fill:#fff}
+.toggle-container{display:flex;align-items:center;gap:8px;font-size:14px}
+.toggle-switch{position:relative;display:inline-block;width:44px;height:24px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.3s;border-radius:24px}
+.slider:before{position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background:#fff;transition:.3s;border-radius:50%}
+.toggle-switch input:checked + .slider{background:var(--cta)}
+.toggle-switch input:checked + .slider:before{transform:translateX(20px)}
+.dark .slider{background:#555}
+.dark .toggle-switch input:checked + .slider{background:var(--cta-hover)}
+</style>
 </head>
 <body>
 <header>
   <div class="container header-content">
-    <h1 id="appTitle">Kweekmaatje</h1>
+    <h1 id="appTitle">
+      <img class="app-logo" src="kweekmaatjelogo.png" alt="logo"/>
+      <span id="appTitleText">Kweekmaatje</span>
+    </h1>
+
     <div class="header-actions">
       <button id="btnAdd" data-i18n="newPlant">+ Nieuwe plant</button>
 
@@ -127,22 +146,19 @@
         <div class="toggle-container">
           <label id="darkModeLabel">Dark Mode</label>
           <label class="toggle-switch">
-            <input type="checkbox" id="darkModeToggle"/>
-            <span class="slider"></span>
+            <input type="checkbox" id="darkModeToggle"/><span class="slider"></span>
           </label>
         </div>
 
         <label class="row hint" style="gap:6px;margin:0;align-items:center">
           <input id="chkArchived" type="checkbox"/> <span data-i18n="showArchived">Toon gearchiveerden</span>
         </label>
+
         <button id="btnReset" class="danger" data-i18n="resetData">Reset data</button>
 
-        <!-- Mooier share-icoon (pijl uit vierkant) -->
+        <!-- Share -->
         <button id="btnHeaderShare" class="btn-icon" title="Delen" aria-label="Delen">
-          <svg viewBox="0 0 24 24">
-            <path d="M7 3h10a2 2 0 0 1 2 2v6h-2V5H7v14h10v-4h2v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
-            <path d="M12 7l4 4h-3v6h-2v-6H8l4-4z"></path>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M4 7a3 3 0 1 0 2.996 3.175l8.263-4.132a3 3 0 1 0-.41-1.28L6.59 8.83A3 3 0 0 0 4 7Zm0 10a3 3 0 1 0 2.59-1.83l8.26-4.13a3 3 0 1 0 0-2L6.59 13.83A3 3 0 0 0 4 17Z"/></svg>
         </button>
 
         <button id="btnHelp" class="btn-icon" aria-label="Help & Info">
@@ -171,15 +187,19 @@
 </main>
 
 <!-- Help -->
-<div id="helpModal" class="modal-overlay">
+<div id="helpModal" class="modal-overlay" style="display:none">
   <div class="modal-content">
-    <button class="modal-close">&times;</button>
+    <button class="modal-close" aria-label="Sluiten">&times;</button>
     <h2 id="helpTitle" data-i18n="helpTitle">Hulp & Informatie</h2>
     <p data-i18n="helpIntro" style="font-style: italic;">
       Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt.
     </p>
     <p id="helpText" data-i18n="helpText">
       Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.
+    </p>
+    <h3 data-i18n="disclaimerTitle">Disclaimer</h3>
+    <p id="disclaimerText" data-i18n="disclaimerText">
+      De ontwikkelaar van deze app is niet verantwoordelijk voor jouw oogst. De app geeft slechts adviezen op basis van gemiddelden. Vertrouw altijd op je eigen waarnemingen.
     </p>
     <a id="whatsappBtn" href="https://wa.me/31655793636" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
       <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.46 3.48 1.34 4.94L2.05 22l5.25-1.42c1.4.78 2.96 1.21 4.59 1.21h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m.01 1.66c4.56 0 8.26 3.7 8.26 8.26 0 4.56-3.7 8.26-8.26 8.26h-.01c-1.47 0-2.89-.39-4.14-1.1L4.65 19.35l1.19-3.23c-.79-1.25-1.22-2.7-1.22-4.21 0-4.56 3.7-8.26 8.26-8.26M9.27 7.93c-.14-.23-.29-.24-.42-.24-.12 0-.27 0-.42.01-.15.01-.37.21-.57.42-.2.2-.72.7-.72 1.73s.74 2.01.84 2.15c.1.15 1.45 2.29 3.53 3.12.55.22.99.36 1.34.46.59.18 1.13.15 1.55.09.48.06 1.4-.68 1.6-1.36.2-.68.2-1.25.14-1.36-.06-.11-.21-.18-.42-.32-.21-.15-1.25-.62-1.45-.69-.2-.07-.35-.11-.5.11-.15.22-.55.69-.68.83-.12.15-.24.16-.44.1-.2-.05-1.02-.37-1.94-1.2-.72-.65-1.2-1.45-1.34-1.7-.14-.25-.02-.38.09-.5.1-.11.22-.27.34-.41.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.38s-.5-.6-.68-.82z"/></svg>
@@ -188,642 +208,767 @@
   </div>
 </div>
 
-<!-- Report modal -->
-<div id="shareModal" class="modal-overlay">
+<!-- Share modal -->
+<div id="shareModal" class="modal-overlay" style="display:none">
   <div class="modal-content">
-    <button class="modal-close" onclick="closeShareModal()">&times;</button>
+    <button class="modal-close" aria-label="Sluiten">&times;</button>
     <h2 data-i18n="shareTitle">Rapport delen</h2>
     <p id="shareExplain" data-i18n="shareExplain">Deel het statusrapport en vier het succes met je vrienden.</p>
     <div class="report-actions">
       <button id="btnShareNow" class="btn" data-i18n="shareNow">Delen</button>
-      <button class="btn" onclick="closeShareModal()" data-i18n="close">Sluiten</button>
+      <button class="btn" data-close-modal data-i18n="close">Sluiten</button>
     </div>
     <p class="hint" id="shareFallbackMsg" style="display:none" data-i18n="shareFallback">Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.</p>
   </div>
 </div>
 
 <!-- Reminder info -->
-<div id="helpModal2" class="modal-overlay">
+<div id="helpModal2" class="modal-overlay" style="display:none">
   <div class="modal-content">
-    <button class="modal-close" onclick="document.getElementById('helpModal2').style.display='none'">&times;</button>
+    <button class="modal-close" aria-label="Sluiten">&times;</button>
     <h2 id="infoTitle">Info</h2>
     <div id="infoBody"></div>
   </div>
 </div>
 
 <script>
-  /* ===== Taal ===== */
-  const TRANSLATIONS = {
-    nl:{appName:"Kweekmaatje", newPlant:"+ Nieuwe plant", showArchived:"Toon gearchiveerden", emptyTitle:"Nog geen plantjes", emptyText:"Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach", archivedTitle:"Gearchiveerd", plant:"Plant", archivedCycle:"Archiveer cyclus", unarchive:"Deblokkeren", delete:"Verwijderen", planted:"Geplant:", age:"Leeftijd:", weeks:"wk", days:"d", timeline:"Tijdlijn", reminders:"Herinneringen", notes:"Notities", date:"Datum:", noteOptional:"Opmerking (optioneel)", uploadPhoto:"Upload foto", noPhotos:"Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.", remove:"Verwijder", water:"💧 Water", feed:"🥦 Voeding", startFlush:"💦 START FLUSH", harvest:"🪴 OOGSTEN", week:"Week", every:"Elke", daysPlural:"dagen", startInWeek:"Start in week", frequency:"Frequentie: elke", flushStartWeek:"Flush starten in week", targetHarvestWeek:"Doel oogstweek", strainGuideline:"Soort Richtlijn:", adjustNote:"Pas frequentie aan op potmaat, substraat en klimaat.", notesPlaceholder:"Notities over water, EC/PPM, pH, training, etc.", alertPhoto:"Kies eerst een foto.", alertDelete:"Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).", alertMax:"Maximaal 12 plantjes ondersteund.", alertImport:"Kan bestand niet lezen:", darkMode:"Dark Mode", seedling:"Zaailing", vegetative:"Vegetatief", flowering:"Bloei", flush:"Spoelen", helpTitle:"Hulp & Informatie",
-      helpIntro:"Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt.",
-      helpText:"Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.",
-      today:"Vandaag", buyNow:"Nu kopen", resetData:"Reset data", confirmReset:"Weet je zeker dat je alle gegevens wilt verwijderen? Dit kan niet ongedaan worden gemaakt.", growthReportTitle:"Groeirapport", shareTitle:"Rapport delen", shareExplain:"Deel het statusrapport en vier het succes met je vrienden.", shareNow:"Delen", close:"Sluiten", shareFallback:"Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.", contactDeveloper:"Contact ontwikkelaar"},
-    en:{appName:"Grow Buddy", newPlant:"+ New Plant", showArchived:"Show Archived", emptyTitle:"No Plants Yet", emptyText:"Add your first plant and activate your personal grow coach", archivedTitle:"Archived", plant:"Plant", archivedCycle:"Archive Cycle", unarchive:"Unarchive", delete:"Delete", planted:"Planted:", age:"Age:", weeks:"wks", days:"d", timeline:"Timeline", reminders:"Reminders", notes:"Notes", date:"Date:", noteOptional:"Note (optional)", uploadPhoto:"Upload Photo", noPhotos:"No photos yet…", remove:"Remove", water:"💧 Water", feed:"🥦 Feed", startFlush:"💦 START FLUSH", harvest:"🪴 HARVEST", week:"Week", every:"Every", daysPlural:"days", startInWeek:"Start in Week", frequency:"Frequency: every", flushStartWeek:"Start Flush in Week", targetHarvestWeek:"Target Harvest Week", strainGuideline:"Strain Guideline:", adjustNote:"Adjust frequency…", notesPlaceholder:"Notes…", alertPhoto:"Please select a photo first.", alertDelete:"Delete? This cannot be undone.", alertMax:"Maximum of 12 plants supported.", alertImport:"Cannot read file:", darkMode:"Dark Mode", seedling:"Seedling", vegetative:"Vegetative", flowering:"Flowering", flush:"Flush", helpTitle:"Help & Information",
-      helpIntro:"No more guesswork. Just pick your plant from the list and the app builds a foolproof schedule for you. Get reminders when it’s time to water, feed, or flush, and track every stage with an easy visual timeline. Snap photos along the way to keep a growth log you’ll actually enjoy looking back on.",
-      helpText:"Your privacy and data security are guaranteed. This is a 100% frontend application, meaning all data you enter (plant names, dates, notes, photos) is stored exclusively on your own device in your browser's local storage. No data is sent to any server.",
-      today:"Today", buyNow:"Buy now", resetData:"Reset data", confirmReset:"Are you sure…", growthReportTitle:"Growth Report", shareTitle:"Share report", shareExplain:"Share the status report and celebrate the progress with your friends.", shareNow:"Share", close:"Close", shareFallback:"Sharing not supported; downloading JPG instead.", contactDeveloper:"Contact developer"},
-    de:{appName:"Kraut Kumpel", newPlant:"+ Neue Pflanze", showArchived:"Archivierte anzeigen", emptyTitle:"Noch keine Pflanzen", emptyText:"Füge deine erste Pflanze hinzu…", archivedTitle:"Archiviert", plant:"Pflanze", archivedCycle:"Zyklus archivieren", unarchive:"Wiederherstellen", delete:"Löschen", planted:"Gepflanzt:", age:"Alter:", weeks:"Wo", days:"T", timeline:"Zeitachse", reminders:"Erinnerungen", notes:"Notizen", date:"Datum:", noteOptional:"Notiz (optional)", uploadPhoto:"Foto hochladen", noPhotos:"Noch keine Fotos…", remove:"Entfernen", water:"💧 Wasser", feed:"🥦 Nährstoffe", startFlush:"💦 SPÜLUNG STARTEN", harvest:"🪴 ERNTEN", week:"Woche", every:"Alle", daysPlural:"Tage", startInWeek:"Start in Woche", frequency:"Frequenz: alle", flushStartWeek:"Spülung starten in Woche", targetHarvestWeek:"Ziel Erntewoche", strainGuideline:"Sortenrichtlinie:", adjustNote:"Anpassen…", notesPlaceholder:"Notizen…", alertPhoto:"Bitte zuerst ein Foto wählen.", alertDelete:"Löschen? Nicht rückgängig.", alertMax:"Maximal 12 Pflanzen.", alertImport:"Datei kann nicht gelesen werden:", darkMode:"Dunkelmodus", seedling:"Keimling", vegetative:"Vegetativ", flowering:"Blüte", flush:"Spülen", helpTitle:"Hilfe & Informationen",
-      helpIntro:"Kein Raten mehr. Wähle einfach deine Pflanze…",
-      helpText:"Ihre Privatsphäre ist gewährleistet. 100% Frontend; lokale Speicherung.",
-      today:"Heute", buyNow:"Jetzt kaufen", resetData:"Daten zurücksetzen", confirmReset:"Alle Daten löschen?", growthReportTitle:"Wachstumsbericht", shareTitle:"Bericht teilen", shareExplain:"Teile den Statusbericht und feiere die Erfolge mit deinen Freunden.", shareNow:"Teilen", close:"Schließen", shareFallback:"Teilen nicht unterstützt; JPG-Download.", contactDeveloper:"Entwickler kontaktieren"},
-    fr:{appName:"Copain de Culture", newPlant:"+ Nouvelle Plante", showArchived:"Afficher Archivé", emptyTitle:"Pas encore de Plantes", emptyText:"Ajoutez votre première plante…", archivedTitle:"Archivé", plant:"Plante", archivedCycle:"Archiver Cycle", unarchive:"Désarchiver", delete:"Supprimer", planted:"Planté(e):", age:"Âge:", weeks:"sem", days:"j", timeline:"Chronologie", reminders:"Rappels", notes:"Notes", date:"Date:", noteOptional:"Note (optionnel)", uploadPhoto:"Télécharger photo", noPhotos:"Aucune photo…", remove:"Retirer", water:"💧 Eau", feed:"🥦 Engrais", startFlush:"💦 DÉBUT RINÇAGE", harvest:"🪴 RÉCOLTER", week:"Semaine", every:"Tous les", daysPlural:"jours", startInWeek:"Début Semaine", frequency:"Fréquence : tous les", flushStartWeek:"Début Rinçage Semaine", targetHarvestWeek:"Semaine de Récolte Cible", strainGuideline:"Ligne directrice :", adjustNote:"Ajustez…", notesPlaceholder:"Notes…", alertPhoto:"Veuillez d'abord sélectionner une photo.", alertDelete:"Supprimer ? Irréversible.", alertMax:"Maximum 12 plantes.", alertImport:"Fichier illisible :", darkMode:"Mode Sombre", seedling:"Germination", vegetative:"Végétatif", flowering:"Floraison", flush:"Rinçage", helpTitle:"Aide & Informations",
-      helpIntro:"Fini les devinettes. Choisissez simplement votre plante…",
-      helpText:"Confidentialité garantie. 100% frontend ; données locales.",
-      today:"Aujourd'hui", buyNow:"Acheter", resetData:"Réinitialiser", confirmReset:"Supprimer toutes les données ?", growthReportTitle:"Rapport de croissance", shareTitle:"Partager le rapport", shareExplain:"Partage le rapport d’état et célèbre tes réussites avec tes amis.", shareNow:"Partager", close:"Fermer", shareFallback:"Partage non pris en charge ; téléchargement.", contactDeveloper:"Contacter le développeur"},
-    es:{appName:"Compa de Cultivo", newPlant:"+ Nueva Planta", showArchived:"Mostrar Archivadas", emptyTitle:"Todavía no hay Plantas", emptyText:"Añade tu primera planta…", archivedTitle:"Archivadas", plant:"Planta", archivedCycle:"Archivar Ciclo", unarchive:"Desarchivar", delete:"Eliminar", planted:"Plantada:", age:"Edad:", weeks:"sem", days:"d", timeline:"Línea de Tiempo", reminders:"Recordatorios", notes:"Notas", date:"Fecha:", noteOptional:"Nota (opcional)", uploadPhoto:"Subir foto", noPhotos:"Aún no hay fotos…", remove:"Quitar", water:"💧 Agua", feed:"🥦 Nutrientes", startFlush:"💦 INICIAR LAVADO", harvest:"🪴 COSECHAR", week:"Semana", every:"Cada", daysPlural:"días", startInWeek:"Iniciar Semana", frequency:"Frecuencia: cada", flushStartWeek:"Iniciar Lavado Semana", targetHarvestWeek:"Semana de Cosecha Objetivo", strainGuideline:"Pauta de la Cepa:", adjustNote:"Ajusta…", notesPlaceholder:"Notas…", alertPhoto:"Selecciona una foto primero.", alertDelete:"¿Eliminar? No se puede deshacer.", alertMax:"Máximo 12 plantas.", alertImport:"No se puede leer el archivo:", darkMode:"Modo Oscuro", seedling:"Plántula", vegetative:"Vegetativo", flowering:"Floración", flush:"Lavado", helpTitle:"Ayuda e Información",
-      helpIntro:"Se acabaron las conjeturas. Simplemente elige tu planta…",
-      helpText:"Privacidad garantizada. 100% frontend; datos locales.",
-      today:"Hoy", buyNow:"Comprar ahora", resetData:"Restablecer datos", confirmReset:"¿Eliminar todos los datos?", growthReportTitle:"Informe de crecimiento", shareTitle:"Compartir informe", shareExplain:"Comparte el informe de estado y celebra los logros con tus amigos.", shareNow:"Compartir", close:"Cerrar", shareFallback:"Compartir no disponible; descargaremos el JPG.", contactDeveloper:"Contactar al desarrollador"}
-  };
+/* ===== i18n ===== */
+const TRANSLATIONS = {
+  nl: {
+    appName: "Kweekmaatje",
+    newPlant: "+ Nieuwe plant",
+    showArchived: "Toon gearchiveerden",
+    emptyTitle: "Nog geen plantjes",
+    emptyText: "Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach",
+    archivedTitle: "Gearchiveerd",
+    plant: "Plant",
+    archivedCycle: "Archiveer cyclus",
+    unarchive: "Deblokkeren",
+    delete: "Verwijderen",
+    planted: "Geplant:",
+    age: "Leeftijd:",
+    weeks: "wk",
+    days: "d",
+    timeline: "Tijdlijn",
+    reminders: "Herinneringen",
+    notes: "Notities",
+    date: "Datum:",
+    noteOptional: "Opmerking (optioneel)",
+    uploadPhoto: "Upload foto",
+    noPhotos: "Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.",
+    remove: "Verwijder",
+    water: "💧 Water",
+    feed: "🥦 Voeding",
+    startFlush: "💦 START FLUSH",
+    harvest: "🪴 OOGSTEN",
+    week: "Week",
+    every: "Elke",
+    daysPlural: "dagen",
+    startInWeek: "Start in week",
+    frequency: "Frequentie: elke",
+    flushStartWeek: "Flush starten in week",
+    targetHarvestWeek: "Doel oogstweek",
+    strainGuideline: "Soort Richtlijn:",
+    adjustNote: "Pas frequentie aan op potmaat, substraat en klimaat.",
+    notesPlaceholder: "Notities over water, EC/PPM, pH, training, etc.",
+    alertPhoto: "Kies eerst een foto.",
+    alertDelete: "Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).",
+    alertMax: "Maximaal 12 plantjes ondersteund.",
+    alertImport: "Kan bestand niet lezen:",
+    darkMode: "Dark Mode",
+    seedling: "Zaailing",
+    vegetative: "Vegetatief",
+    flowering: "Bloei",
+    flush: "Spoelen",
+    today: "Vandaag",
+    buyNow: "Nu kopen",
+    resetData: "Reset data",
+    confirmReset: "Weet je zeker dat je alle gegevens wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+    growthReportTitle: "Groeirapport",
+    shareTitle: "Rapport delen",
+    shareExplain: "Deel het statusrapport en vier het succes met je vrienden.",
+    shareNow: "Delen",
+    close: "Sluiten",
+    shareFallback: "Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.",
+    contactDeveloper: "Contact ontwikkelaar",
 
-  /* ===== Reminder copy (lokaal per taal) ===== */
-  const REMINDER_COPY = {
-    nl:{
-      feed:{
-        vegetative:`<p><b>Voeding (groei):</b> Focus op <b>Stikstof (N)</b> voor blad- en stengelgroei.</p>
-        <ul style="margin-top:8px;"><li><b>Primair:</b> Hoog N</li><li><b>Secundair:</b> Gemiddeld P & K</li><li><b>Micro:</b> Mg & Ca</li></ul>`,
-        flowering:`<p><b>Voeding (bloei):</b> Focus op <b>Fosfor (P)</b> & <b>Kalium (K)</b> voor stevige toppen. Minder N.</p>
-        <ul style="margin-top:8px;"><li><b>Primair:</b> Hoog P & K</li><li><b>Secundair:</b> Laag N</li><li><b>Micro:</b> S, Mg & Ca</li></ul>`,
-        seedling:`<p><b>Zaailing:</b> Geen extra voeding. Potgrond bevat genoeg; jonge wortels zijn gevoelig.</p>`,
-        flush:`<p><b>Spoelen:</b> Geen voeding; alleen water tot oogst.</p>`
-      },
-      water:{
-        seedling:`<p><b>Water (zaailing):</b> 100–250 ml per beurt. Alleen bij droge bovenlaag (2–3 cm).</p>`,
-        vegetative:`<p><b>Water (groei):</b> Matig tot veel. Geef tot lichte drainage; zorg voor goede lucht/afvoer.</p>`,
-        flowering:`<p><b>Water (bloei):</b> Veel (±1,5–3 L afhankelijk van potmaat). Regelmaat helpt.</p>`,
-        flush:`<p><b>Spoelen:</b> Alleen water gebruiken om zouten te verwijderen.</p>`
-      },
-      flush:`<p><b>Spoelen:</b> 1–2 weken voor oogst. Alleen water; verbetert smaak.</p>`,
-      harvest:`<p><b>Oogst:</b> Check trichomen (melkig/amber). Droog & cure voor topkwaliteit.</p>`
+    /* ✅ Originele help-teksten */
+    helpTitle: "Hulp & Informatie",
+    helpIntro:
+      "Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt.",
+    helpText:
+      "Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.",
+
+    disclaimerTitle: "Disclaimer",
+    disclaimerText:
+      "De ontwikkelaar van deze app is niet verantwoordelijk voor jouw oogst. De app geeft slechts adviezen op basis van gemiddelden. Vertrouw altijd op je eigen waarnemingen."
+  },
+
+  en: {
+    appName: "Grow Buddy",
+    newPlant: "+ New Plant",
+    showArchived: "Show Archived",
+    emptyTitle: "No Plants Yet",
+    emptyText: "Add your first plant and activate your personal grow coach",
+    archivedTitle: "Archived",
+    plant: "Plant",
+    archivedCycle: "Archive Cycle",
+    unarchive: "Unarchive",
+    delete: "Delete",
+    planted: "Planted:",
+    age: "Age:",
+    weeks: "wks",
+    days: "d",
+    timeline: "Timeline",
+    reminders: "Reminders",
+    notes: "Notes",
+    date: "Date:",
+    noteOptional: "Note (optional)",
+    uploadPhoto: "Upload Photo",
+    noPhotos: "No photos yet – add your first Week 0 photo above.",
+    remove: "Remove",
+    water: "💧 Water",
+    feed: "🥦 Feed",
+    startFlush: "💦 START FLUSH",
+    harvest: "🪴 HARVEST",
+    week: "Week",
+    every: "Every",
+    daysPlural: "days",
+    startInWeek: "Start in Week",
+    frequency: "Frequency: every",
+    flushStartWeek: "Start Flush in Week",
+    targetHarvestWeek: "Target Harvest Week",
+    strainGuideline: "Strain Guideline:",
+    adjustNote: "Adjust frequency based on pot size, substrate, and climate.",
+    notesPlaceholder: "Notes on watering, EC/PPM, pH, training, etc.",
+    alertPhoto: "Please select a photo first.",
+    alertDelete: "Delete? This cannot be undone (all photos will be deleted).",
+    alertMax: "Maximum of 12 plants supported.",
+    alertImport: "Cannot read file:",
+    darkMode: "Dark Mode",
+    seedling: "Seedling",
+    vegetative: "Vegetative",
+    flowering: "Flowering",
+    flush: "Flush",
+    today: "Today",
+    buyNow: "Buy now",
+    resetData: "Reset data",
+    confirmReset: "Are you sure you want to delete all data? This cannot be undone.",
+    growthReportTitle: "Growth Report",
+    shareTitle: "Share report",
+    shareExplain: "Share the status report and celebrate the progress with your friends.",
+    shareNow: "Share",
+    close: "Close",
+    shareFallback: "Sharing not supported; downloading JPG instead.",
+    contactDeveloper: "Contact developer",
+
+    /* ✅ Original help copy */
+    helpTitle: "Help & Information",
+    helpIntro:
+      "No more guesswork. Just pick your plant from the list and the app builds a foolproof schedule for you. Get reminders when it’s time to water, feed, or flush, and track every stage with an easy visual timeline. Snap photos along the way to keep a growth log you’ll actually enjoy looking back on.",
+    helpText:
+      "Your privacy and data security are guaranteed. This is a 100% frontend application, meaning all data you enter (plant names, dates, notes, photos) is stored exclusively on your own device in your browser's local storage. No data is sent to any server.",
+
+    disclaimerTitle: "Disclaimer",
+    disclaimerText:
+      "The developer of this app is not responsible for your harvest. The app offers guidance based on averages. Always trust your own observations."
+  },
+
+  de: {
+    appName: "Kraut Kumpel",
+    newPlant: "+ Neue Pflanze",
+    showArchived: "Archivierte anzeigen",
+    emptyTitle: "Noch keine Pflanzen",
+    emptyText: "Füge deine erste Pflanze hinzu und aktiviere deinen persönlichen Grow-Coach",
+    archivedTitle: "Archiviert",
+    plant: "Pflanze",
+    archivedCycle: "Zyklus archivieren",
+    unarchive: "Wiederherstellen",
+    delete: "Löschen",
+    planted: "Gepflanzt:",
+    age: "Alter:",
+    weeks: "Wo",
+    days: "T",
+    timeline: "Zeitachse",
+    reminders: "Erinnerungen",
+    notes: "Notizen",
+    date: "Datum:",
+    noteOptional: "Notiz (optional)",
+    uploadPhoto: "Foto hochladen",
+    noPhotos: "Noch keine Fotos – fügen Sie Ihr erstes Foto der Woche 0 oben hinzu.",
+    remove: "Entfernen",
+    water: "💧 Wasser",
+    feed: "🥦 Nährstoffe",
+    startFlush: "💦 SPÜLUNG STARTEN",
+    harvest: "🪴 ERNTEN",
+    week: "Woche",
+    every: "Alle",
+    daysPlural: "Tage",
+    startInWeek: "Start in Woche",
+    frequency: "Frequenz: alle",
+    flushStartWeek: "Spülung starten in Woche",
+    targetHarvestWeek: "Ziel Erntewoche",
+    strainGuideline: "Sortenrichtlinie:",
+    adjustNote: "Passen Sie die Häufigkeit an Topfgröße, Substrat und Klima an.",
+    notesPlaceholder: "Notizen zu Bewässerung, EC/PPM, pH, Training, etc.",
+    alertPhoto: "Bitte wählen Sie zuerst ein Foto aus.",
+    alertDelete: "Löschen? Dies kann nicht rückgängig gemacht werden (alle Fotos werden gelöscht).",
+    alertMax: "Maximal 12 Pflanzen werden unterstützt.",
+    alertImport: "Datei kann nicht gelesen werden:",
+    darkMode: "Dunkelmodus",
+    seedling: "Keimling",
+    vegetative: "Vegetativ",
+    flowering: "Blüte",
+    flush: "Spülen",
+    today: "Heute",
+    buyNow: "Jetzt kaufen",
+    resetData: "Daten zurücksetzen",
+    confirmReset: "Alle Daten löschen? Dies kann nicht rückgängig gemacht werden.",
+    growthReportTitle: "Wachstumsbericht",
+    shareTitle: "Bericht teilen",
+    shareExplain: "Teile den Statusbericht und feiere die Erfolge mit deinen Freunden.",
+    shareNow: "Teilen",
+    close: "Schließen",
+    shareFallback: "Teilen nicht unterstützt; JPG-Download.",
+    contactDeveloper: "Entwickler kontaktieren",
+
+    /* ✅ Originale Hilfe-Texte */
+    helpTitle: "Hilfe & Informationen",
+    helpIntro:
+      "Kein Raten mehr. Wähle einfach deine Pflanze aus der Liste aus und die App erstellt einen zuverlässigen Zeitplan für dich. Erhalte Erinnerungen, wenn es Zeit zum Gießen, Düngen oder Spülen ist, und verfolge jede Phase mit einer einfachen visuellen Zeitleiste. Mache unterwegs Fotos, um ein Wachstumsprotokoll zu führen, auf das du gerne zurückblicken wirst.",
+    helpText:
+      "Ihre Privatsphäre und Datensicherheit sind gewährleistet. Dies ist eine 100%ige Frontend-Anwendung, was bedeutet, dass alle von Ihnen eingegebenen Daten (Pflanzennamen, Daten, Notizen, Fotos) ausschließlich auf Ihrem eigenen Gerät im lokalen Speicher Ihres Browsers gespeichert werden. Es werden keine Daten an einen Server gesendet.",
+
+    disclaimerTitle: "Haftungsausschluss",
+    disclaimerText:
+      "Der Entwickler dieser App ist nicht für deine Ernte verantwortlich. Die App gibt Empfehlungen auf Basis von Durchschnittswerten. Verlasse dich stets auf deine eigenen Beobachtungen."
+  },
+
+  fr: {
+    appName: "Copain de Culture",
+    newPlant: "+ Nouvelle Plante",
+    showArchived: "Afficher Archivé",
+    emptyTitle: "Pas encore de Plantes",
+    emptyText: "Ajoutez votre première plante et activez votre coach de culture personnel",
+    archivedTitle: "Archivé",
+    plant: "Plante",
+    archivedCycle: "Archiver Cycle",
+    unarchive: "Désarchiver",
+    delete: "Supprimer",
+    planted: "Planté(e):",
+    age: "Âge:",
+    weeks: "sem",
+    days: "j",
+    timeline: "Chronologie",
+    reminders: "Rappels",
+    notes: "Notes",
+    date: "Date:",
+    noteOptional: "Note (optionnel)",
+    uploadPhoto: "Télécharger photo",
+    noPhotos: "Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.",
+    remove: "Retirer",
+    water: "💧 Eau",
+    feed: "🥦 Engrais",
+    startFlush: "💦 DÉBUT RINÇAGE",
+    harvest: "🪴 RÉCOLTER",
+    week: "Semaine",
+    every: "Tous les",
+    daysPlural: "jours",
+    startInWeek: "Début Semaine",
+    frequency: "Fréquence : tous les",
+    flushStartWeek: "Début Rinçage Semaine",
+    targetHarvestWeek: "Semaine de Récolte Cible",
+    strainGuideline: "Ligne directrice de la souche:",
+    adjustNote: "Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.",
+    notesPlaceholder: "Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.",
+    alertPhoto: "Veuillez d'abord sélectionner une photo.",
+    alertDelete: "Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).",
+    alertMax: "Maximum de 12 plantes prises en charge.",
+    alertImport: "Impossible de lire le fichier :",
+    darkMode: "Mode Sombre",
+    seedling: "Germination",
+    vegetative: "Végétatif",
+    flowering: "Floraison",
+    flush: "Rinçage",
+    today: "Aujourd'hui",
+    buyNow: "Acheter",
+    resetData: "Réinitialiser",
+    confirmReset: "Supprimer toutes les données ? Ceci est irréversible.",
+    growthReportTitle: "Rapport de croissance",
+    shareTitle: "Partager le rapport",
+    shareExplain: "Partage le rapport d’état et célèbre tes réussites avec tes amis.",
+    shareNow: "Partager",
+    close: "Fermer",
+    shareFallback: "Le partage n'est pas pris en charge ; téléchargement du JPG à la place.",
+    contactDeveloper: "Contacter le développeur",
+
+    /* ✅ Textes d’aide d’origine */
+    helpTitle: "Aide & Informations",
+    helpIntro:
+      "Fini les devinettes. Choisissez simplement votre plante dans la liste et l'application élabore un programme infaillible pour vous. Recevez des rappels quand il est temps d'arroser, de nourrir ou de rincer, et suivez chaque étape avec une chronologie visuelle simple. Prenez des photos en cours de route pour tenir un journal de croissance que vous aimerez vraiment consulter.",
+    helpText:
+      "Votre confidentialité et la sécurité de vos données sont garanties. Il s'agit d'une application 100% frontend, ce qui signifie que toutes les données que vous saisissez (noms de plantes, dates, notes, photos) sont stockées exclusivement sur votre propre appareil dans le stockage local de votre navigateur. Aucune donnée n'est envoyée à un serveur.",
+
+    disclaimerTitle: "Avertissement",
+    disclaimerText:
+      "Le développeur de cette application n’est pas responsable de votre récolte. L’app fournit des conseils basés sur des moyennes. Fiez-vous toujours à vos propres observations."
+  },
+
+  es: {
+    appName: "Compa de Cultivo",
+    newPlant: "+ Nueva Planta",
+    showArchived: "Mostrar Archivadas",
+    emptyTitle: "Todavía no hay Plantas",
+    emptyText: "Añade tu primera planta y activa tu coach de cultivo personal",
+    archivedTitle: "Archivadas",
+    plant: "Planta",
+    archivedCycle: "Archivar Ciclo",
+    unarchive: "Desarchivar",
+    delete: "Eliminar",
+    planted: "Plantada:",
+    age: "Edad:",
+    weeks: "sem",
+    days: "d",
+    timeline: "Línea de Tiempo",
+    reminders: "Recordatorios",
+    notes: "Notas",
+    date: "Fecha:",
+    noteOptional: "Nota (opcional)",
+    uploadPhoto: "Subir foto",
+    noPhotos: "Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.",
+    remove: "Quitar",
+    water: "💧 Agua",
+    feed: "🥦 Nutrientes",
+    startFlush: "💦 INICIAR LAVADO",
+    harvest: "🪴 COSECHAR",
+    week: "Semana",
+    every: "Cada",
+    daysPlural: "días",
+    startInWeek: "Iniciar Semana",
+    frequency: "Frecuencia: cada",
+    flushStartWeek: "Iniciar Lavado Semana",
+    targetHarvestWeek: "Semana de Cosecha Objetivo",
+    strainGuideline: "Pauta de la Cepa:",
+    adjustNote: "Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.",
+    notesPlaceholder: "Notas sobre riego, EC/PPM, pH, entrenamiento, etc.",
+    alertPhoto: "Por favor, selecciona una foto primero.",
+    alertDelete: "¿Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).",
+    alertMax: "Máximo de 12 plantas admitidas.",
+    alertImport: "No se puede leer el archivo:",
+    darkMode: "Modo Oscuro",
+    seedling: "Plántula",
+    vegetative: "Vegetativo",
+    flowering: "Floración",
+    flush: "Lavado",
+    today: "Hoy",
+    buyNow: "Comprar ahora",
+    resetData: "Restablecer datos",
+    confirmReset: "¿Eliminar todos los datos? Esto no se puede deshacer.",
+    growthReportTitle: "Informe de crecimiento",
+    shareTitle: "Compartir informe",
+    shareExplain: "Comparte el informe de estado y celebra los logros con tus amigos.",
+    shareNow: "Compartir",
+    close: "Cerrar",
+    shareFallback: "Compartir no disponible; descargaremos el JPG.",
+    contactDeveloper: "Contactar al desarrollador",
+
+    /* ✅ Textos de ayuda originales */
+    helpTitle: "Ayuda e Información",
+    helpIntro:
+      "Se acabaron las conjeturas. Simplemente elige tu planta de la lista y la aplicación creará un programa infalible para ti. Recibe recordatorios cuando sea el momento de regar, abonar o hacer un lavado de raíces, y sigue cada etapa con una sencilla línea de tiempo visual. Haz fotos por el camino para llevar un diario de crecimiento que de verdad disfrutarás recordando.",
+    helpText:
+      "Su privacidad y seguridad de los datos están garantizadas. Esta es una aplicación 100% frontend, lo que significa que todos los datos que ingresa (nombres de plantas, fechas, notas, fotos) se almacenan exclusivamente en su propio dispositivo en el almacenamiento local de su navegador. No se envía ningún dato a ningún servidor.",
+
+    disclaimerTitle: "Aviso",
+    disclaimerText:
+      "El desarrollador de esta app no es responsable de tu cosecha. La app ofrece consejos basados en promedios. Confía siempre en tus propias observaciones."
+  }
+};
+
+
+/* ==== Reminder copy (per language & phase) ==== */
+const REMINDER_COPY={
+  nl:{
+    feed:{
+      seedling:"<p><b>Voeding:</b> Nog geen voeding. Potgrond bevat genoeg; extra voeding kan wortels verbranden.</p>",
+      vegetative:"<p><b>Voeding (groei):</b> Focus op stikstof (N). Begin licht en bouw langzaam op.</p>",
+      flowering:"<p><b>Voeding (bloei):</b> Meer fosfor (P) en kalium (K), minder stikstof (N). Let op overvoeding.</p>",
+      flush:"<p><b>Voeding:</b> Tijdens spoelen geen voeding meer gebruiken.</p>"
     },
-    en:{
-      feed:{
-        vegetative:`<p><b>Feeding (veg):</b> Prioritise <b>Nitrogen (N)</b> for leafy growth.</p>
-        <ul style="margin-top:8px;"><li><b>Primary:</b> High N</li><li><b>Secondary:</b> Medium P & K</li><li><b>Micro:</b> Mg & Ca</li></ul>`,
-        flowering:`<p><b>Feeding (flower):</b> Shift to <b>Phosphorus (P)</b> & <b>Potassium (K)</b>. Lower N.</p>
-        <ul style="margin-top:8px;"><li><b>Primary:</b> High P & K</li><li><b>Secondary:</b> Low N</li><li><b>Micro:</b> S, Mg & Ca</li></ul>`,
-        seedling:`<p><b>Seedling:</b> No extra nutrients; soil is enough. Roots are fragile.</p>`,
-        flush:`<p><b>Flush:</b> No nutrients; water only until harvest.</p>`
-      },
-      water:{
-        seedling:`<p><b>Water (seedling):</b> 100–250 ml. Only when the top 2–3 cm are dry.</p>`,
-        vegetative:`<p><b>Water (veg):</b> Moderate to heavy. Water to slight runoff.</p>`,
-        flowering:`<p><b>Water (flower):</b> Higher demand (≈1.5–3 L depending on pot size).</p>`,
-        flush:`<p><b>Flush:</b> Water only.</p>`
-      },
-      flush:`<p><b>Flush:</b> Start 1–2 weeks before harvest. Water only; improves taste.</p>`,
-      harvest:`<p><b>Harvest:</b> Inspect trichomes (milky/amber). Dry & cure well.</p>`
+    water:{
+      seedling:"<p><b>Water:</b> Heel weinig; 100–250 ml. Alleen wanneer bovenlaag droog is.</p>",
+      vegetative:"<p><b>Water:</b> Matig tot veel. Geef tot lichte drainage.</p>",
+      flowering:"<p><b>Water:</b> Hoog verbruik; 1.5–3 L per beurt (afhankelijk van potmaat).</p>",
+      flush:"<p><b>Water:</b> Alleen water om zouten uit te spoelen.</p>"
     },
-    de:{
-      feed:{
-        vegetative:`<p><b>Düngen (Wachstum):</b> <b>Stickstoff (N)</b> für Blatt- und Stängelwachstum.</p>
-        <ul style="margin-top:8px;"><li><b>Primär:</b> Hoher N</li><li><b>Sekundär:</b> Mittleres P & K</li><li><b>Mikro:</b> Mg & Ca</li></ul>`,
-        flowering:`<p><b>Düngen (Blüte):</b> Fokus auf <b>Phosphor (P)</b> & <b>Kalium (K)</b>. Weniger N.</p>
-        <ul style="margin-top:8px;"><li><b>Primär:</b> Hohes P & K</li><li><b>Sekundär:</b> Niedriges N</li><li><b>Mikro:</b> S, Mg & Ca</li></ul>`,
-        seedling:`<p><b>Keimling:</b> Keine Zusatzdünger; Erde reicht aus.</p>`,
-        flush:`<p><b>Spülen:</b> Keine Nährstoffe; nur Wasser bis zur Ernte.</p>`
-      },
-      water:{
-        seedling:`<p><b>Wasser (Keimling):</b> 100–250 ml. Nur bei trockener Oberfläche (2–3 cm).</p>`,
-        vegetative:`<p><b>Wasser (Wuchs):</b> Mäßig bis viel. Bis leichter Drainage.</p>`,
-        flowering:`<p><b>Wasser (Blüte):</b> Hoher Bedarf (≈1,5–3 L je nach Topfgröße).</p>`,
-        flush:`<p><b>Spülen:</b> Nur Wasser.</p>`
-      },
-      flush:`<p><b>Spülen:</b> 1–2 Wochen vor Ernte. Nur Wasser; besserer Geschmack.</p>`,
-      harvest:`<p><b>Ernte:</b> Trichome prüfen (milchig/bernstein). Gut trocknen & curen.</p>`
+    flush:"<p><b>Spoelen:</b> 1–2 weken voor oogst alleen water voor betere smaak.</p>",
+    harvest:"<p><b>Oogst:</b> Check trichomen; droog en cure voor kwaliteit.</p>"
+  },
+  en:{
+    feed:{
+      seedling:"<p><b>Feeding:</b> None yet. Medium has enough; extra nutrients can burn roots.</p>",
+      vegetative:"<p><b>Feeding (veg):</b> Emphasize nitrogen (N). Start light and increase gradually.</p>",
+      flowering:"<p><b>Feeding (flower):</b> More phosphorus (P) & potassium (K), less N. Avoid overfeeding.</p>",
+      flush:"<p><b>Feeding:</b> No nutrients during flush.</p>"
     },
-    fr:{
-      feed:{
-        vegetative:`<p><b>Engrais (croissance):</b> Priorité à l’<b>Azote (N)</b> pour la masse foliaire.</p>
-        <ul style="margin-top:8px;"><li><b>Principal:</b> N élevé</li><li><b>Secondaire:</b> P & K moyens</li><li><b>Micro:</b> Mg & Ca</li></ul>`,
-        flowering:`<p><b>Engrais (floraison):</b> Accent sur <b>Phosphore (P)</b> & <b>Potassium (K)</b>. Moins de N.</p>
-        <ul style="margin-top:8px;"><li><b>Principal:</b> P & K élevés</li><li><b>Secondaire:</b> N faible</li><li><b>Micro:</b> S, Mg & Ca</li></ul>`,
-        seedling:`<p><b>Plantule:</b> Pas d’engrais supplémentaire; les racines sont fragiles.</p>`,
-        flush:`<p><b>Rinçage:</b> Pas d’engrais; uniquement de l’eau jusqu’à la récolte.</p>`
-      },
-      water:{
-        seedling:`<p><b>Eau (plantule):</b> 100–250 ml. Seulement quand le dessus (2–3 cm) est sec.</p>`,
-        vegetative:`<p><b>Eau (croissance):</b> Modérée à abondante. Jusqu’à léger drainage.</p>`,
-        flowering:`<p><b>Eau (floraison):</b> Besoin élevé (≈1,5–3 L selon le pot).</p>`,
-        flush:`<p><b>Rinçage:</b> Uniquement de l’eau.</p>`
-      },
-      flush:`<p><b>Rinçage:</b> 1–2 semaines avant récolte. Meilleur goût.</p>`,
-      harvest:`<p><b>Récolte:</b> Observer les trichomes (laiteux/ambre). Séchage & affinage soignés.</p>`
+    water:{
+      seedling:"<p><b>Water:</b> Very little; 100–250 ml. Only when top layer is dry.</p>",
+      vegetative:"<p><b>Water:</b> Moderate to high; water to slight runoff.</p>",
+      flowering:"<p><b>Water:</b> Highest demand; often 1.5–3 L per watering.</p>",
+      flush:"<p><b>Water:</b> Plain water to wash out salts.</p>"
     },
-    es:{
-      feed:{
-        vegetative:`<p><b>Nutrientes (crecimiento):</b> Prioriza <b>Nitrógeno (N)</b> para hojas y tallos.</p>
-        <ul style="margin-top:8px;"><li><b>Primario:</b> N alto</li><li><b>Secundario:</b> P & K medios</li><li><b>Micro:</b> Mg & Ca</li></ul>`,
-        flowering:`<p><b>Nutrientes (floración):</b> Enfoca en <b>Fósforo (P)</b> & <b>Potasio (K)</b>. Menos N.</p>
-        <ul style="margin-top:8px;"><li><b>Primario:</b> P & K altos</li><li><b>Secundario:</b> N bajo</li><li><b>Micro:</b> S, Mg & Ca</li></ul>`,
-        seedling:`<p><b>Plántula:</b> Sin extra; la tierra basta. Raíces delicadas.</p>`,
-        flush:`<p><b>Lavado:</b> Sin nutrientes; solo agua hasta la cosecha.</p>`
-      },
-      water:{
-        seedling:`<p><b>Agua (plántula):</b> 100–250 ml. Solo cuando la capa superior (2–3 cm) esté seca.</p>`,
-        vegetative:`<p><b>Agua (crecimiento):</b> Moderada a alta. Hasta ligero drenaje.</p>`,
-        flowering:`<p><b>Agua (floración):</b> Mayor demanda (≈1,5–3 L según la maceta).</p>`,
-        flush:`<p><b>Lavado:</b> Solo agua.</p>`
-      },
-      flush:`<p><b>Lavado:</b> 1–2 semanas antes de la cosecha. Mejor sabor.</p>`,
-      harvest:`<p><b>Cosecha:</b> Revisa tricomas (lechoso/ámbar). Seca y cura bien.</p>`
-    }
-  };
-
-  const REPORT_INTRO = {
-    nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚",
-    en:"Look how well my plants are doing! 🌱💚",
-    de:"Schau mal, wie gut meine Pflanzen unterwegs sind! 🌱💚",
-    fr:"Regardez comme mes plantes se portent bien ! 🌱💚",
-    es:"¡Miren qué bien van mis plantas! 🌱💚",
-  };
-
-  /* ===== Affiliate helpers ===== */
-  const AFFIL_ID = ""; // optioneel
-  const RQS_SEED_SLUGS = {
-    'Quick One (RQS)':'quick-one','Royal Dwarf (RQS)':'royal-dwarf','White Widow Auto':'white-widow-automatic',
-    'Northern Light Auto':'northern-light-automatic','Amnesia Haze Auto':'amnesia-haze-automatic',
-    'Zkittlez Auto':'zkittlez-automatic','Gelato Auto':'royal-creamatic-automatic'
-  };
-  function rqsLocalePath(){ switch(currentLang){ case 'nl':return 'nl/'; case 'de':return 'de/'; case 'fr':return 'fr/'; case 'es':return 'es/'; default:return ''; } }
-  function addAffil(url){ return AFFIL_ID ? url + (url.includes('?')?'&':'?') + AFFIL_ID : url; }
-  function getRqsSeedUrl(strainKey){ const slug=RQS_SEED_SLUGS[strainKey]; if(!slug) return null; return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}387-${slug}.html`); }
-  function getRqsNutrientUrl(phase){
-    if(phase==='vegetative') return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/435-easy-grow-booster-tablets.html`);
-    if(phase==='flowering')  return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/436-easy-bloom-booster-tablets.html`);
-    return null;
+    flush:"<p><b>Flush:</b> 1–2 weeks pre-harvest with plain water.</p>",
+    harvest:"<p><b>Harvest:</b> Check trichomes; dry & cure for best results.</p>"
+  },
+  de:{
+    feed:{
+      seedling:"<p><b>Düngen:</b> Noch nicht. Substrat enthält genug; Zusatz kann Wurzeln verbrennen.</p>",
+      vegetative:"<p><b>Düngen (Wuchs):</b> Fokus auf Stickstoff (N). Langsam steigern.</p>",
+      flowering:"<p><b>Düngen (Blüte):</b> Mehr Phosphor (P) & Kalium (K), weniger N.</p>",
+      flush:"<p><b>Düngen:</b> Während des Spülens keine Nährstoffe.</p>"
+    },
+    water:{
+      seedling:"<p><b>Wasser:</b> Sehr wenig; 100–250 ml. Nur bei trockener Oberfläche.</p>",
+      vegetative:"<p><b>Wasser:</b> Mittel bis viel; bis leichte Drainage.</p>",
+      flowering:"<p><b>Wasser:</b> Höchster Bedarf; oft 1.5–3 L.</p>",
+      flush:"<p><b>Wasser:</b> Nur Wasser zum Ausspülen.</p>"
+    },
+    flush:"<p><b>Spülen:</b> 1–2 Wochen vor der Ernte nur Wasser.</p>",
+    harvest:"<p><b>Ernte:</b> Trichome prüfen; trocknen & curen.</p>"
+  },
+  fr:{
+    feed:{
+      seedling:"<p><b>Engrais :</b> Pas encore. Le substrat suffit; excès peut brûler les racines.</p>",
+      vegetative:"<p><b>Engrais (croissance) :</b> Accent sur l’azote (N). Augmenter progressivement.</p>",
+      flowering:"<p><b>Engrais (floraison) :</b> Plus de phosphore (P) et potassium (K), moins de N.</p>",
+      flush:"<p><b>Engrais :</b> Aucun pendant le rinçage.</p>"
+    },
+    water:{
+      seedling:"<p><b>Eau :</b> Très peu; 100–250 ml. Seulement si le dessus est sec.</p>",
+      vegetative:"<p><b>Eau :</b> Modérée à forte; jusqu’à léger ruissellement.</p>",
+      flowering:"<p><b>Eau :</b> Demande maximale; 1,5–3 L.</p>",
+      flush:"<p><b>Eau :</b> Eau claire pour rincer les sels.</p>"
+    },
+    flush:"<p><b>Rinçage :</b> 1–2 semaines avant récolte, eau claire.</p>",
+    harvest:"<p><b>Récolte :</b> Vérifier les trichomes; séchage & affinage.</p>"
+  },
+  es:{
+    feed:{
+      seedling:"<p><b>Nutrientes:</b> Aún no. El sustrato tiene suficiente; el exceso quema raíces.</p>",
+      vegetative:"<p><b>Nutrientes (crecimiento):</b> Énfasis en nitrógeno (N). Aumenta poco a poco.</p>",
+      flowering:"<p><b>Nutrientes (floración):</b> Más fósforo (P) y potasio (K), menos N.</p>",
+      flush:"<p><b>Nutrientes:</b> Ninguno durante el lavado.</p>"
+    },
+    water:{
+      seedling:"<p><b>Agua:</b> Muy poca; 100–250 ml. Solo si la superficie está seca.</p>",
+      vegetative:"<p><b>Agua:</b> Moderada a alta; hasta ligero drenaje.</p>",
+      flowering:"<p><b>Agua:</b> Demanda máxima; 1.5–3 L.</p>",
+      flush:"<p><b>Agua:</b> Solo agua para eliminar sales.</p>"
+    },
+    flush:"<p><b>Lavado:</b> 1–2 semanas antes de la cosecha con agua sola.</p>",
+    harvest:"<p><b>Cosecha:</b> Revisa tricomas; secado y curado.</p>"
   }
+};
 
-  /* ===== App state ===== */
-  let currentLang = localStorage.getItem('appLang') || 'nl';
-  let isDarkMode = localStorage.getItem('isDarkMode') === 'true';
-  const uid = () => Math.random().toString(36).slice(2,10);
-  const todayISO = () => new Date().toISOString().slice(0,10);
-  const toISODate = d => new Date(d).toISOString().slice(0,10);
-  const fmtDate = d => new Date(d).toLocaleDateString(currentLang);
-  const fmtShortDate = (d) => new Date(d).toLocaleDateString(currentLang, { day:'numeric', month:'short' });
-  const daysBetween = (a,b) => Math.floor((new Date(b) - new Date(a)) / 86400000);
-  const weekNumberSince = (start, at) => Math.floor(daysBetween(start, at) / 7);
-  function t(key){ return TRANSLATIONS[currentLang]?.[key] || `[${key}]`; }
+const REPORT_INTRO={nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚",en:"Look how well my plants are doing! 🌱💚",de:"Schau mal, wie gut meine Pflanzen unterwegs sind! 🌱💚",fr:"Regardez comme mes plantes se portent bien ! 🌱💚",es:"¡Miren qué bien van mis plantas! 🌱💚",};
 
-  function translateUI(){
-    document.getElementById('appTitle').textContent = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
-    document.title = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
-    document.getElementById('darkModeLabel').textContent = t('darkMode');
-    document.querySelectorAll('[data-i18n]').forEach(el=> el.textContent = t(el.getAttribute('data-i18n')));
-    render();
-  }
-  function setDarkMode(enabled){
-    isDarkMode = enabled;
-    document.body.classList.toggle('dark', enabled);
-    document.getElementById('darkModeToggle').checked = enabled;
-    localStorage.setItem('isDarkMode', enabled);
-  }
+/* ==== Affiliate helpers ==== */
+const AFFIL_ID="";
+const RQS_SEED_SLUGS={'Quick One (RQS)':'quick-one','Royal Dwarf (RQS)':'royal-dwarf','White Widow Auto':'white-widow-automatic','Northern Light Auto':'northern-light-automatic','Amnesia Haze Auto':'amnesia-haze-automatic','Zkittlez Auto':'zkittlez-automatic','Gelato Auto':'royal-creamatic-automatic'};
+function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
+function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
+function getRqsSeedUrl(k){const slug=RQS_SEED_SLUGS[k];if(!slug)return null;return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}387-${slug}.html`);}
+function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/435-easy-grow-booster-tablets.html`);if(phase==='flowering')return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/436-easy-bloom-booster-tablets.html`);return null;}
 
-  /* ===== Strains/Schedules ===== */
-  const RQS_STRAINS = {
-    'Onbekend/Algemeen': { displayName:{nl:'Onbekend/Algemeen',en:'Unknown/Generic',de:'Unbekannt/Allgemein',fr:'Inconnu/Générique',es:'Desconocido/Genérico'}, schedule:{waterEveryDays:2, feedStartWeek:2, feedEveryDays:7, flushStartWeek:9, targetHarvestWeek:10} },
-    'Quick One (RQS)': { schedule:{waterEveryDays:2, feedStartWeek:2, feedEveryDays:7, flushStartWeek:7, targetHarvestWeek:9} },
-    'Royal Dwarf (RQS)': { schedule:{waterEveryDays:3, feedStartWeek:2, feedEveryDays:7, flushStartWeek:8, targetHarvestWeek:10} },
-    'White Widow Auto': { schedule:{waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:8, targetHarvestWeek:10} },
-    'Northern Light Auto': { schedule:{waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:10, targetHarvestWeek:12} },
-    'Amnesia Haze Auto': { schedule:{waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:8, targetHarvestWeek:10} },
-    'Zkittlez Auto': { schedule:{waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:10, targetHarvestWeek:13} },
-    'Gelato Auto': { schedule:{waterEveryDays:2, feedStartWeek:3, feedEveryDays:7, flushStartWeek:8, targetHarvestWeek:13} }
-  };
-  const getStrainDisplayName = (key)=> RQS_STRAINS[key]?.displayName?.[currentLang] || key;
+/* ==== State & utils ==== */
+let currentLang=localStorage.getItem('appLang')||'nl';
+let isDarkMode=localStorage.getItem('isDarkMode')==='true';
+const uid=()=>Math.random().toString(36).slice(2,10);
+const todayISO=()=>new Date().toISOString().slice(0,10);
+const toISODate=d=>new Date(d).toISOString().slice(0,10);
+const fmtDate=d=>new Date(d).toLocaleDateString(currentLang);
+const fmtShortDate=d=>new Date(d).toLocaleDateString(currentLang,{day:'numeric',month:'short'});
+const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/86400000);
+const weekNumberSince=(start,at)=>Math.floor(daysBetween(start,at)/7);
+function t(k){return TRANSLATIONS[currentLang]?.[k]||`[${k}]`;}
 
-  /* ===== Local storage ===== */
-  const LS_KEY = 'quickone_grow_tracker_v1_html';
-  let state = { plants:[], viewArchived:false };
-  const loadState = ()=>{
-    try{
-      const raw = localStorage.getItem(LS_KEY);
-      state = raw ? JSON.parse(raw) : {plants:[], viewArchived:false};
-      (state.plants||[]).forEach(p=>{
-        if(!p.acknowledgedActions) p.acknowledgedActions=[];
-        if(typeof p.isCollapsed==='undefined') p.isCollapsed=false;
-        if(typeof p.archived==='undefined') p.archived=false;
-      });
-    }catch(e){ state={plants:[], viewArchived:false}; }
-  };
-  const saveState = (s)=>{ try{ localStorage.setItem(LS_KEY, JSON.stringify(s)); }catch(e){} };
-  loadState();
+/* ==== Strains (short) ==== */
+const RQS_STRAINS={'Onbekend/Algemeen':{displayName:{nl:'Onbekend/Algemeen',en:'Unknown/Generic',de:'Unbekannt/Allgemein',fr:'Inconnu/Générique',es:'Desconocido/Genérico'},schedule:{waterEveryDays:2,feedStartWeek:2,feedEveryDays:7,flushStartWeek:9,targetHarvestWeek:10}},'Quick One (RQS)':{schedule:{waterEveryDays:2,feedStartWeek:2,feedEveryDays:7,flushStartWeek:7,targetHarvestWeek:9}},'Royal Dwarf (RQS)':{schedule:{waterEveryDays:3,feedStartWeek:2,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'White Widow Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'Northern Light Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:10,targetHarvestWeek:12}},'Amnesia Haze Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'Zkittlez Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:10,targetHarvestWeek:13}},'Gelato Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:13}}};
+const getStrainDisplayName=key=>RQS_STRAINS[key]?.displayName?.[currentLang]||key;
 
-  /* ===== Actions calc ===== */
-  const createActionId = (type, date) => `${type}-${toISODate(date)}`;
-  const getPendingActions = (plant, dateToCheck)=>{
-    const pending=[];
-    const startDate = new Date(plant.planted_at);
-    const today = dateToCheck;
-    if(today < startDate) return [];
-    for(let d=new Date(startDate); d<=today; d.setDate(d.getDate()+1)){
-      const ageInDays = daysBetween(startDate, d);
-      const currentWeek = Math.floor(ageInDays/7);
-      const s=plant.schedule;
-      const arr=[];
-      if(ageInDays>0 && s.waterEveryDays>0 && ageInDays % s.waterEveryDays===0) arr.push({type:'water',label:t('water'),date:new Date(d)});
-      if(currentWeek < s.flushStartWeek && currentWeek >= s.feedStartWeek){
-        const startFeedDays=s.feedStartWeek*7;
-        if(s.feedEveryDays>0 && (ageInDays-startFeedDays)>=0 && (ageInDays-startFeedDays)%s.feedEveryDays===0) arr.push({type:'feed',label:t('feed'),date:new Date(d)});
-      }
-      if(currentWeek===s.flushStartWeek && ageInDays===s.flushStartWeek*7) arr.push({type:'flush',label:t('startFlush'),date:new Date(d)});
-      if(ageInDays===s.targetHarvestWeek*7) arr.push({type:'harvest',label:t('harvest'),date:new Date(d)});
-      arr.forEach(a=>{ const id=createActionId(a.type,a.date); if(!plant.acknowledgedActions.includes(id)) pending.push(a); });
-    }
-    return pending;
-  };
+/* ==== Storage ==== */
+const LS_KEY='quickone_grow_tracker_v1_html';
+let state={plants:[],viewArchived:false};
+function loadState(){try{const raw=localStorage.getItem(LS_KEY);state=raw?JSON.parse(raw):{plants:[],viewArchived:false};(state.plants||[]).forEach(p=>{p.acknowledgedActions=p.acknowledgedActions||[];if(typeof p.isCollapsed==='undefined')p.isCollapsed=false;if(typeof p.archived==='undefined')p.archived=false;});}catch(e){state={plants:[],viewArchived:false};}}
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+loadState();
 
-  /* ===== UI init ===== */
-  document.addEventListener('DOMContentLoaded', ()=>{
-    document.getElementById('langSelect').value=currentLang;
-    document.getElementById('langSelect').onchange=(e)=>{ currentLang=e.target.value; localStorage.setItem('appLang', currentLang); translateUI(); };
-    document.getElementById('darkModeToggle').onchange=(e)=> setDarkMode(e.target.checked);
+/* ==== Actions ==== */
+const createActionId=(type,date)=>`${type}-${toISODate(date)}`;
+function getPendingActions(plant,dateToCheck){
+  const out=[];const start=new Date(plant.planted_at);const today=dateToCheck;if(today<start)return[];
+  for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
+    const age=daysBetween(start,d);const wk=Math.floor(age/7);const s=plant.schedule;const arr=[];
+    if(age>0&&s.waterEveryDays>0&&age%s.waterEveryDays===0)arr.push({type:'water',label:t('water'),date:new Date(d)});
+    if(wk<s.flushStartWeek&&wk>=s.feedStartWeek){const startFeed=s.feedStartWeek*7;if(s.feedEveryDays>0&&(age-startFeed)>=0&&(age-startFeed)%s.feedEveryDays===0)arr.push({type:'feed',label:t('feed'),date:new Date(d)});}
+    if(wk===s.flushStartWeek&&age===s.flushStartWeek*7)arr.push({type:'flush',label:t('startFlush'),date:new Date(d)});
+    if(age===s.targetHarvestWeek*7)arr.push({type:'harvest',label:t('harvest'),date:new Date(d)});
+    arr.forEach(a=>{const id=createActionId(a.type,a.date);if(!plant.acknowledgedActions.includes(id))out.push(a);});
+  } return out;
+}
 
-    const chkArchived=document.getElementById('chkArchived');
-    chkArchived.checked=state.viewArchived;
-    chkArchived.onchange=(e)=>{ state.viewArchived=e.target.checked; saveAndRender(); };
+/* ==== App init ==== */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('langSelect').value=currentLang;
+  document.getElementById('langSelect').onchange=e=>{currentLang=e.target.value;localStorage.setItem('appLang',currentLang);translateUI();};
+  document.getElementById('darkModeToggle').onchange=e=>setDarkMode(e.target.checked);
+  const chk=document.getElementById('chkArchived');chk.checked=state.viewArchived;chk.onchange=e=>{state.viewArchived=e.target.checked;saveAndRender();};
+  document.getElementById('btnAdd').onclick=addPlant;document.getElementById('btnAdd2').onclick=addPlant;
+  document.getElementById('btnReset').onclick=()=>{if(confirm(t('confirmReset'))){localStorage.removeItem(LS_KEY);location.reload();}};
+  document.getElementById('btnHeaderShare').onclick=openShareModal;
+  document.getElementById('btnHelp').onclick=()=>document.getElementById('helpModal').style.display='flex';
+  // Modal closers
+  document.querySelectorAll('.modal-close,[data-close-modal]').forEach(b=>b.addEventListener('click',()=>{const m=b.closest('.modal-overlay');if(m)m.style.display='none';}));
+  document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.style.display='none';}));
+  setDarkMode(isDarkMode);translateUI();setupMenu();
+});
+function setupMenu(){const t=document.getElementById('btnMenuToggle'), m=document.getElementById('menuContent'); if(t&&m){t.onclick=e=>{e.stopPropagation();m.classList.toggle('is-open');}; document.addEventListener('click',e=>{if(m.classList.contains('is-open')&&!m.contains(e.target))m.classList.remove('is-open');});}}
 
-    document.getElementById('btnAdd').onclick=addPlant;
-    document.getElementById('btnAdd2').onclick=addPlant;
+function tKeyExists(k){return TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][k];}
+function translateUI(){
+  const name=TRANSLATIONS[currentLang]?.appName||'Kweekmaatje';
+  document.title=name;
+  const span=document.getElementById('appTitleText'); if(span) span.textContent=name;
+  document.getElementById('darkModeLabel').textContent=t('darkMode');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'));});
+  render();
+}
+function setDarkMode(enabled){isDarkMode=enabled;document.body.classList.toggle('dark',enabled);document.getElementById('darkModeToggle').checked=enabled;localStorage.setItem('isDarkMode',enabled);}
 
-    document.getElementById('btnReset').onclick=()=>{ if(confirm(t('confirmReset'))){ localStorage.removeItem(LS_KEY); location.reload(); } };
+/* ==== Plant ops ==== */
+function addPlant(){const active=state.plants.filter(p=>!p.archived).length;if(active>=12){alert(t('alertMax'));return;} const p={id:uid(),name:`${t('plant')} ${active+1}`,strain:'Onbekend/Algemeen',planted_at:todayISO(),notes:"",photos:[],acknowledgedActions:[],isCollapsed:false,archived:false,schedule:{...RQS_STRAINS['Onbekend/Algemeen'].schedule}};state.plants.unshift(p);saveAndRender();}
+function getPlant(id){return state.plants.find(p=>p.id===id);}
+function updatePlant(id,props){const p=getPlant(id);if(p){Object.assign(p,props);saveAndRender();}}
+function deletePlant(id){if(confirm(t('alertDelete'))){state.plants=state.plants.filter(p=>p.id!==id);saveAndRender();}}
+function toggleCollapse(id){const p=getPlant(id);if(p){p.isCollapsed=!p.isCollapsed;saveAndRender();}}
+function handleStrainChange(id,key){const s=RQS_STRAINS[key]?.schedule||RQS_STRAINS['Onbekend/Algemeen'].schedule;updatePlant(id,{strain:key,schedule:{...s}});}
+function saveAndRender(){saveState();render();}
+window.addPlant=addPlant;window.updatePlant=updatePlant;window.deletePlant=deletePlant;window.toggleCollapse=toggleCollapse;window.handleStrainChange=handleStrainChange;
 
-    document.getElementById('btnHeaderShare').onclick=openShareModal;
-    document.getElementById('btnShareNow').onclick=shareReportJPG;
+/* ==== Phases ==== */
+function getPhaseForDate(plant,iso){const w=weekNumberSince(plant.planted_at, new Date(iso)); if(w<2)return'seedling'; if(w<4)return'vegetative'; const fsw=plant.schedule.flushStartWeek||8; if(w<fsw)return'flowering'; return'flush';}
 
-    setDarkMode(isDarkMode);
-    translateUI();
-    setupModal();
-    setupMobileMenu();
-  });
-
-  function setupMobileMenu(){
-    const menuToggleBtn=document.getElementById('btnMenuToggle');
-    const menuContent=document.getElementById('menuContent');
-    if(menuToggleBtn && menuContent){
-      menuToggleBtn.onclick=(e)=>{ e.stopPropagation(); menuContent.classList.toggle('is-open'); };
-      document.addEventListener('click',(e)=>{ if(menuContent.classList.contains('is-open') && !menuContent.contains(e.target)){ menuContent.classList.remove('is-open'); } });
-    }
-  }
-  function setupModal(){
-    const helpModal=document.getElementById('helpModal');
-    const btnHelp=document.getElementById('btnHelp');
-    if(btnHelp && helpModal){
-      btnHelp.onclick=()=> helpModal.style.display='flex';
-      helpModal.querySelector('.modal-close').onclick=()=> helpModal.style.display='none';
-      helpModal.onclick=(e)=>{ if(e.target===helpModal) helpModal.style.display='none'; };
-    }
-  }
-
-  /* ===== Plant helpers ===== */
-  function addPlant(){
-    const activeCount = state.plants.filter(p=>!p.archived).length;
-    if(activeCount>=12){ alert(t('alertMax')); return; }
-    const newPlant={
-      id:uid(), name:`${t('plant')} ${activeCount+1}`, strain:'Onbekend/Algemeen',
-      planted_at:todayISO(), notes:"", photos:[], acknowledgedActions:[], isCollapsed:false, archived:false,
-      schedule:{...RQS_STRAINS['Onbekend/Algemeen'].schedule}
-    };
-    state.plants.unshift(newPlant); saveAndRender();
-  }
-  const getPlant=(id)=> state.plants.find(p=>p.id===id);
-  const updatePlant=(id, props)=>{ const p=getPlant(id); if(p){ Object.assign(p, props); saveAndRender(); } };
-  function deletePlant(id){ if(confirm(t('alertDelete'))){ state.plants = state.plants.filter(p=>p.id!==id); saveAndRender(); } }
-  function toggleCollapse(plantId){ const p=getPlant(plantId); if(p){ p.isCollapsed=!p.isCollapsed; saveAndRender(); } }
-  function handleStrainChange(plantId, strainKey){ const s=RQS_STRAINS[strainKey]?.schedule || RQS_STRAINS['Onbekend/Algemeen'].schedule; updatePlant(plantId, {strain:strainKey, schedule:{...s}}); }
-  function saveAndRender(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} render(); }
-
-  /* ===== Fase-helper ===== */
-  function getPhaseForDate(plant, isoDateString){
-    const dateObj = new Date(isoDateString);
-    const w = weekNumberSince(plant.planted_at, dateObj);
-    if (w < 2) return 'seedling';
-    if (w < 4) return 'vegetative';
-    const fsw = plant.schedule.flushStartWeek || 8;
-    if (w < fsw) return 'flowering';
-    return 'flush';
-  }
-
-  /* ===== Progress bar ===== */
-  function createProgressBarHTML(plant){
-    const s = plant.schedule;
-    const totalW = Math.max(1, s.targetHarvestWeek);
-    const seedW = Math.min(2, totalW);
-    const vegW  = Math.max(0, Math.min(4,totalW) - seedW);
-    const flowW = Math.max(0, Math.min(s.flushStartWeek,totalW) - (seedW + vegW));
-    const flushW= Math.max(0, totalW - (seedW + vegW + flowW));
-    const pct = w => (w/totalW)*100;
-    const start = new Date(plant.planted_at);
-    const end   = new Date(start); end.setDate(end.getDate() + s.targetHarvestWeek*7);
-    const elapsedDays = Math.max(0, daysBetween(start, new Date()));
-    const progressPct = Math.max(0, Math.min(100, (elapsedDays / (s.targetHarvestWeek*7))*100 ));
-
-    return `
-      <div class="progress-wrapper">
-        <div class="progress-date-labels">
-          <span>${fmtDate(start)}</span><span>${fmtDate(end)}</span>
+/* ==== Progress ==== */
+function createProgressBarHTML(plant){
+  const s=plant.schedule,totalW=Math.max(1,s.targetHarvestWeek);
+  const seedW=Math.min(2,totalW),vegW=Math.max(0,Math.min(4,totalW)-seedW),flowW=Math.max(0,Math.min(s.flushStartWeek,totalW)-(seedW+vegW)),flushW=Math.max(0,totalW-(seedW+vegW+flowW));
+  const pct=w=>(w/totalW)*100;
+  const start=new Date(plant.planted_at),end=new Date(start);end.setDate(end.getDate()+s.targetHarvestWeek*7);
+  const elapsedDays=Math.max(0,daysBetween(start,new Date()));const progressPct=Math.max(0,Math.min(100,(elapsedDays/(s.targetHarvestWeek*7))*100));
+  return `
+    <div class="progress-wrapper">
+      <div class="progress-date-labels"><span>${fmtDate(start)}</span><span>${fmtDate(end)}</span></div>
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div class="progress-segment seg-seed" style="width:${pct(seedW)}%"></div>
+          <div class="progress-segment seg-veg"  style="width:${pct(vegW)}%"></div>
+          <div class="progress-segment seg-flow" style="width:${pct(flowW)}%"></div>
+          <div class="progress-segment seg-flush"style="width:${pct(flushW)}%"></div>
         </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar">
-            <div class="progress-segment seg-seed"  style="width:${pct(seedW)}%"></div>
-            <div class="progress-segment seg-veg"   style="width:${pct(vegW)}%"></div>
-            <div class="progress-segment seg-flow"  style="width:${pct(flowW)}%"></div>
-            <div class="progress-segment seg-flush" style="width:${pct(flushW)}%"></div>
-          </div>
-          <div class="progress-marker" style="left:${progressPct}%"></div>
-          <div class="progress-marker-label" style="left:${progressPct}%">${t('today')}</div>
-        </div>
-        <div class="progress-phase-labels-container">
-          <div class="progress-phase-label" style="width:${pct(seedW)}%">${t('seedling')}</div>
-          <div class="progress-phase-label" style="width:${pct(vegW)}%">${t('vegetative')}</div>
-          <div class="progress-phase-label" style="width:${pct(flowW)}%">${t('flowering')}</div>
-          <div class="progress-phase-label" style="width:${pct(flushW)}%">${t('flush')}</div>
-        </div>
-      </div>`;
-  }
-
-  /* ===== Reminder info popup (gelokaliseerd) ===== */
-  function showReminderInfo(plantId, actionType, isoDate){
-    const plant = getPlant(plantId);
-    const phase = getPhaseForDate(plant, isoDate);
-    const copy = REMINDER_COPY[currentLang] || REMINDER_COPY['en'];
-    let html = '';
-
-    if(actionType === 'feed'){
-      html = copy.feed[phase] || '';
-      const url = getRqsNutrientUrl(phase);
-      if(url) html += `<p style="margin-top:10px;"><a class="btn-affiliate" href="${url}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a></p>`;
-    } else if(actionType === 'water'){
-      html = copy.water[phase] || '';
-    } else if(actionType === 'flush'){
-      html = copy.flush || '';
-    } else if(actionType === 'harvest'){
-      html = copy.harvest || '';
-    }
-
-    document.getElementById('infoBody').innerHTML = html || '<p>—</p>';
-    document.getElementById('helpModal2').style.display = 'flex';
-  }
-
-  /* ===== Render ===== */
-  function render(){
-    const activePlants = state.plants.filter(p=>!p.archived);
-    const archivedPlants = state.plants.filter(p=>p.archived);
-    const grid=document.getElementById('grid');
-    const archivedGrid=document.getElementById('archivedGrid');
-    const archivedSection=document.getElementById('archivedSection');
-
-    grid.innerHTML = activePlants.map(plant=>{
-      let ageDays=Math.max(0, daysBetween(plant.planted_at, new Date()));
-      const ageWeeks=Math.floor(ageDays/7), ageRemDays=ageDays%7;
-      const seedUrl = getRqsSeedUrl(plant.strain);
-      const buyBtn = seedUrl ? ` <a class="btn-affiliate" href="${seedUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>` : '';
-      return `
-      <div class="card ${plant.isCollapsed?'is-collapsed':''}" id="card_${plant.id}">
-        <div class="card-h">
-          <div class="row-name">
-            <input type="text" value="${plant.name}" onchange="updatePlant('${plant.id}', {name:this.value})"/>
-            <button class="btn-collapse" onclick="toggleCollapse('${plant.id}')" aria-label="Details in/uitklappen">
-              <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>
-            </button>
-          </div>
-          <div class="row-strain">
-            <select onchange="handleStrainChange('${plant.id}', this.value)">
-              ${Object.keys(RQS_STRAINS).map(s=>`<option value="${s}" ${plant.strain===s?'selected':''}>${getStrainDisplayName(s)}</option>`).join('')}
-            </select>
-            ${buyBtn}
-          </div>
-          <div class="row-info">
-            <label><span class="muted">${t('planted')}</span>
-              <input type="date" value="${plant.planted_at}" onchange="updatePlant('${plant.id}', {planted_at:this.value})"/>
-            </label>
-            <span class="pill"><b>${t('age')}</b> ${ageWeeks} ${t('weeks')} ${ageRemDays} ${t('days')}</span>
-            <div class="action-buttons">
-              <button onclick="updatePlant('${plant.id}', {archived:true})">${t('archivedCycle')}</button>
-              <button class="danger" onclick="deletePlant('${plant.id}')">${t('delete')}</button>
-            </div>
-          </div>
-          ${renderActionsBar(plant)}
-          ${createProgressBarHTML(plant)}
-        </div>
-        <div class="card-b">
-          <div class="tabs">
-            <button class="tab active" data-tab="timeline"  onclick="switchTab(this, '${plant.id}')">${t('timeline')}</button>
-            <button class="tab"        data-tab="reminders" onclick="switchTab(this, '${plant.id}')">${t('reminders')}</button>
-            <button class="tab"        data-tab="notes"     onclick="switchTab(this, '${plant.id}')">${t('notes')}</button>
-          </div>
-          <div id="content_${plant.id}" style="margin-top:12px;"></div>
-        </div>
-      </div>`;
-    }).join('');
-
-    archivedGrid.innerHTML = archivedPlants.map(p=>`
-      <div class="card" id="card_${p.id}">
-        <div class="card-h">
-          <div class="row-name" style="align-items:center;">
-            <b>${p.name}</b> <span class="muted" style="font-weight:400;font-size:14px;margin-left:8px;">(${getStrainDisplayName(p.strain)})</span>
-          </div>
-          <div class="row-info">
-            <span>${t('planted')} ${fmtDate(p.planted_at)}</span>
-            <div class="action-buttons">
-              <button onclick="updatePlant('${p.id}', {archived:false})">${t('unarchive')}</button>
-              <button class="danger" onclick="deletePlant('${p.id}')">${t('delete')}</button>
-            </div>
-          </div>
-        </div>
+        <div class="progress-marker" style="left:${progressPct}%"></div>
+        <div class="progress-marker-label" style="left:${progressPct}%">${t('today')}</div>
       </div>
-    `).join('');
-
-    document.getElementById('empty').style.display = activePlants.length===0 ? 'block':'none';
-    archivedSection.style.display = state.viewArchived && archivedPlants.length>0 ? 'block':'none';
-
-    activePlants.forEach(p=>{
-      const card = document.getElementById(`card_${p.id}`);
-      if(card && !p.isCollapsed){
-        const activeTab = card.querySelector('.tab.active');
-        if(activeTab){ switchTab(activeTab, p.id); }
-      }
-    });
-  }
-
-  /* ===== Actions bar + ? ===== */
-  function renderActionsBar(plant, overrideDate=null){
-    const dateToCheck = overrideDate || new Date();
-    const actions = getPendingActions(plant, dateToCheck);
-    if(actions.length===0) return `<div class="actions-bar" id="actions_${plant.id}"></div>`;
-    const html = actions.map(action=>{
-      const id = createActionId(action.type, action.date);
-      const iso = toISODate(action.date);
-      return `<div class="action-item ${action.type}" onclick="acknowledgeAction('${plant.id}', '${id}')">
-        <div class="left">
-          <span>${action.label}</span>
-          <button class="info-btn" title="?" onclick="event.stopPropagation(); showReminderInfo('${plant.id}', '${action.type}', '${iso}')">?</button>
-        </div>
-        <span class="action-date">${fmtShortDate(action.date)}</span>
-      </div>`;
-    }).join('');
-    return `<div class="actions-bar" id="actions_${plant.id}">${html}</div>`;
-  }
-
-  /* ===== Tabs ===== */
-  function switchTab(el, plantId){
-    const card = el.closest('.card');
-    card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    el.classList.add('active');
-    const tab = el.getAttribute('data-tab');
-    const content = document.getElementById(`content_${plantId}`);
-    const plant = getPlant(plantId);
-    if(tab==='timeline') content.innerHTML = renderTimeline(plant);
-    if(tab==='reminders') content.innerHTML = renderReminders(plant);
-    if(tab==='notes') content.innerHTML = renderNotes(plant);
-  }
-  function renderTimeline(plant){
-    const photosByWeek = plant.photos.reduce((acc,p)=>{ const w=weekNumberSince(plant.planted_at, p.date); (acc[w]||(acc[w]=[])).push(p); return acc; },{});
-    return `
-      <div class="uploader">
-        <label>${t('date')}</label>
-        <input type="date" id="photo_date_${plant.id}" value="${todayISO()}"/>
-        <label>${t('noteOptional')}</label>
-        <input type="text" id="photo_note_${plant.id}" placeholder="W${weekNumberSince(plant.planted_at, todayISO())}"/>
-        <input type="file" id="photo_file_${plant.id}" accept="image/*"/>
-        <button onclick="addPhoto('${plant.id}')">${t('uploadPhoto')}</button>
+      <div class="progress-phase-labels-container">
+        <div class="progress-phase-label" style="width:${pct(seedW)}%">${t('seedling')}</div>
+        <div class="progress-phase-label" style="width:${pct(vegW)}%">${t('vegetative')}</div>
+        <div class="progress-phase-label" style="width:${pct(flowW)}%">${t('flowering')}</div>
+        <div class="progress-phase-label" style="width:${pct(flushW)}%">${t('flush')}</div>
       </div>
-      <div style="margin-top:16px;">
-        ${Object.keys(photosByWeek).sort((a,b)=>a-b).map(week=>`
-          <div class="section-title" style="margin-top:0;">Week ${week}</div>
-          <div class="grid" style="gap:12px; margin-bottom:12px;">
-            ${photosByWeek[week].map(p=>`
-              <figure>
-                <img src="${p.data}" alt="Week ${week}"/>
-                <figcaption>
-                  <div>
-                    <div class="muted">${fmtDate(p.date)}</div>
-                    <div>${p.note||''}</div>
-                  </div>
-                  <button class="danger" style="padding:4px 8px; font-size:12px;" onclick="removePhoto('${plant.id}', '${p.id}')">${t('remove')}</button>
-                </figcaption>
-              </figure>
-            `).join('')}
+    </div>`;
+}
+
+/* ==== Reminder info popup ==== */
+function showReminderInfo(plantId,actionType,iso){
+  const plant=getPlant(plantId),phase=getPhaseForDate(plant,iso),copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
+  let html='';
+  if(actionType==='feed'){html=(copy.feed&&copy.feed[phase])||'';const url=getRqsNutrientUrl(phase);if(url)html+=`<p style="margin-top:10px;"><a class="btn-affiliate" href="${url}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a></p>`;}
+  else if(actionType==='water'){html=(copy.water&&copy.water[phase])||'';}
+  else if(actionType==='flush'){html=copy.flush||'';}
+  else if(actionType==='harvest'){html=copy.harvest||'';}
+  document.getElementById('infoBody').innerHTML=html||'<p>—</p>';
+  document.getElementById('helpModal2').style.display='flex';
+}
+window.showReminderInfo=showReminderInfo;
+
+/* ==== Render ==== */
+function render(){
+  const active=state.plants.filter(p=>!p.archived), archived=state.plants.filter(p=>p.archived);
+  const grid=document.getElementById('grid'), archivedGrid=document.getElementById('archivedGrid'), archivedSection=document.getElementById('archivedSection');
+  grid.innerHTML=active.map(p=>{
+    const ageDays=Math.max(0,daysBetween(p.planted_at,new Date())), w=Math.floor(ageDays/7), d=ageDays%7;
+    const seedUrl=getRqsSeedUrl(p.strain); const buyBtn=seedUrl?` <a class="btn-affiliate" href="${seedUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
+    return `<div class="card ${p.isCollapsed?'is-collapsed':''}" id="card_${p.id}">
+      <div class="card-h">
+        <div class="row-name">
+          <input type="text" value="${p.name}" onchange="updatePlant('${p.id}',{name:this.value})"/>
+          <button class="btn-collapse" onclick="toggleCollapse('${p.id}')"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
+        </div>
+        <div class="row-strain">
+          <select onchange="handleStrainChange('${p.id}',this.value)">${Object.keys(RQS_STRAINS).map(s=>`<option value="${s}" ${p.strain===s?'selected':''}>${getStrainDisplayName(s)}</option>`).join('')}</select>
+          ${buyBtn}
+        </div>
+        <div class="row-info">
+          <label><span class="muted">${t('planted')}</span> <input type="date" value="${p.planted_at}" onchange="updatePlant('${p.id}',{planted_at:this.value})"/></label>
+          <span class="pill"><b>${t('age')}</b> ${w} ${t('weeks')} ${d} ${t('days')}</span>
+          <div class="action-buttons">
+            <button onclick="updatePlant('${p.id}',{archived:true})">${t('archivedCycle')}</button>
+            <button class="danger" onclick="deletePlant('${p.id}')">${t('delete')}</button>
           </div>
-        `).join('') || `<p class="muted" style="text-align:center;">${t('noPhotos')}</p>`}
-      </div>`;
-  }
-  function renderReminders(plant){
-    const s=plant.schedule;
-    const phase = getPhaseForDate(plant, todayISO());
-    const nutrientUrl = getRqsNutrientUrl(phase);
-    const nutrientBtn = nutrientUrl ? `<a class="btn-affiliate" href="${nutrientUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>` : '';
-    return `
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div class="field-group">${t('water')}: ${t('every')} <input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${plant.id}','waterEveryDays',this.value)"/> ${t('daysPlural')}</div>
-        <div class="field-group">${t('feed')}: ${t('startInWeek')} <input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${plant.id}','feedStartWeek',this.value)"/> | ${t('frequency')} <input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${plant.id}','feedEveryDays',this.value)"/> ${t('daysPlural')}</div>
-        <div class="field-group">${t('startFlush')}: ${t('flushStartWeek')} <input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${plant.id}','flushStartWeek',this.value)"/></div>
-        <div class="field-group">${t('targetHarvestWeek')}: <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${plant.id}','targetHarvestWeek',this.value)"/></div>
-        <div class="hint" style="margin-top:4px;"><b>${t('strainGuideline')}</b></div>
-        <div style="margin-top:8px;">${nutrientBtn}</div>
-      </div>`;
-  }
-  function renderNotes(plant){ return `<textarea style="width:100%; min-height:120px;" onchange="updatePlant('${plant.id}', {notes:this.value})" placeholder="${t('notesPlaceholder')}">${plant.notes||''}</textarea>`; }
-  function updateSchedule(plantId, key, value){ const p=getPlant(plantId); p.schedule[key]=parseInt(value,10); saveAndRender(); }
-  function addPhoto(plantId){
-    const fi=document.getElementById(`photo_file_${plantId}`); const date=document.getElementById(`photo_date_${plantId}`).value; const note=document.getElementById(`photo_note_${plantId}`).value;
-    if(!fi.files[0]){ alert(t('alertPhoto')); return; }
-    const reader=new FileReader();
-    reader.onload=(e)=>{ const p=getPlant(plantId); p.photos.push({id:uid(), date, note, data:e.target.result}); p.photos.sort((a,b)=> new Date(a.date)-new Date(b.date)); saveAndRender(); };
-    reader.readAsDataURL(fi.files[0]);
-  }
-  function removePhoto(plantId, photoId){ const p=getPlant(plantId); p.photos=p.photos.filter(x=>x.id!==photoId); saveAndRender(); }
-  function acknowledgeAction(plantId, actionId){ const p=getPlant(plantId); if(p && !p.acknowledgedActions.includes(actionId)){ p.acknowledgedActions.push(actionId); saveAndRender(); } }
+        </div>
+        ${renderActionsBar(p)}
+        ${createProgressBarHTML(p)}
+      </div>
+      <div class="card-b">
+        <div class="tabs">
+          <button class="tab active" data-tab="timeline" onclick="switchTab(this,'${p.id}')">${t('timeline')}</button>
+          <button class="tab" data-tab="reminders" onclick="switchTab(this,'${p.id}')">${t('reminders')}</button>
+          <button class="tab" data-tab="notes" onclick="switchTab(this,'${p.id}')">${t('notes')}</button>
+        </div>
+        <div id="content_${p.id}" style="margin-top:12px;"></div>
+      </div>
+    </div>`;
+  }).join('');
+  archivedGrid.innerHTML=archived.map(p=>`<div class="card"><div class="card-h"><div class="row-name"><b>${p.name}</b> <span class="muted" style="margin-left:8px">(${getStrainDisplayName(p.strain)})</span></div><div class="row-info"><span>${t('planted')} ${fmtDate(p.planted_at)}</span><div class="action-buttons"><button onclick="updatePlant('${p.id}',{archived:false})">${t('unarchive')}</button><button class="danger" onclick="deletePlant('${p.id}')">${t('delete')}</button></div></div></div></div>`).join('');
+  document.getElementById('empty').style.display=active.length===0?'block':'none';
+  archivedSection.style.display=state.viewArchived&&archived.length>0?'block':'none';
+  active.forEach(p=>{const card=document.getElementById(`card_${p.id}`);if(card&&!p.isCollapsed){const tab=card.querySelector('.tab.active');if(tab)switchTab(tab,p.id);}});
+}
+function renderActionsBar(plant,overrideDate=null){
+  const actions=getPendingActions(plant,overrideDate||new Date());
+  if(actions.length===0)return `<div class="actions-bar" id="actions_${plant.id}"></div>`;
+  const html=actions.map(a=>{const id=createActionId(a.type,a.date);const iso=toISODate(a.date);return `<div class="action-item ${a.type}" onclick="acknowledgeAction('${plant.id}','${id}')"><div class="left"><span>${a.label}</span><button type="button" class="info-btn" onclick="event.stopPropagation();showReminderInfo('${plant.id}','${a.type}','${iso}')">?</button></div><span class="action-date">${fmtShortDate(a.date)}</span></div>`;}).join('');
+  return `<div class="actions-bar" id="actions_${plant.id}">${html}</div>`;
+}
+window.render=render;
 
-  /* ===== Share modal / JPG-rapport ===== */
-  function openShareModal(){
-    const sm = document.getElementById('shareModal');
-    sm.style.display='flex';
-    const shareSupported = !!(navigator.canShare && window.File);
-    document.getElementById('shareFallbackMsg').style.display = shareSupported ? 'none' : 'block';
-  }
-  function closeShareModal(){ document.getElementById('shareModal').style.display='none'; }
+/* ==== Tabs ==== */
+function switchTab(el,id){
+  const card=el.closest('.card');card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  const tab=el.getAttribute('data-tab');const c=document.getElementById(`content_${id}`);const p=getPlant(id);
+  if(tab==='timeline')c.innerHTML=renderTimeline(p);
+  if(tab==='reminders')c.innerHTML=renderReminders(p);
+  if(tab==='notes')c.innerHTML=renderNotes(p);
+}
+window.switchTab=switchTab;
 
-  async function shareReportJPG(){
-    const activePlants = state.plants.filter(p=>!p.archived);
-    const W = 1080, headerH=260, rowH=320, VPad=32, HPad=40;
-    const totalH = headerH + (activePlants.length * (rowH + VPad)) + VPad;
-    const canvas = document.createElement('canvas'); canvas.width=W; canvas.height=Math.max(headerH+VPad*2,totalH);
-    const ctx = canvas.getContext('2d');
-    const C = { bg:'#FFFFFF', fg:'#4D3A31', main:'#38761D', muted:'#90B47A', line:'#90B47A', segSeed:'#90B47A', segVeg:'#38761D', segFlow:'#A9C439', segFlush:'#C8D29B', danger:'#CC0000' };
-    ctx.fillStyle=C.bg; ctx.fillRect(0,0,canvas.width, canvas.height);
+function renderTimeline(p){
+  const byWeek=p.photos.reduce((acc,x)=>{const w=weekNumberSince(p.planted_at,x.date);(acc[w]||(acc[w]=[])).push(x);return acc;}, {});
+  return `<div class="uploader">
+    <label>${t('date')}</label><input type="date" id="photo_date_${p.id}" value="${todayISO()}"/>
+    <label>${t('noteOptional')}</label><input type="text" id="photo_note_${p.id}" placeholder="W${weekNumberSince(p.planted_at,todayISO())}"/>
+    <input type="file" id="photo_file_${p.id}" accept="image/*"/><button onclick="addPhoto('${p.id}')">${t('uploadPhoto')}</button>
+  </div>
+  <div style="margin-top:16px;">
+    ${Object.keys(byWeek).sort((a,b)=>a-b).map(w=>`
+      <div class="section-title" style="margin-top:0;">Week ${w}</div>
+      <div class="grid" style="gap:12px;margin-bottom:12px;">
+        ${byWeek[w].map(ph=>`
+          <figure>
+            <img src="${ph.data}" alt="Week ${w}"/>
+            <figcaption>
+              <div><div class="muted">${fmtDate(ph.date)}</div><div>${ph.note||''}</div></div>
+              <button class="danger" style="padding:4px 8px;font-size:12px" onclick="removePhoto('${p.id}','${ph.id}')">${t('remove')}</button>
+            </figcaption>
+          </figure>
+        `).join('')}
+      </div>`).join('') || `<p class="muted" style="text-align:center;">${t('noPhotos')}</p>`}
+  </div>`;
+}
 
-    const appName = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
-    const intro = REPORT_INTRO[currentLang] || REPORT_INTRO['nl'];
-    const dateStr = new Date().toLocaleString(currentLang, {year:'numeric', month:'long', day:'numeric'});
+/* Reminders tab — with ? buttons */
+function renderReminders(p){
+  const s=p.schedule;const phase=getPhaseForDate(p,todayISO());
+  const nutrUrl=getRqsNutrientUrl(phase);
+  const buyBtn=nutrUrl?`<a class="btn-affiliate" href="${nutrUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
 
-    ctx.fillStyle=C.main; ctx.font='bold 44px system-ui, Arial'; ctx.fillText(appName, HPad, 70);
-    ctx.fillStyle=C.fg; ctx.font='28px system-ui, Arial'; ctx.fillText(intro, HPad, 120);
-    ctx.fillStyle=C.muted; ctx.font='20px system-ui, Arial'; ctx.fillText(`${t('growthReportTitle')} • ${dateStr}`, HPad, 160);
-    ctx.strokeStyle=C.line; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(HPad,190); ctx.lineTo(W-HPad,190); ctx.stroke();
+  return `<div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="field-group">
+      <span>${t('water')}</span>
+      <button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','water','${todayISO()}')">?</button>:
+      <span>${t('every')}</span>
+      <input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${p.id}','waterEveryDays',this.value)"/>
+      <span>${t('daysPlural')}</span>
+    </div>
 
-    function drawProgressBar(x,y,width,height, plant){
-      const s=plant.schedule;
-      const totalW=Math.max(1, s.targetHarvestWeek);
-      const seedW=Math.min(2,totalW), vegW=Math.max(0, Math.min(4,totalW)-seedW), flowW=Math.max(0, Math.min(s.flushStartWeek,totalW)-(seedW+vegW)), flushW=Math.max(0, totalW-(seedW+vegW+flowW));
-      const px = w=> Math.round((w/totalW)*width);
-      ctx.strokeStyle=C.line; ctx.lineWidth=2; ctx.strokeRect(x,y,width,height);
-      let cur=x;
-      const segs=[{w:px(seedW),c:C.segSeed,label:TRANSLATIONS[currentLang]?.seedling},{w:px(vegW),c:C.segVeg,label:TRANSLATIONS[currentLang]?.vegetative},{w:px(flowW),c:C.segFlow,label:TRANSLATIONS[currentLang]?.flowering},{w:px(flushW),c:C.segFlush,label:TRANSLATIONS[currentLang]?.flush}];
-      segs.forEach(seg=>{ if(seg.w>0){ ctx.fillStyle=seg.c; ctx.fillRect(cur,y,seg.w,height); cur+=seg.w; } });
-      const elapsedDays=Math.max(0, daysBetween(plant.planted_at, new Date()));
-      const prog=Math.max(0, Math.min(1, elapsedDays/(s.targetHarvestWeek*7)));
-      const mx = x + Math.round(width*prog);
-      ctx.fillStyle=C.danger; ctx.fillRect(mx-1, y-6, 3, height+12);
-      ctx.fillStyle=C.danger; ctx.font='bold 12px system-ui, Arial';
-      const label=t('today'); const tw=ctx.measureText(label).width+8;
-      const lx = Math.min(W-HPad-tw, Math.max(HPad, mx - tw/2));
-      ctx.fillRect(lx, y-26, tw, 18);
-      ctx.fillStyle='#fff'; ctx.fillText(label, lx+4, y-12);
-      ctx.fillStyle=C.muted; ctx.font='12px system-ui, Arial';
-      const start=new Date(plant.planted_at), end=new Date(start); end.setDate(end.getDate()+s.targetHarvestWeek*7);
-      ctx.fillText(fmtDate(start), x, y+height+16);
-      let endTxt=fmtDate(end), endW=ctx.measureText(endTxt).width;
-      ctx.fillText(endTxt, x+width-endW, y+height+16);
-      let cx=x; ctx.fillStyle=C.fg; ctx.font='12px system-ui, Arial';
-      segs.forEach(seg=>{ if(seg.w>0){ const txt=seg.label||''; const tw=ctx.measureText(txt).width; const tx=cx+Math.max(2,(seg.w-tw)/2); ctx.fillText(txt, tx, y+height+32); cx+=seg.w; }});
-    }
-    function drawLatestPhoto(x,y,w,h, plant){
-      const ph=(plant.photos||[]).slice().sort((a,b)=> new Date(a.date)-new Date(b.date));
-      const last = ph[ph.length-1];
-      ctx.strokeStyle=C.line; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h);
-      if(!last){ ctx.fillStyle='#fafafa'; ctx.fillRect(x+2,y+2,w-4,h-4); ctx.fillStyle=C.muted; ctx.font='16px system-ui, Arial'; const txt=t('noPhotos'); const tw=ctx.measureText(txt).width; ctx.fillText(txt, x+(w-tw)/2, y+h/2); return Promise.resolve(); }
-      return new Promise(resolve=>{
-        const img=new Image();
-        img.onload=()=>{ const ir=img.width/img.height, br=w/h; let dw,dh,dx,dy; if(ir>br){ dh=h; dw=ir*dh; dx=x+(w-dw)/2; dy=y; }else{ dw=w; dh=dw/ir; dx=x; dy=y+(h-dh)/2; } ctx.drawImage(img, dx,dy,dw,dh); resolve(); };
-        img.onerror=()=>resolve();
-        img.src=last.data;
-      });
-    }
+    <div class="field-group">
+      <span>${t('feed')}</span>
+      <button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','feed','${todayISO()}')">?</button>:
+      <span>${t('startInWeek')}</span>
+      <input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${p.id}','feedStartWeek',this.value)"/>
+      <span> | ${t('frequency')}</span>
+      <input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${p.id}','feedEveryDays',this.value)"/>
+      <span>${t('daysPlural')}</span>
+    </div>
 
-    let y = 220; const promises=[];
-    for(const plant of activePlants){
-      ctx.fillStyle=C.fg; ctx.font='bold 26px system-ui, Arial'; ctx.fillText(plant.name, HPad, y);
-      ctx.fillStyle=C.muted; ctx.font='18px system-ui, Arial'; ctx.fillText(getStrainDisplayName(plant.strain), HPad, y+26);
-      drawProgressBar(HPad,y+44, W-HPad*2-360,18, plant);
-      promises.push(drawLatestPhoto(W-HPad-320, y-10, 320, 180, plant));
-      ctx.strokeStyle='#eee'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(HPad, y+rowH-8); ctx.lineTo(W-HPad, y+rowH-8); ctx.stroke();
-      y += rowH;
-    }
-    await Promise.all(promises);
+    <div class="field-group">
+      <span>${t('startFlush')}</span>
+      <button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','flush','${todayISO()}')">?</button>:
+      <span>${t('flushStartWeek')}</span>
+      <input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${p.id}','flushStartWeek',this.value)"/>
+    </div>
 
-    canvas.toBlob(async (blob)=>{
-      if(!blob){ closeShareModal(); return; }
-      const file = new File([blob], `${(TRANSLATIONS[currentLang]?.appName||'Kweekmaatje').replace(/\s+/g,'_')}_rapport.jpg`, {type:'image/jpeg'});
-      if(navigator.canShare && navigator.canShare({files:[file]})){
-        try{ await navigator.share({ files:[file], title: TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje', text: REPORT_INTRO[currentLang] || REPORT_INTRO['nl'] }); }catch(e){}
-      }else{
-        const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=file.name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-      }
-      closeShareModal();
-    }, 'image/jpeg', 0.92);
-  }
+    <div class="field-group">
+      <span>${t('targetHarvestWeek')}</span>:
+      <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${p.id}','targetHarvestWeek',this.value)"/>
+    </div>
+
+    <div class="hint" style="margin-top:4px;"><b>${t('strainGuideline')}</b> — ${getStrainDisplayName(p.strain)}<br/>${t('adjustNote')}</div>
+    <div style="margin-top:8px;">${buyBtn}</div>
+  </div>`;
+}
+
+function renderNotes(p){return `<textarea style="width:100%;min-height:120px;" onchange="updatePlant('${p.id}',{notes:this.value})" placeholder="${t('notesPlaceholder')}">${p.notes||''}</textarea>`;}
+function updateSchedule(id,key,val){const p=getPlant(id);p.schedule[key]=parseInt(val,10);saveAndRender();}
+window.updateSchedule=updateSchedule;
+
+function addPhoto(id){
+  const fi=document.getElementById(`photo_file_${id}`),date=document.getElementById(`photo_date_${id}`).value,note=document.getElementById(`photo_note_${id}`).value;
+  if(!fi.files[0]){alert(t('alertPhoto'));return;}
+  const r=new FileReader();r.onload=e=>{const p=getPlant(id);p.photos.push({id:uid(),date,note,data:e.target.result});p.photos.sort((a,b)=>new Date(a.date)-new Date(b.date));saveAndRender();};r.readAsDataURL(fi.files[0]);
+}
+window.addPhoto=addPhoto;
+function removePhoto(id,photoId){const p=getPlant(id);p.photos=p.photos.filter(x=>x.id!==photoId);saveAndRender();}
+window.removePhoto=removePhoto;
+function acknowledgeAction(id,actId){const p=getPlant(id);if(p&&!p.acknowledgedActions.includes(actId)){p.acknowledgedActions.push(actId);saveAndRender();}}
+window.acknowledgeAction=acknowledgeAction;
+
+/* ==== Share report ==== */
+function openShareModal(){document.getElementById('shareModal').style.display='flex';document.getElementById('btnShareNow').onclick=shareReportJPG;document.getElementById('shareFallbackMsg').style.display=navigator.share?'none':'block';}
+window.openShareModal=openShareModal;
+function loadImage(src){return new Promise(res=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=()=>res(null);img.src=src;});}
+async function shareReportJPG(){
+  const active=state.plants.filter(p=>!p.archived);
+  const W=1080, headerH=260, rowH=320, VPad=32, HPad=40;
+  const H=headerH+(active.length*(rowH+VPad))+VPad;
+  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=Math.max(headerH+VPad*2,H);const ctx=canvas.getContext('2d');
+  const C={bg:'#FFFFFF',fg:'#4D3A31',main:'#38761D',muted:'#90B47A',line:'#90B47A',segSeed:'#90B47A',segVeg:'#38761D',segFlow:'#A9C439',segFlush:'#C8D29B',danger:'#CC0000'};
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,canvas.height);
+  const appName=TRANSLATIONS[currentLang]?.appName||'Kweekmaatje';
+  const intro=REPORT_INTRO[currentLang]||REPORT_INTRO['nl'];
+  const dateStr=new Date().toLocaleString(currentLang,{year:'numeric',month:'long',day:'numeric'});
+  const logo=await loadImage('kweekmaatjelogo.png');
+  let tx=HPad;if(logo){ctx.drawImage(logo,HPad,24,56,56);tx=HPad+56+12;}
+  ctx.fillStyle=C.main;ctx.font='bold 44px system-ui,Arial';ctx.fillText(appName,tx,70);
+  ctx.fillStyle=C.fg;ctx.font='28px system-ui,Arial';ctx.fillText(intro,HPad,120);
+  ctx.fillStyle=C.muted;ctx.font='20px system-ui,Arial';ctx.fillText(`${t('growthReportTitle')} • ${dateStr}`,HPad,160);
+  ctx.strokeStyle=C.line;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(HPad,190);ctx.lineTo(W-HPad,190);ctx.stroke();
+  function drawPB(x,y,w,h,plant){const s=plant.schedule,totalW=Math.max(1,s.targetHarvestWeek);const seedW=Math.min(2,totalW),vegW=Math.max(0,Math.min(4,totalW)-seedW),flowW=Math.max(0,Math.min(s.flushStartWeek,totalW)-(seedW+vegW)),flushW=Math.max(0,totalW-(seedW+vegW+flowW));const px=p=>Math.round((p/totalW)*w);ctx.strokeStyle=C.line;ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);let cur=x;const segs=[{w:px(seedW),c:C.segSeed},{w:px(vegW),c:C.segVeg},{w:px(flowW),c:C.segFlow},{w:px(flushW),c:C.segFlush}];segs.forEach(sg=>{if(sg.w>0){ctx.fillStyle=sg.c;ctx.fillRect(cur,y,sg.w,h);cur+=sg.w;}});const elapsed=Math.max(0,daysBetween(plant.planted_at,new Date()));const prog=Math.max(0,Math.min(1,elapsed/(s.targetHarvestWeek*7)));const mx=x+Math.round(w*prog);ctx.fillStyle=C.danger;ctx.fillRect(mx-1,y-6,3,h+12);ctx.fillStyle=C.danger;ctx.font='bold 12px system-ui,Arial';const lab=t('today');const tw=ctx.measureText(lab).width+8;const lx=Math.min(W-HPad-tw,Math.max(HPad,mx-tw/2));ctx.fillRect(lx,y-26,tw,18);ctx.fillStyle='#fff';ctx.fillText(lab,lx+4,y-12);ctx.fillStyle=C.muted;ctx.font='12px system-ui,Arial';const st=new Date(plant.planted_at),en=new Date(st);en.setDate(en.getDate()+s.targetHarvestWeek*7);ctx.fillText(fmtDate(st),x,y+h+16);let ew=ctx.measureText(fmtDate(en)).width;ctx.fillText(fmtDate(en),x+w-ew,y+h+16);}
+  function drawLatest(x,y,w,h,plant){const arr=(plant.photos||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));const last=arr[arr.length-1];ctx.strokeStyle=C.line;ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);if(!last){ctx.fillStyle='#fafafa';ctx.fillRect(x+2,y+2,w-4,h-4);ctx.fillStyle=C.muted;ctx.font='16px system-ui,Arial';const txt=t('noPhotos');const tw=ctx.measureText(txt).width;ctx.fillText(txt,x+(w-tw)/2,y+h/2);return Promise.resolve();}return new Promise(r=>{const img=new Image();img.onload=()=>{const ir=img.width/img.height,br=w/h;let dw,dh,dx,dy;if(ir>br){dh=h;dw=ir*dh;dx=x+(w-dw)/2;dy=y;}else{dw=w;dh=dw/ir;dx=x;dy=y+(h-dh)/2;}ctx.drawImage(img,dx,dy,dw,dh);r();};img.onerror=()=>r();img.src=last.data;});}
+  let y=220;const promises=[];for(const p of active){ctx.fillStyle=C.fg;ctx.font='bold 26px system-ui,Arial';ctx.fillText(p.name,40,y);ctx.fillStyle=C.muted;ctx.font='18px system-ui,Arial';ctx.fillText(getStrainDisplayName(p.strain),40,y+26);drawPB(40,y+44,W-40*2-360,18,p);promises.push(drawLatest(W-40-320,y-10,320,180,p));ctx.strokeStyle='#eee';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,y+rowH-8);ctx.lineTo(W-40,y+rowH-8);ctx.stroke();y+=rowH;}
+  await Promise.all(promises);
+  canvas.toBlob(async (blob)=>{const name=(TRANSLATIONS[currentLang]?.appName||'Kweekmaatje').replace(/\s+/g,'_')+'_rapport.jpg';const file=(typeof File!=='undefined')?new File([blob],name,{type:'image/jpeg'}):blob;try{if(navigator.canShare && file instanceof File && navigator.canShare({files:[file]})){await navigator.share({files:[file],title:TRANSLATIONS[currentLang]?.appName||'Kweekmaatje',text:REPORT_INTRO[currentLang]});}else if(navigator.share){await navigator.share({title:TRANSLATIONS[currentLang]?.appName||'Kweekmaatje',text:REPORT_INTRO[currentLang]});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}else{const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);} }catch(e){const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);} document.getElementById('shareModal').style.display='none';},'image/jpeg',0.92);
+}
+window.shareReportJPG=shareReportJPG;
 </script>
 </body>
 </html>
