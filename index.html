@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Autoflower Grow Assistant</title>
+    <title>Kweekmaatje</title>
     <style>
         /*
          * Kleurenpalet Groeicyclus Cannabis
@@ -234,12 +234,15 @@
         .btn-whatsapp { display: inline-flex; align-items: center; gap: 10px; background-color: #25D366; color: white !important; padding: 10px 16px; border-radius: 16px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; transition: background-color 0.2s; }
         .btn-whatsapp:hover { background-color: #1DA851; }
         .btn-whatsapp svg { width: 20px; height: 20px; fill: white; }
+        /* --- EXTRA TOEVOEGING: klein stijltje voor ?-icoon --- */
+        .info-btn { margin-left: 8px; font-weight: 700; border: 1px solid var(--line); border-radius: 999px; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: #fff; color: var(--fg); }
+        .dark .info-btn { background: var(--card); }
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
-            <h1 id="appTitle">Autoflower Grow Assistant</h1>
+            <h1 id="appTitle">Kweekmaatje</h1>
             
             <div class="header-actions">
                 <button id="btnAdd" data-i18n="newPlant">+ Nieuwe plant</button>
@@ -303,29 +306,343 @@
         </div>
     </div>
 
+    <!-- EXTRA TOEVOEGING: Info-modal voor reminder-uitleg -->
+    <div id="infoModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+            <h2 id="infoTitle">Info</h2>
+            <div id="infoBody"></div>
+        </div>
+    </div>
+
     <script>
         // Taaldefinitie
         const TRANSLATIONS = {
             nl: {
-                appName: "Autoflower Grow Assistant", newPlant: "+ Nieuwe plant", showArchived: "Toon gearchiveerden", emptyTitle: "Nog geen plantjes", emptyText: "Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach", archivedTitle: "Gearchiveerd", plant: "Plant", archivedCycle: "Archiveer cyclus", unarchive: "Deblokkeren", delete: "Verwijderen", planted: "Geplant:", age: "Leeftijd:", weeks: "wk", days: "d", timeline: "Tijdlijn", reminders: "Herinneringen", notes: "Notities", date: "Datum:", noteOptional: "Opmerking (optioneel)", uploadPhoto: "Upload foto", noPhotos: "Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.", remove: "Verwijder", water: "💧 Water", feed: "🥦 Voeding", startFlush: "💦 START FLUSH", harvest: "🪴 OOGSTEN", week: "Week", every: "Elke", daysPlural: "dagen", startInWeek: "Start in week", frequency: "Frequentie: elke", flushStartWeek: "Flush starten in week", targetHarvestWeek: "Doel oogstweek", strainGuideline: "Soort Richtlijn:", adjustNote: "Pas frequentie aan op potmaat, substraat en klimaat.", notesPlaceholder: "Notities over water, EC/PPM, pH, training, etc.", alertPhoto: "Kies eerst een foto.", alertDelete: "Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).", alertMax: "Maximaal 12 plantjes ondersteund.", alertImport: "Kan bestand niet lezen:", darkMode: "Dark Mode", seedling: "Zaailing", vegetative: "Vegetatief", flowering: "Bloei", flush: "Spoelen", helpTitle: "Hulp & Informatie", 
+                appName: "Kweekmaatje", newPlant: "+ Nieuwe plant", showArchived: "Toon gearchiveerden", emptyTitle: "Nog geen plantjes", emptyText: "Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach", archivedTitle: "Gearchiveerd", plant: "Plant", archivedCycle: "Archiveer cyclus", unarchive: "Deblokkeren", delete: "Verwijderen", planted: "Geplant:", age: "Leeftijd:", weeks: "wk", days: "d", timeline: "Tijdlijn", reminders: "Herinneringen", notes: "Notities", date: "Datum:", noteOptional: "Opmerking (optioneel)", uploadPhoto: "Upload foto", noPhotos: "Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.", remove: "Verwijder", water: "💧 Water", feed: "🥦 Voeding", startFlush: "💦 START FLUSH", harvest: "🪴 OOGSTEN", week: "Week", every: "Elke", daysPlural: "dagen", startInWeek: "Start in week", frequency: "Frequentie: elke", flushStartWeek: "Flush starten in week", targetHarvestWeek: "Doel oogstweek", strainGuideline: "Soort Richtlijn:", adjustNote: "Pas frequentie aan op potmaat, substraat en klimaat.", notesPlaceholder: "Notities over water, EC/PPM, pH, training, etc.", alertPhoto: "Kies eerst een foto.", alertDelete: "Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).", alertMax: "Maximaal 12 plantjes ondersteund.", alertImport: "Kan bestand niet lezen:", darkMode: "Dark Mode", seedling: "Zaailing", vegetative: "Vegetatief", flowering: "Bloei", flush: "Spoelen", helpTitle: "Hulp & Informatie", 
                 helpIntro: "Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt.",
                 helpText: "Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.", contactDeveloper: "Contact ontwikkelaar", today: "Vandaag"
             },
             en: {
-                appName: "Autoflower Grow Assistant", newPlant: "+ New Plant", showArchived: "Show Archived", emptyTitle: "No Plants Yet", emptyText: "Add your first plant and activate your personal grow coach", archivedTitle: "Archived", plant: "Plant", archivedCycle: "Archive Cycle", unarchive: "Unarchive", delete: "Delete", planted: "Planted:", age: "Age:", weeks: "wks", days: "d", timeline: "Timeline", reminders: "Reminders", notes: "Notes", date: "Date:", noteOptional: "Note (optional)", uploadPhoto: "Upload Photo", noPhotos: "No photos yet – add your first Week 0 photo above.", remove: "Remove", water: "💧 Water", feed: "🥦 Feed", startFlush: "💦 START FLUSH", harvest: "🪴 HARVEST", week: "Week", every: "Every", daysPlural: "days", startInWeek: "Start in Week", frequency: "Frequency: every", flushStartWeek: "Start Flush in Week", targetHarvestWeek: "Target Harvest Week", strainGuideline: "Strain Guideline:", adjustNote: "Adjust frequency based on pot size, substrate, and climate.", notesPlaceholder: "Notes on watering, EC/PPM, pH, training, etc.", alertPhoto: "Please select a photo first.", alertDelete: "Delete? This cannot be undone (all photos will be deleted).", alertMax: "Maximum of 12 plants supported.", alertImport: "Cannot read file:", darkMode: "Dark Mode", seedling: "Seedling", vegetative: "Vegetative", flowering: "Flowering", flush: "Flush", helpTitle: "Help & Information",
+                appName: "Grow Buddy", newPlant: "+ New Plant", showArchived: "Show Archived", emptyTitle: "No Plants Yet", emptyText: "Add your first plant and activate your personal grow coach", archivedTitle: "Archived", plant: "Plant", archivedCycle: "Archive Cycle", unarchive: "Unarchive", delete: "Delete", planted: "Planted:", age: "Age:", weeks: "wks", days: "d", timeline: "Timeline", reminders: "Reminders", notes: "Notes", date: "Date:", noteOptional: "Note (optional)", uploadPhoto: "Upload Photo", noPhotos: "No photos yet – add your first Week 0 photo above.", remove: "Remove", water: "💧 Water", feed: "🥦 Feed", startFlush: "💦 START FLUSH", harvest: "🪴 HARVEST", week: "Week", every: "Every", daysPlural: "days", startInWeek: "Start in Week", frequency: "Frequency: every", flushStartWeek: "Start Flush in Week", targetHarvestWeek: "Target Harvest Week", strainGuideline: "Strain Guideline:", adjustNote: "Adjust frequency based on pot size, substrate, and climate.", notesPlaceholder: "Notes on watering, EC/PPM, pH, training, etc.", alertPhoto: "Please select a photo first.", alertDelete: "Delete? This cannot be undone (all photos will be deleted).", alertMax: "Maximum of 12 plants supported.", alertImport: "Cannot read file:", darkMode: "Dark Mode", seedling: "Seedling", vegetative: "Vegetative", flowering: "Flowering", flush: "Flush", helpTitle: "Help & Information",
                 helpIntro: "No more guesswork. Just pick your plant from the list and the app builds a foolproof schedule for you. Get reminders when it’s time to water, feed, or flush, and track every stage with an easy visual timeline. Snap photos along the way to keep a growth log you’ll actually enjoy looking back on.",
                 helpText: "Your privacy and data security are guaranteed. This is a 100% frontend application, meaning all data you enter (plant names, dates, notes, photos) is stored exclusively on your own device in your browser's local storage. No data is sent to any server.", contactDeveloper: "Contact developer", today: "Today"
             },
-            de: { appName: "Autoflower Grow Assistant", newPlant: "+ Neue Pflanze", showArchived: "Archivierte anzeigen", emptyTitle: "Noch keine Pflanzen", emptyText: "Füge deine erste Pflanze hinzu und aktiviere deinen persönlichen Grow-Coach", archivedTitle: "Archiviert", plant: "Pflanze", archivedCycle: "Zyklus archivieren", unarchive: "Wiederherstellen", delete: "Löschen", planted: "Gepflanzt:", age: "Alter:", weeks: "Wo", days: "T", timeline: "Zeitachse", reminders: "Erinnerungen", notes: "Notizen", date: "Datum:", noteOptional: "Notiz (optional)", uploadPhoto: "Foto hochladen", noPhotos: "Noch keine Fotos – fügen Sie Ihr erstes Foto der Woche 0 oben hinzu.", remove: "Entfernen", water: "💧 Wasser", feed: "🥦 Nährstoffe", startFlush: "💦 SPÜLUNG STARTEN", harvest: "🪴 ERNTEN", week: "Woche", every: "Alle", daysPlural: "Tage", startInWeek: "Start in Woche", frequency: "Frequenz: alle", flushStartWeek: "Spülung starten in Woche", targetHarvestWeek: "Ziel Erntewoche", strainGuideline: "Sortenrichtlinie:", adjustNote: "Passen Sie die Häufigkeit an Topfgröße, Substrat und Klima an.", notesPlaceholder: "Notizen zu Bewässerung, EC/PPM, pH, Training, etc.", alertPhoto: "Bitte wählen Sie zuerst ein Foto aus.", alertDelete: "Löschen? Dies kann nicht rückgängig gemacht werden (alle Fotos werden gelöscht).", alertMax: "Maximal 12 Pflanzen werden unterstützt.", alertImport: "Datei kann nicht gelesen werden:", darkMode: "Dunkelmodus", seedling: "Keimling", vegetative: "Vegetativ", flowering: "Blüte", flush: "Spülen", helpTitle: "Hilfe & Informationen", 
+            de: { appName: "Kraut Kumpel", newPlant: "+ Neue Pflanze", showArchived: "Archivierte anzeigen", emptyTitle: "Noch keine Pflanzen", emptyText: "Füge deine erste Pflanze hinzu und aktiviere deinen persönlichen Grow-Coach", archivedTitle: "Archiviert", plant: "Pflanze", archivedCycle: "Zyklus archivieren", unarchive: "Wiederherstellen", delete: "Löschen", planted: "Gepflanzt:", age: "Alter:", weeks: "Wo", days: "T", timeline: "Zeitachse", reminders: "Erinnerungen", notes: "Notizen", date: "Datum:", noteOptional: "Notiz (optional)", uploadPhoto: "Foto hochladen", noPhotos: "Noch keine Fotos – fügen Sie Ihr erstes Foto der Woche 0 oben hinzu.", remove: "Entfernen", water: "💧 Wasser", feed: "🥦 Nährstoffe", startFlush: "💦 SPÜLUNG STARTEN", harvest: "🪴 ERNTEN", week: "Woche", every: "Alle", daysPlural: "Tage", startInWeek: "Start in Woche", frequency: "Frequenz: alle", flushStartWeek: "Spülung starten in Woche", targetHarvestWeek: "Ziel Erntewoche", strainGuideline: "Sortenrichtlinie:", adjustNote: "Passen Sie die Häufigkeit an Topfgröße, Substrat und Klima an.", notesPlaceholder: "Notizen zu Bewässerung, EC/PPM, pH, Training, etc.", alertPhoto: "Bitte wählen Sie zuerst ein Foto aus.", alertDelete: "Löschen? Dies kann nicht rückgängig gemacht werden (alle Fotos werden gelöscht).", alertMax: "Maximal 12 Pflanzen werden unterstützt.", alertImport: "Datei kann nicht gelesen werden:", darkMode: "Dunkelmodus", seedling: "Keimling", vegetative: "Vegetativ", flowering: "Blüte", flush: "Spülen", helpTitle: "Hilfe & Informationen", 
                 helpIntro: "Kein Raten mehr. Wähle einfach deine Pflanze aus der Liste aus und die App erstellt einen zuverlässigen Zeitplan für dich. Erhalte Erinnerungen, wenn es Zeit zum Gießen, Düngen oder Spülen ist, und verfolge jede Phase mit einer einfachen visuellen Zeitleiste. Mache unterwegs Fotos, um ein Wachstumsprotokoll zu führen, auf das du gerne zurückblicken wirst.",
                 helpText: "Ihre Privatsphäre und Datensicherheit sind gewährleistet. Dies ist eine 100%ige Frontend-Anwendung, was bedeutet, dass alle von Ihnen eingegebenen Daten (Pflanzennamen, Daten, Notizen, Fotos) ausschließlich auf Ihrem eigenen Gerät im lokalen Speicher Ihres Browsers gespeichert werden. Es werden keine Daten an einen Server gesendet.", contactDeveloper: "Entwickler kontaktieren", today: "Heute" },
-            fr: { appName: "Assistant de Culture Autofloraison", newPlant: "+ Nouvelle Plante", showArchived: "Afficher Archivé", emptyTitle: "Pas encore de Plantes", emptyText: "Ajoutez votre première plante et activez votre coach de culture personnel", archivedTitle: "Archivé", plant: "Plante", archivedCycle: "Archiver Cycle", unarchive: "Désarchiver", delete: "Supprimer", planted: "Planté(e):", age: "Âge:", weeks: "sem", days: "j", timeline: "Chronologie", reminders: "Rappels", notes: "Notes", date: "Date:", noteOptional: "Note (optionnel)", uploadPhoto: "Télécharger photo", noPhotos: "Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.", remove: "Retirer", water: "💧 Eau", feed: "🥦 Engrais", startFlush: "💦 DÉBUT RINÇAGE", harvest: "🪴 RÉCOLTER", week: "Semaine", every: "Tous les", daysPlural: "jours", startInWeek: "Début Semaine", frequency: "Fréquence : tous les", flushStartWeek: "Début Rinçage Semaine", targetHarvestWeek: "Semaine de Récolte Cible", strainGuideline: "Ligne directrice de la souche:", adjustNote: "Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.", notesPlaceholder: "Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.", alertPhoto: "Veuillez d'abord sélectionner une photo.", alertDelete: "Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).", alertMax: "Maximum de 12 plantes prises en charge.", alertImport: "Impossible de lire le fichier :", darkMode: "Mode Sombre", seedling: "Germination", vegetative: "Végétatif", flowering: "Floraison", flush: "Rinçage", helpTitle: "Aide & Informations",
-                helpIntro: "Fini les devinettes. Choisissez simplement votre plante dans la liste et l'application élabore un programme infaillible pour vous. Recevez des rappels quand il est temps d'arroser, de nourrir ou de rincer, et suivez chaque étape avec une chronologie visuelle simple. Prenez des photos en cours de route pour tenir un journal de croissance que vous aimerez vraiment consulter.",
+            fr: { appName: "Copain de Culture", newPlant: "+ Nouvelle Plante", showArchived: "Afficher Archivé", emptyTitle: "Pas encore de Plantes", emptyText: "Ajoutez votre première plante et activez votre coach de culture personnel", archivedTitle: "Archivé", plant: "Plante", archivedCycle: "Archiver Cycle", unarchive: "Désarchiver", delete: "Supprimer", planted: "Planté(e):", age: "Âge:", weeks: "sem", days: "j", timeline: "Chronologie", reminders: "Rappels", notes: "Notes", date: "Date:", noteOptional: "Note (optionnel)", uploadPhoto: "Télécharger photo", noPhotos: "Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.", remove: "Retirer", water: "💧 Eau", feed: "🥦 Engrais", startFlush: "💦 DÉBUT RINÇAGE", harvest: "🪴 RÉCOLTER", week: "Semaine", every: "Tous les", daysPlural: "jours", startInWeek: "Début Semaine", frequency: "Fréquence : tous les", flushStartWeek: "Début Rinçage Semaine", targetHarvestWeek: "Semaine de Récolte Cible", strainGuideline: "Ligne directrice de la souche:", adjustNote: "Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.", notesPlaceholder: "Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.", alertPhoto: "Veuillez d'abord sélectionner une photo.", alertDelete: "Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).", alertMax: "Maximum de 12 plantes prises en charge.", alertImport: "Impossible de lire le fichier :", darkMode: "Mode Sombre", seedling: "Germination", vegetative: "Végétatif", flowering: "Floraison", flush: "Rinçage", helpTitle: "Aide & Informations",
+                helpIntro: "Fini les devinettes. Choisissez simplement votre plante dans la liste et l'application élabore un programme infallible pour vous. Recevez des rappels quand il est temps d'arroser, de nourrir ou de rincer, et suivez chaque étape avec une chronologie visuelle simple. Prenez des photos en cours de route pour tenir un journal de croissance que vous aimerez vraiment consulter.",
                 helpText: "Votre confidentialité et la sécurité de vos données sont garanties. Il s'agit d'une application 100% frontend, ce qui signifie que toutes les données que vous saisissez (noms de plantes, dates, notes, photos) sont stockées exclusivement sur votre propre appareil dans le stockage local de votre navigateur. Aucune donnée n'est envoyée à un serveur.", contactDeveloper: "Contacter le développeur", today: "Aujourd'hui" },
-            es: { appName: "Asistente de Cultivo Autofloreciente", newPlant: "+ Nueva Planta", showArchived: "Mostrar Archivadas", emptyTitle: "Todavía no hay Plantas", emptyText: "Añade tu primera planta y activa tu coach de cultivo personal", archivedTitle: "Archivadas", plant: "Planta", archivedCycle: "Archivar Ciclo", unarchive: "Desarchivar", delete: "Eliminar", planted: "Plantada:", age: "Edad:", weeks: "sem", days: "d", timeline: "Línea de Tiempo", reminders: "Recordatorios", notes: "Notas", date: "Fecha:", noteOptional: "Nota (opcional)", uploadPhoto: "Subir foto", noPhotos: "Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.", remove: "Quitar", water: "💧 Agua", feed: "🥦 Nutrientes", startFlush: "💦 INICIAR LAVADO", harvest: "🪴 COSECHAR", week: "Semana", every: "Cada", daysPlural: "días", startInWeek: "Iniciar Semana", frequency: "Frecuencia: cada", flushStartWeek: "Iniciar Lavado Semana", targetHarvestWeek: "Semana de Cosecha Objetivo", pautaDeLaCepa: "Pauta de la Cepa:", adjustNote: "Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.", notesPlaceholder: "Notas sobre riego, EC/PPM, pH, entrenamiento, etc.", alertPhoto: "Por favor, selecciona una foto primero.", alertDelete: "Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).", alertMax: "Máximo de 12 plantas admitidas.", alertImport: "No se puede leer el archivo:", darkMode: "Modo Oscuro", seedling: "Plántula", vegetative: "Vegetativo", flowering: "Floración", flush: "Lavado", helpTitle: "Ayuda e Información", 
+            es: { appName: "Compa de Cultivo", newPlant: "+ Nueva Planta", showArchived: "Mostrar Archivadas", emptyTitle: "Todavía no hay Plantas", emptyText: "Añade tu primera planta y activa tu coach de cultivo personal", archivedTitle: "Archivadas", plant: "Planta", archivedCycle: "Archivar Ciclo", unarchive: "Desarchivar", delete: "Eliminar", planted: "Plantada:", age: "Edad:", weeks: "sem", days: "d", timeline: "Línea de Tiempo", reminders: "Recordatorios", notes: "Notas", date: "Fecha:", noteOptional: "Nota (opcional)", uploadPhoto: "Subir foto", noPhotos: "Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.", remove: "Quitar", water: "💧 Agua", feed: "🥦 Nutrientes", startFlush: "💦 INICIAR LAVADO", harvest: "🪴 COSECHAR", week: "Semana", every: "Cada", daysPlural: "días", startInWeek: "Iniciar Semana", frequency: "Frecuencia: cada", flushStartWeek: "Iniciar Lavado Semana", targetHarvestWeek: "Semana de Cosecha Objetivo", pautaDeLaCepa: "Pauta de la Cepa:", adjustNote: "Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.", notesPlaceholder: "Notas sobre riego, EC/PPM, pH, entrenamiento, etc.", alertPhoto: "Por favor, selecciona una foto primero.", alertDelete: "Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).", alertMax: "Máximo de 12 plantas admitidas.", alertImport: "No se puede leer el archivo:", darkMode: "Modo Oscuro", seedling: "Plántula", vegetative: "Vegetativo", flowering: "Floración", flush: "Lavado", helpTitle: "Ayuda e Información", 
                 helpIntro: "Se acabaron las conjeturas. Simplemente elige tu planta de la lista y la aplicación creará un programa infalible para ti. Recibe recordatorios cuando sea el momento de regar, abonar o hacer un lavado de raíces, y sigue cada etapa con una sencilla línea de tiempo visual. Haz fotos por el camino para llevar un diario de crecimiento que de verdad disfrutarás recordando.",
                 helpText: "Su privacidad y seguridad de los datos están garantizadas. Esta es una aplicación 100% frontend, lo que significa que todos los datos que ingresa (nombres de plantas, fechas, notas, fotos) se almacenan exclusivamente en su propio dispositivo en el almacenamiento local de su navegador. No se envía ningún dato a ningún servidor.", contactDeveloper: "Contactar al desarrollador", today: "Hoy" }
         };
+
+        /* EXTRA TOEVOEGING: Uitlegteksten per taal/actie/fase */
+        const REMINDER_INFO = {
+          nl: {
+            titles: { water: "Waterbehoefte", feed: "Benodigde voedingsstoffen", flush: "Spoelen", harvest: "Oogsten" },
+            phases: { seedling: "Zaailingfase", vegetative: "Vegetatieve fase", flowering: "Bloeifase", flush: "Flush" },
+            water: {
+              seedling: [
+                "Waterbehoefte: Zeer weinig. De wortels zijn nog klein en kunnen snel \"verdrinken\".",
+                "Hoeveelheid: Begin met ongeveer 100–250 ml water per waterbeurt.",
+                "Hoe vaak: Geef alleen water als de bovenste 2–3 cm grond droog aanvoelt (± om de 2–4 dagen). Een plantenspuit rond de zaailing is ideaal."
+              ],
+              vegetative: [
+                "Waterbehoefte: Matig tot veel; snelle groei en meer verdamping.",
+                "Hoeveelheid: ± 500 ml tot 1,5 L per beurt (afhankelijk van potmaat/plantgrootte).",
+                "Hoe vaak: Meestal om de 2–3 dagen, met lichte drainage aan de onderkant."
+              ],
+              flowering: [
+                "Waterbehoefte: Maximaal; de plant is het dorstigst.",
+                "Hoeveelheid: ± 1,5 tot 3 L per beurt (afhankelijk van potmaat).",
+                "Hoe vaak: Vaak om de 2 dagen; zorg voor goede drainage om wortelrot te voorkomen."
+              ],
+              flush: [
+                "Waterbehoefte: Veel; doel is de grond goed door te spoelen.",
+                "Hoeveelheid: Zelfde of iets meer dan in de bloeifase.",
+                "Hoe vaak: Wanneer de grond droog aanvoelt; opname kan afnemen richting het einde."
+              ]
+            },
+            feed: {
+              seedling: [
+                "In de zaailingfase geen extra voeding: potgrond bevat voldoende; extra voeding kan jonge wortels verbranden."
+              ],
+              vegetative: [
+                "De belangrijkste voedingsstof is Stikstof (N) voor bladgroen en groei van bladeren/stengels.",
+                "Primair: Veel Stikstof (N).",
+                "Secundair: Gemiddelde hoeveelheden Fosfor (P) en Kalium (K).",
+                "Micro: Sporenelementen zoals Magnesium (Mg) en Calcium (Ca)."
+              ],
+              flowering: [
+                "Focus verschuift naar Fosfor (P) en Kalium (K) voor grote, dichte toppen.",
+                "Primair: Veel Fosfor (P) en Kalium (K).",
+                "Secundair: Weinig Stikstof (N).",
+                "Micro: Zwavel (S), Magnesium (Mg) en Calcium (Ca) blijven belangrijk."
+              ],
+              flush: [
+                "Geen voeding tijdens flush; alleen water om zouten/voeding uit te spoelen."
+              ]
+            },
+            flush: {
+              flush: [
+                "START FLUSH: gebruik alleen water in de laatste 1–2 weken voor de oogst.",
+                "Doel: opgebouwde zouten wegspoelen voor betere smaak."
+              ]
+            },
+            harvest: {
+              flowering: [
+                "Oogst: plan na de flush-periode wanneer trichomen en rijpheid op niveau zijn."
+              ],
+              flush: [
+                "Oogst: zodra flush is voltooid en de plant rijp is."
+              ]
+            }
+          },
+          en: {
+            titles: { water: "Watering", feed: "Nutrients Needed", flush: "Flushing", harvest: "Harvest" },
+            phases: { seedling: "Seedling", vegetative: "Vegetative", flowering: "Flowering", flush: "Flush" },
+            water: {
+              seedling: [
+                "Water need: Very little. Roots are small and can drown easily.",
+                "Amount: Start with about 100–250 ml per watering.",
+                "How often: Only when the top 2–3 cm of soil feels dry (every ~2–4 days). A spray bottle around the seedling is ideal."
+              ],
+              vegetative: [
+                "Water need: Moderate to high due to rapid growth.",
+                "Amount: ~500 ml to 1.5 L per watering (depends on pot size/plant).",
+                "How often: Usually every 2–3 days, with slight runoff."
+              ],
+              flowering: [
+                "Water need: Highest; plant is thirstiest.",
+                "Amount: ~1.5 to 3 L per watering (depends on pot size).",
+                "How often: About every 2 days; ensure good drainage."
+              ],
+              flush: [
+                "Water need: High; goal is to rinse the medium well.",
+                "Amount: Same or slightly more than flowering.",
+                "How often: When soil feels dry; uptake may slow towards the end."
+              ]
+            },
+            feed: {
+              seedling: [
+                "No extra nutrients in seedling stage: soil has enough; extra feed may burn young roots."
+              ],
+              vegetative: [
+                "Key nutrient is Nitrogen (N) for chlorophyll and leaf/stem growth.",
+                "Primary: High Nitrogen (N).",
+                "Secondary: Moderate Phosphorus (P) and Potassium (K).",
+                "Micro: Trace elements like Magnesium (Mg) and Calcium (Ca)."
+              ],
+              flowering: [
+                "Shift towards Phosphorus (P) and Potassium (K) for dense buds.",
+                "Primary: High Phosphorus (P) and Potassium (K).",
+                "Secondary: Low Nitrogen (N).",
+                "Micro: Sulfur (S), Magnesium (Mg), and Calcium (Ca) remain important."
+              ],
+              flush: [
+                "No feeding during flush; only water to remove built-up salts."
+              ]
+            },
+            flush: {
+              flush: [
+                "START FLUSH: use only water in the last 1–2 weeks before harvest.",
+                "Goal: remove accumulated salts for better flavor."
+              ]
+            },
+            harvest: {
+              flowering: [
+                "Harvest: plan after the flush period when ripeness/trichomes are right."
+              ],
+              flush: [
+                "Harvest: once flush is complete and plant is ripe."
+              ]
+            }
+          },
+          de: {
+            titles: { water: "Bewässerung", feed: "Benötigte Nährstoffe", flush: "Spülen", harvest: "Ernte" },
+            phases: { seedling: "Keimling", vegetative: "Vegetativ", flowering: "Blüte", flush: "Flush" },
+            water: {
+              seedling: [
+                "Wasserbedarf: Sehr gering. Kleine Wurzeln können leicht ertrinken.",
+                "Menge: Beginn mit etwa 100–250 ml pro Gießen.",
+                "Häufigkeit: Nur wenn die oberen 2–3 cm Erde trocken sind (~alle 2–4 Tage). Sprühflasche ist ideal."
+              ],
+              vegetative: [
+                "Wasserbedarf: Mittel bis hoch; schnelles Wachstum.",
+                "Menge: ~500 ml bis 1,5 L (je nach Topf/Pflanze).",
+                "Häufigkeit: Meist alle 2–3 Tage mit leichtem Ablauf."
+              ],
+              flowering: [
+                "Wasserbedarf: Am höchsten.",
+                "Menge: ~1,5 bis 3 L (je nach Topfgröße).",
+                "Häufigkeit: Etwa alle 2 Tage; gute Drainage sicherstellen."
+              ],
+              flush: [
+                "Wasserbedarf: Hoch; Medium gründlich spülen.",
+                "Menge: Gleich oder etwas mehr als in der Blüte.",
+                "Häufigkeit: Wenn die Erde trocken wirkt; Aufnahme kann am Ende abnehmen."
+              ]
+            },
+            feed: {
+              seedling: [
+                "Keine zusätzliche Düngung in der Keimlingsphase: Erde reicht aus; Zusatzdünger kann Wurzeln verbrennen."
+              ],
+              vegetative: [
+                "Wichtigster Nährstoff ist Stickstoff (N) für Blattgrün und Wachstum.",
+                "Primär: Viel Stickstoff (N).",
+                "Sekundär: Mittlere Mengen Phosphor (P) und Kalium (K).",
+                "Mikro: Spurenelemente wie Magnesium (Mg) und Calcium (Ca)."
+              ],
+              flowering: [
+                "Fokus auf Phosphor (P) und Kalium (K) für dichte Blüten.",
+                "Primär: Viel Phosphor (P) und Kalium (K).",
+                "Sekundär: Wenig Stickstoff (N).",
+                "Mikro: Schwefel (S), Magnesium (Mg) und Calcium (Ca)."
+              ],
+              flush: [
+                "Keine Düngung während des Flush; nur Wasser zum Ausspülen."
+              ]
+            },
+            flush: {
+              flush: [
+                "START FLUSH: Nur Wasser in den letzten 1–2 Wochen vor der Ernte.",
+                "Ziel: Abgelagerte Salze entfernen für besseren Geschmack."
+              ]
+            },
+            harvest: {
+              flowering: [
+                "Ernte: nach der Flush-Phase, wenn Reife/Trichome passen."
+              ],
+              flush: [
+                "Ernte: sobald Flush abgeschlossen ist und die Pflanze reif ist."
+              ]
+            }
+          },
+          fr: {
+            titles: { water: "Arrosage", feed: "Nutriments nécessaires", flush: "Rinçage", harvest: "Récolte" },
+            phases: { seedling: "Germination", vegetative: "Végétatif", flowering: "Floraison", flush: "Rinçage" },
+            water: {
+              seedling: [
+                "Besoins en eau : Très faibles. Les racines sont petites et peuvent « se noyer ».",
+                "Quantité : Commencer à ~100–250 ml par arrosage.",
+                "Fréquence : Quand les 2–3 cm supérieurs du sol sont secs (~tous les 2–4 jours). Un pulvérisateur est idéal."
+              ],
+              vegetative: [
+                "Besoins en eau : Modérés à élevés; croissance rapide.",
+                "Quantité : ~500 ml à 1,5 L (selon la taille du pot/plante).",
+                "Fréquence : En général tous les 2–3 jours avec un léger drainage."
+              ],
+              flowering: [
+                "Besoins en eau : Maximum.",
+                "Quantité : ~1,5 à 3 L (selon la taille du pot).",
+                "Fréquence : Environ tous les 2 jours; assurer un bon drainage."
+              ],
+              flush: [
+                "Besoins en eau : Élevés; objectif de bien rincer le substrat.",
+                "Quantité : Identique ou légèrement plus qu’en floraison.",
+                "Fréquence : Quand le sol est sec; l’absorption peut diminuer en fin de phase."
+              ]
+            },
+            feed: {
+              seedling: [
+                "Pas d’engrais au stade de germination : le terreau suffit; un apport peut brûler les jeunes racines."
+              ],
+              vegetative: [
+                "Nutriment clé : Azote (N) pour la chlorophylle et la croissance feuilles/tiges.",
+                "Primaire : Beaucoup d’Azote (N).",
+                "Secondaire : Quantités moyennes de Phosphore (P) et Potassium (K).",
+                "Micro : Oligo-éléments comme Magnésium (Mg) et Calcium (Ca)."
+              ],
+              flowering: [
+                "Accent sur Phosphore (P) et Potassium (K) pour des fleurs denses.",
+                "Primaire : Beaucoup de P et K.",
+                "Secondaire : Peu d’Azote (N).",
+                "Micro : Soufre (S), Magnésium (Mg) et Calcium (Ca) restent importants."
+              ],
+              flush: [
+                "Pas d’engrais pendant le rinçage; uniquement de l’eau."
+              ]
+            },
+            flush: {
+              flush: [
+                "DÉBUT RINÇAGE : uniquement de l’eau durant les 1–2 dernières semaines avant récolte.",
+                "Objectif : éliminer les sels pour une meilleure saveur."
+              ]
+            },
+            harvest: {
+              flowering: [
+                "Récolte : après le rinçage, quand la maturité est atteinte."
+              ],
+              flush: [
+                "Récolte : une fois le rinçage terminé et la plante mûre."
+              ]
+            }
+          },
+          es: {
+            titles: { water: "Riego", feed: "Nutrientes necesarios", flush: "Lavado", harvest: "Cosecha" },
+            phases: { seedling: "Plántula", vegetative: "Vegetativo", flowering: "Floración", flush: "Lavado" },
+            water: {
+              seedling: [
+                "Necesidad de agua: Muy poca. Las raíces son pequeñas y pueden «ahogarse».",
+                "Cantidad: Comienza con ~100–250 ml por riego.",
+                "Frecuencia: Solo cuando los 2–3 cm superiores estén secos (~cada 2–4 días). Un pulverizador es ideal."
+              ],
+              vegetative: [
+                "Necesidad de agua: Moderada a alta; crecimiento rápido.",
+                "Cantidad: ~500 ml a 1,5 L (según maceta/planta).",
+                "Frecuencia: Normalmente cada 2–3 días, con un pequeño drenaje."
+              ],
+              flowering: [
+                "Necesidad de agua: Máxima.",
+                "Cantidad: ~1,5 a 3 L (según maceta).",
+                "Frecuencia: Aproximadamente cada 2 días; garantizar buen drenaje."
+              ],
+              flush: [
+                "Necesidad de agua: Alta; objetivo es enjuagar bien el sustrato.",
+                "Cantidad: Igual o un poco más que en floración.",
+                "Frecuencia: Cuando el sustrato esté seco; la absorción puede bajar al final."
+              ]
+            },
+            feed: {
+              seedling: [
+                "Sin fertilizantes en plántula: el sustrato es suficiente; añadir podría quemar raíces."
+              ],
+              vegetative: [
+                "Nutriente clave: Nitrógeno (N) para clorofila y crecimiento de hojas/tallos.",
+                "Primario: Mucho Nitrógeno (N).",
+                "Secundario: Cantidades medias de Fósforo (P) y Potasio (K).",
+                "Micro: Oligoelementos como Magnesio (Mg) y Calcio (Ca)."
+              ],
+              flowering: [
+                "Enfoque en Fósforo (P) y Potasio (K) para cogollos densos.",
+                "Primario: Mucho P y K.",
+                "Secundario: Poco Nitrógeno (N).",
+                "Micro: Azufre (S), Magnesio (Mg) y Calcio (Ca) siguen siendo importantes."
+              ],
+              flush: [
+                "Sin fertilizantes durante el lavado; solo agua para eliminar sales."
+              ]
+            },
+            flush: {
+              flush: [
+                "INICIAR LAVADO: usa solo agua las últimas 1–2 semanas antes de la cosecha.",
+                "Objetivo: eliminar sales acumuladas para mejor sabor."
+              ]
+            },
+            harvest: {
+              flowering: [
+                "Cosecha: planifica tras el lavado cuando la madurez sea la adecuada."
+              ],
+              flush: [
+                "Cosecha: cuando el lavado haya terminado y la planta esté madura."
+              ]
+            }
+          }
+        };
+
         // De rest van het script blijft ongewijzigd
         let currentLang = localStorage.getItem('appLang') || 'nl';
         let isDarkMode = localStorage.getItem('isDarkMode') === 'true';
@@ -397,7 +714,36 @@
         loadState();
         const createActionId = (actionType, date) => `${actionType}-${toISODate(date)}`;
         const getPendingActions = (plant, dateToCheck) => { const pendingActions = []; const startDate = new Date(plant.planted_at); const today = dateToCheck; if (today < startDate) return []; for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) { const ageInDays = daysBetween(startDate, d); if (ageInDays < 0) continue; const currentWeek = Math.floor(ageInDays / 7); const s = plant.schedule; let actionsForThisDay = []; if (ageInDays > 0 && s.waterEveryDays > 0 && ageInDays % s.waterEveryDays === 0) { actionsForThisDay.push({ type: 'water', label: t('water'), date: new Date(d) }); } if (currentWeek < s.flushStartWeek && currentWeek >= s.feedStartWeek) { const startFeedDays = s.feedStartWeek * 7; if (s.feedEveryDays > 0 && (ageInDays - startFeedDays) >= 0 && (ageInDays - startFeedDays) % s.feedEveryDays === 0) { actionsForThisDay.push({ type: 'feed', label: t('feed'), date: new Date(d) }); } } if (currentWeek === s.flushStartWeek && ageInDays === s.flushStartWeek * 7) { actionsForThisDay.push({ type: 'flush', label: t('startFlush'), date: new Date(d) }); } if (ageInDays === s.targetHarvestWeek * 7) { actionsForThisDay.push({ type: 'harvest', label: t('harvest'), date: new Date(d) }); } actionsForThisDay.forEach(action => { const actionId = createActionId(action.type, action.date); if (!plant.acknowledgedActions.includes(actionId)) { pendingActions.push(action); } }); } return pendingActions; }
-        const renderActionsBar = (plant, overrideDate = null) => { const dateToCheck = overrideDate || new Date(); const actions = getPendingActions(plant, dateToCheck); if (actions.length === 0) { return `<div class="actions-bar" id="actions_${plant.id}"></div>`; } const actionsHTML = actions.map(action => { const actionId = createActionId(action.type, action.date); return `<div class="action-item ${action.type}" onclick="acknowledgeAction('${plant.id}', '${actionId}')"> <span>${action.label}</span> <span class="action-date">${fmtShortDate(action.date)}</span> </div>` }).join(''); return `<div class="actions-bar" id="actions_${plant.id}">${actionsHTML}</div>`; }
+
+        /* EXTRA TOEVOEGING: fasebepaling en info-modal handlers */
+        function getPhaseForDate(plant, dateObj){
+          const w = weekNumberSince(plant.planted_at, dateObj);
+          if (w < 2) return 'seedling';
+          if (w < 4) return 'vegetative';
+          const fsw = plant.schedule.flushStartWeek || 8;
+          if (w < fsw) return 'flowering';
+          return 'flush';
+        }
+        function showReminderInfo(plantId, actionType, isoDate){
+          const plant = getPlant(plantId);
+          const phase = getPhaseForDate(plant, isoDate);
+          const lang = currentLang in REMINDER_INFO ? currentLang : 'en';
+          const titles = REMINDER_INFO[lang].titles;
+          const sections = REMINDER_INFO[lang][actionType] || {};
+          const lines = sections[phase] || [];
+          const phaseLabel = REMINDER_INFO[lang].phases[phase] || '';
+          const title = (titles[actionType] || 'Info') + (phaseLabel ? ` — ${phaseLabel}` : '');
+          document.getElementById('infoTitle').textContent = title;
+          const body = Array.isArray(lines) ? lines.map(l => `<p>${l}</p>`).join('') : `<p>${lines}</p>`;
+          document.getElementById('infoBody').innerHTML = body || `<p>—</p>`;
+          document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfoModal(){
+          document.getElementById('infoModal').style.display = 'none';
+        }
+
+        const renderActionsBar = (plant, overrideDate = null) => { const dateToCheck = overrideDate || new Date(); const actions = getPendingActions(plant, dateToCheck); if (actions.length === 0) { return `<div class="actions-bar" id="actions_${plant.id}"></div>`; } const actionsHTML = actions.map(action => { const actionId = createActionId(action.type, action.date); return `<div class="action-item ${action.type}" onclick="acknowledgeAction('${plant.id}', '${actionId}')"> <span>${action.label}</span> <span class="action-date">${fmtShortDate(action.date)}</span> <button class="info-btn" title="?" onclick="event.stopPropagation(); showReminderInfo('${plant.id}', '${action.type}', '${toISODate(action.date)}')">?</button> </div>` }).join(''); return `<div class="actions-bar" id="actions_${plant.id}">${actionsHTML}</div>`; }
+
         function acknowledgeAction(plantId, actionId) { const plant = getPlant(plantId); if (plant && !plant.acknowledgedActions.includes(actionId)) { plant.acknowledgedActions.push(actionId); saveAndRender(); } }
         const createProgressBarHTML = (plant, overrideDate = null) => { const { planted_at, schedule } = plant; if (!planted_at || !schedule || !schedule.targetHarvestWeek) return ''; const today = overrideDate || new Date(); const seedlingEndWeek = 2; const vegEndWeek = 4; const flowerEndWeek = schedule.flushStartWeek || (schedule.targetHarvestWeek - 2); const harvestWeek = schedule.targetHarvestWeek; if (harvestWeek <= 0) return ''; const phases = [ { name: t('seedling'), duration: seedlingEndWeek, color: '#90B47A' }, { name: t('vegetative'), duration: vegEndWeek - seedlingEndWeek, color: '#38761D' }, { name: t('flowering'), duration: flowerEndWeek - vegEndWeek, color: '#A9C439' }, { name: t('flush'), duration: harvestWeek - flowerEndWeek, color: '#00BFFF' } ].filter(p => p.duration > 0); const segmentsHTML = phases.map(phase => { const width = (phase.duration / harvestWeek) * 100; return `<div class="progress-segment" style="width: ${width}%; background-color: ${phase.color};"></div>`; }).join(''); const phaseLabelsHTML = phases.map(phase => { const width = (phase.duration / harvestWeek) * 100; return `<div class="progress-phase-label" style="width: ${width}%;">${phase.name}</div>`; }).join(''); const harvestDate = addDays(new Date(planted_at), harvestWeek * 7); const harvestDateString = harvestDate.toLocaleDateString(currentLang, { month: 'short', day: 'numeric' }); const dateLabelsHTML = ` <div class="progress-date-labels"> <span>${fmtDate(planted_at)}</span> <span>${t('harvest')}: ${harvestDateString}</span> </div> `; const totalDays = harvestWeek * 7; const currentAgeInDays = daysBetween(planted_at, today); let markerHTML = ''; if (currentAgeInDays >= 0 && currentAgeInDays <= totalDays) { const markerPosition = (currentAgeInDays / totalDays) * 100; let labelStyle = `left: ${markerPosition}%; transform: translateX(-50%);`; if (markerPosition < 8) { labelStyle = `left: 0; transform: translateX(0);`; } else if (markerPosition > 92) { labelStyle = `left: 100%; transform: translateX(-100%);`; } const markerLabel = overrideDate ? '' : `<div class="progress-marker-label" style="${labelStyle}">${t('today')}</div>`; markerHTML = ` ${markerLabel} <div class="progress-marker" style="left: ${markerPosition}%;"></div> `; } return ` <div class="progress-wrapper" id="progress_${plant.id}"> ${dateLabelsHTML} <div class="progress-bar-container"> <div class="progress-bar"> ${segmentsHTML} </div> ${markerHTML} </div> <div class="progress-phase-labels-container"> ${phaseLabelsHTML} </div> </div> `; };
         function setupModal() { const modal = document.getElementById('helpModal'); const btnOpen = document.getElementById('btnHelp'); const btnClose = modal.querySelector('.modal-close'); btnOpen.onclick = () => modal.style.display = 'flex'; btnClose.onclick = () => modal.style.display = 'none'; modal.onclick = (e) => { if (e.target === modal) { modal.style.display = 'none'; } }; }
