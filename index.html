@@ -2,8 +2,9 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
 <title>Kweekmaatje</title>
 <style>
 /* ====== THEMA ====== */
@@ -138,8 +139,7 @@ figcaption{padding:10px;display:flex;justify-content:space-between;gap:10px;font
 </label>
 <button id="btnReset" class="danger" data-i18n="resetData">Reset data</button>
 <button id="btnHeaderShare" class="btn-icon" title="Delen" aria-label="Delen">
-<svg viewBox="0 0 24 24"><path d="M4 7a3 3 0 1 0 2.996 3.175l8.263-4.132a3 3 0 1 0-.41-1.28L6.59 8.83A3 3 0 0 0 4 7Zm0 10a3 3 0 1 0 2.59-1.83l8.26-4.13a3 3 0 1 0 0-2L6.59 13.83A3 3 0 0 0 4 17Z"/></svg>
-</button>
+<span class="material-icons">share</span></button>
 <button id="btnHelp" class="btn-icon" aria-label="Help & Info">
 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
 </button>
