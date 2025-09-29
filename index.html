@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"/>
-<link rel="icon" type="image/png" href="kweekmaatjelogo.png">  
+<link rel="icon" type="image/png" href="kweekmaatjelogo.png">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
@@ -212,7 +212,59 @@ es:{feed:{seedling:"<p><b>Nutrientes:</b> Aún no. El sustrato tiene suficiente;
 const REPORT_INTRO={nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚",en:"Look how well my plants are doing! 🌱💚",de:"Schau mal, wie gut meine Pflanzen unterwegs sind! 🌱💚",fr:"Regardez comme mes plantes se portent bien ! 🌱💚",es:"¡Miren qué bien van mis plantas! 🌱💚",};
 /* ==== Affiliate helpers ==== */
 const AFFIL_ID="";
-const RQS_SEED_SLUGS={'Quick One (RQS)':'quick-one','Royal Dwarf (RQS)':'royal-dwarf','White Widow Auto':'white-widow-automatic','Northern Light Auto':'northern-light-automatic','Amnesia Haze Auto':'amnesia-haze-automatic','Zkittlez Auto':'zkittlez-automatic','Gelato Auto':'royal-creamatic-automatic'};
+const RQS_SEED_SLUGS = {
+    'Sticky Queen Auto': 'sticky-queen-auto',
+    'Mexican Rush Auto': 'mexican-rush-auto',
+    'Blue Cheese Auto': 'blue-cheese-auto',
+    'Royal Haze Auto': 'royal-haze-auto',
+    'Mimosa Auto': 'mimosa-auto',
+    'Royal Bluematic': 'royal-bluematic',
+    'Royal Creamatic': 'royal-creamatic',
+    'Green Gelato Auto': 'green-gelato-auto',
+    'Northern Light Auto': 'northern-light-auto',
+    'North Thunderfuck Auto': 'north-thunderfuck-auto',
+    'Triple G Auto': 'triple-g-auto',
+    'Haze Berry Auto': 'haze-berry-auto',
+    'Special Queen 1 Auto': 'special-queen-1-auto',
+    'Sweet ZZ Auto': 'sweet-zz-auto',
+    'Sweet Skunk Auto': 'sweet-skunk-auto',
+    'Cherry Pie Auto': 'cherry-pie-auto',
+    'Tropicana Cookies Purple Auto': 'tropicana-cookies-purple-auto',
+    'Trainwreck Auto': 'trainwreck-auto',
+    'Royal Cheese Auto': 'royal-cheese-auto',
+    'Granddaddy Purple Auto': 'granddaddy-purple-auto',
+    'Pink Runtz Auto': 'pink-runtz-auto',
+    'Grape Ape Auto': 'grape-ape-auto',
+    'White Widow Auto': 'white-widow-auto',
+    'NYC Sour D Auto': 'nyc-sour-d-auto',
+    'GOAT\'lato Auto': 'goatlato-auto',
+    'Corkscrew Auto': 'corkscrew-auto',
+    'Fat Banana Auto': 'fat-banana-auto',
+    'Cookies Gelato Auto': 'cookies-gelato-auto',
+    'Royal Runtz Auto': 'royal-runtz-auto',
+    'Royal Cookies Auto': 'royal-cookies-auto',
+    'Watermelon Auto': 'watermelon-auto',
+    'Apple Fritter Auto': 'apple-fritter-auto',
+    'Royal Critical Auto': 'royal-critical-auto',
+    'Sherbet Queen Auto': 'sherbet-queen-auto',
+    'HulkBerry Auto': 'hulkberry-auto',
+    'Purple Queen Auto': 'purple-queen-auto',
+    'Royal Gorilla Auto': 'royal-gorilla-auto',
+    'Wedding Cake Auto': 'wedding-cake-auto',
+    'Royal Dwarf': 'royal-dwarf',
+    'Pink Mist Auto': 'pink-mist-auto',
+    'Easy Bud': 'easy-bud',
+    'Purple Lemonade Auto': 'purple-lemonade-auto',
+    'Quick One': 'quick-one',
+    'Diesel Auto': 'diesel-auto',
+    'Bubble Kush Auto': 'bubble-kush-auto',
+    'Amnesia Haze Auto': 'amnesia-haze-auto',
+    'Do-Si-Dos Auto': 'do-si-dos-auto',
+    'Royal Jack Auto': 'royal-jack-auto',
+    'Purple Punch Auto': 'purple-punch-auto',
+    'Royal Kush Auto': 'royal-kush-auto',
+    'Royal AK Auto': 'royal-ak-auto'
+};
 function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
 function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
 function getRqsSeedUrl(k){const slug=RQS_SEED_SLUGS[k];if(!slug)return null;return addAffil('https://www.royalqueenseeds.com/34-autoflowering-cannabis-seeds');}
@@ -229,7 +281,60 @@ const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/86400000);
 const weekNumberSince=(start,at)=>Math.floor(daysBetween(start,at)/7);
 function t(k){return TRANSLATIONS[currentLang]?.[k]||`[${k}]`;}
 /* ==== Strains (short) ==== */
-const RQS_STRAINS={'Onbekend/Algemeen':{displayName:{nl:'Onbekend/Algemeen',en:'Unknown/Generic',de:'Unbekannt/Allgemein',fr:'Inconnu/Générique',es:'Desconocido/Genérico'},schedule:{waterEveryDays:2,feedStartWeek:2,feedEveryDays:7,flushStartWeek:9,targetHarvestWeek:10}},'Quick One (RQS)':{schedule:{waterEveryDays:2,feedStartWeek:2,feedEveryDays:7,flushStartWeek:7,targetHarvestWeek:9}},'Royal Dwarf (RQS)':{schedule:{waterEveryDays:3,feedStartWeek:2,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'White Widow Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'Northern Light Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:10,targetHarvestWeek:12}},'Amnesia Haze Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:10}},'Zkittlez Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:10,targetHarvestWeek:13}},'Gelato Auto':{schedule:{waterEveryDays:2,feedStartWeek:3,feedEveryDays:7,flushStartWeek:8,targetHarvestWeek:13}}};
+const RQS_STRAINS = {
+    'Onbekend/Algemeen': { displayName: { nl: 'Onbekend/Algemeen', en: 'Unknown/Generic', de: 'Unbekannt/Allgemein', fr: 'Inconnu/Générique', es: 'Desconocido/Genérico' }, schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 10 } },
+    'Sticky Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Mexican Rush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } },
+    'Blue Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Mimosa Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Bluematic': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Creamatic': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Green Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Northern Light Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'North Thunderfuck Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Triple G Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Haze Berry Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Special Queen 1 Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Sweet ZZ Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Sweet Skunk Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Cherry Pie Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Tropicana Cookies Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Trainwreck Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Royal Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Granddaddy Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Pink Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Grape Ape Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'White Widow Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'NYC Sour D Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'GOAT\'lato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Corkscrew Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Fat Banana Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Cookies Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Cookies Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Watermelon Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Apple Fritter Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Critical Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Sherbet Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'HulkBerry Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Purple Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Royal Gorilla Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Wedding Cake Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Dwarf': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Pink Mist Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Easy Bud': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Purple Lemonade Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Quick One': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Diesel Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } },
+    'Bubble Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Amnesia Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Do-Si-Dos Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Jack Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Purple Punch Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal AK Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }
+};
 const getStrainDisplayName=key=>RQS_STRAINS[key]?.displayName?.[currentLang]||key;
 /* ==== Storage ==== */
 const LS_KEY='quickone_grow_tracker_v1_html';
