@@ -214,8 +214,8 @@ const AFFIL_ID="";
 const RQS_SEED_SLUGS={'Quick One (RQS)':'quick-one','Royal Dwarf (RQS)':'royal-dwarf','White Widow Auto':'white-widow-automatic','Northern Light Auto':'northern-light-automatic','Amnesia Haze Auto':'amnesia-haze-automatic','Zkittlez Auto':'zkittlez-automatic','Gelato Auto':'royal-creamatic-automatic'};
 function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
 function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
-function getRqsSeedUrl(k){const slug=RQS_SEED_SLUGS[k];if(!slug)return null;return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}387-${slug}.html`);}
-function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/435-easy-grow-booster-tablets.html`);if(phase==='flowering')return addAffil(`https://www.royalqueenseeds.com/${rqsLocalePath()}fertilizers/436-easy-bloom-booster-tablets.html`);return null;}
+function getRqsSeedUrl(k){const slug=RQS_SEED_SLUGS[k];if(!slug)return null;return addAffil('https://www.royalqueenseeds.com/34-autoflowering-cannabis-seeds');}
+function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil('https://www.royalqueenseeds.com/growing/671-bio-grow-fertiliser.html');if(phase==='flowering')return addAffil('https://www.royalqueenseeds.com/growing/670-bio-bloom-fertiliser.html');return null;}
 /* ==== State & utils ==== */
 let currentLang=localStorage.getItem('appLang')||'nl';
 let isDarkMode=localStorage.getItem('isDarkMode')==='true';
