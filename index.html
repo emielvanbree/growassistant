@@ -241,6 +241,59 @@ const REPORT_INTRO={nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚
 const HIGH_SCORES={'FIRST_HARVEST':{title:{nl:'De Ontmaagding',en:'The First Time',de:'Das erste Mal',fr:'La Première Fois',es:'La Primera Vez'},description:{nl:'Voltooi je allereerste kweekcyclus.',en:'Complete your very first grow cycle.',de:'Schließe deinen allerersten Grow-Zyklus ab.',fr:'Terminez votre tout premier cycle de culture.',es:'Completa tu primer ciclo de cultivo.'}},'HATTRICK_HERO':{title:{nl:'Hattrick Held',en:'Hattrick Hero',de:'Hattrick-Held',fr:'Héros du Triplé',es:'Héroe del Hattrick'},description:{nl:'Voltooi 3 succesvolle kweekcycli.',en:'Complete 3 successful grow cycles.',de:'Schließe 3 erfolgreiche Grow-Zyklen ab.',fr:'Terminez 3 cycles de culture réussis.',es:'Completa 3 ciclos de cultivo exitosos.'}},'AUTOPILOT':{title:{nl:'Autopilot Aan',en:'Autopilot Engaged',de:'Autopilot aktiviert',fr:'Pilote Automatique Engagé',es:'Piloto Automático Activado'},description:{nl:'Voltooi 5 kweekcycli.',en:'Complete 5 grow cycles.',de:'Schließe 5 Grow-Zyklen ab.',fr:'Terminez 5 cycles de culture.',es:'Completa 5 ciclos de cultivo.'}},'GOTTA_SMOKE_EM_ALL':{title:{nl:"Gotta Smoke 'Em All",en:"Gotta Smoke 'Em All",de:"Schnapp sie dir alle",fr:'Fumez-les Tous',es:'A Fumarlos Todos'},description:{nl:'Kweek 5 verschillende soorten wiet.',en:'Grow 5 different cannabis strains.',de:'Baue 5 verschiedene Cannabis-Sorten an.',fr:'Cultivez 5 variétés de cannabis différentes.',es:'Cultiva 5 cepas de cannabis diferentes.'}},'GANJA_GENERAL':{title:{nl:'De Ganja Generaal',en:'The Ganja General',de:'Der Ganja-General',fr:'Le Général Ganja',es:'El General Ganja'},description:{nl:'Voltooi 10 kweekcycli.',en:'Complete 10 grow cycles.',de:'Schließe 10 Grow-Zyklen ab.',fr:'Terminez 10 cycles de culture.',es:'Completa 10 ciclos de cultivo.'}}};
 /* ==== Affiliate helpers ==== */
 const AFFIL_ID="";
+const STRAIN_URLS = {
+    'Sticky Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/714-sticky-queen-automatic.html',
+    'Mexican Rush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/713-mexican-rush-automatic.html',
+    'Blue Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/312-blue-cheese-automatic.html',
+    'Royal Haze Auto': 'https://www.royalqueenseeds.com/autoflowering-cannabis-seeds/131-royal-haze-automatic.html',
+    'Mimosa Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/537-mimosa-automatic.html',
+    'Royal Bluematic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/129-royal-bluematic.html',
+    'Royal Creamatic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/145-royal-creamatic.html',
+    'Green Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/489-green-gelato-automatic.html',
+    'Northern Light Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/125-northern-light-automatic.html',
+    'North Thunderfuck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-north-thunderfuck-automatic.html',
+    'Triple G Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/572-triple-g-automatic.html',
+    'Haze Berry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/362-haze-berry-automatic.html',
+    'Special Queen 1 Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-special-queen-1-automatic.html',
+    'Sweet ZZ Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/429-sweet-zz-automatic.html',
+    'Sweet Skunk Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/162-sweet-skunk-automatic.html',
+    'Cherry Pie Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/612-cherry-pie-automatic.html',
+    'Tropicana Cookies Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/650-tropicana-cookies-purple-automatic.html',
+    'Trainwreck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/513-trainwreck-automatic.html',
+    'Royal Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-cheese-automatic.html',
+    'Granddaddy Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/607-granddaddy-purple-automatic.html',
+    'Pink Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/639-pink-runtz-automatic.html',
+    'Grape Ape Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/608-grape-ape-automatic.html',
+    'White Widow Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/119-white-widow-automatic.html',
+    'NYC Sour D Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/665-nyc-sour-d-automatic.html',
+    'GOAT\'lato Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/666-goatlato-automatic.html',
+    'Corkscrew Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/712-corkscrew-automatic.html',
+    'Fat Banana Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/413-fat-banana-automatic.html',
+    'Cookies Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/507-cookies-gelato-automatic.html',
+    'Royal Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/575-royal-runtz-automatic.html',
+    'Royal Cookies Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/190-royal-cookies-automatic.html',
+    'Watermelon Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/544-watermelon-automatic.html',
+    'Apple Fritter Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/611-apple-fritter-automatic.html',
+    'Royal Critical Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/168-royal-critical-automatic.html',
+    'Sherbet Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/478-sherbet-queen-automatic.html',
+    'HulkBerry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/456-hulkberry-automatic.html',
+    'Purple Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/482-purple-queen-automatic.html',
+    'Royal Gorilla Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/421-royal-gorilla-automatic.html',
+    'Wedding Cake Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/588-wedding-cake-automatic.html',
+    'Royal Dwarf': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/130-royal-dwarf.html',
+    'Pink Mist Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/660-pink-mist-automatic.html',
+    'Easy Bud': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/124-easy-bud.html',
+    'Purple Lemonade Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/648-purple-lemonade-automatic.html',
+    'Quick One': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/126-quick-one.html',
+    'Diesel Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/180-diesel-automatic.html',
+    'Bubble Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/315-bubble-kush-automatic.html',
+    'Amnesia Haze Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/165-amnesia-haze-automatic.html',
+    'Do-Si-Dos Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/585-do-si-dos-automatic.html',
+    'Royal Jack Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/179-royal-jack-automatic.html',
+    'Purple Punch Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-purple-punch-automatic.html',
+    'Royal Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-kush-automatic.html',
+    'Royal AK Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/154-royal-ak-automatic.html'
+};
 const RQS_SEED_SLUGS = {
     'Onbekend/Algemeen': 'unknown-generic',
     'Sticky Queen Auto': 'sticky-queen-auto',
@@ -297,7 +350,7 @@ const RQS_SEED_SLUGS = {
 };
 function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
 function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
-function getRqsSeedUrl(k){const slug=RQS_SEED_SLUGS[k];if(!slug)return null;return addAffil('https://www.royalqueenseeds.com/34-autoflowering-cannabis-seeds');}
+function getRqsSeedUrl(k){const url=STRAIN_URLS[k];if(!url)return null;return addAffil(url);}
 function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil('https://www.royalqueenseeds.com/growing/671-bio-grow-fertiliser.html');if(phase==='flowering')return addAffil('https://www.royalqueenseeds.com/growing/670-bio-bloom-fertiliser.html');return null;}
 /* ==== State & utils ==== */
 let currentLang=localStorage.getItem('appLang')||'nl';
