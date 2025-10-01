@@ -1,0 +1,1204 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<link rel="icon" type="image/png" href="kweekmaatjelogo.png">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
+<title>Kweekmaatje</title>
+<style>
+/* ====== BRAND THEME (RQS 2024 Rebrand Inspired) ====== */
+:root {
+  --bg: #FFFFFF;
+  --fg: #1E1E1E;
+  --main: #08473A;
+  --main-hover: #00473B;
+  --card: #FFFFFF;
+  --line: #EAEAEA;
+  --pill: #F5F5F5;
+  --cta: #08473A;
+  --cta-hover: #00473B;
+  --cta-fg: #FFFFFF;
+  --danger: #CC0000;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* Progress Bar Palette */
+  --seg-seed: #A3C4BC;
+  --seg-veg: #1A7464;
+  --seg-flow: #08473A;
+  --seg-flush: #D1E2DE;
+}
+
+.dark {
+  --bg: #121212;
+  --fg: #F5F5F5;
+  --main: #08473A;
+  --main-hover: #1A7464;
+  --card: #1E1E1E;
+  --line: #333333;
+  --pill: #282828;
+  --cta: #08473A;
+  --cta-hover: #00473B;
+  --cta-fg: #FFFFFF;
+  --danger: #FF6B6B;
+}
+
+/* ====== BASE & TYPOGRAPHY ====== */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  margin: 0;
+  color: var(--fg);
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* ====== LAYOUT & STRUCTURE ====== */
+.container { max-width: 1080px; margin: 0 auto; padding: 12px 24px; }
+main.container { padding: 24px 24px 48px; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(1.2) blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.dark header { background: rgba(18, 18, 18, 0.8); }
+
+.header-content { display: flex; gap: 16px; align-items: center; }
+.header-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; position: relative; }
+
+#btnMenuToggle { display: none; }
+@media (max-width: 768px) {
+  #btnMenuToggle { display: flex; }
+  #menuContent {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    z-index: 20;
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+    width: 280px;
+  }
+  #menuContent.is-open { display: flex; }
+}
+@media (min-width: 769px) { #menuContent { display: contents; } }
+
+.grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+@media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+
+/* ====== CARDS ====== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+.card:hover { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); }
+.card-h { padding: 20px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.card-b { border-top: 1px solid var(--line); padding: 20px; }
+
+.row-name { display: flex; gap: 8px; width: 100%; align-items: center; }
+.row-name input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--fg);
+  min-width: 150px;
+}
+.row-strain { display: flex; gap: 8px; align-items: center; width: 100%; }
+.row-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--fg);
+  opacity: 0.7;
+  width: 100%;
+  justify-content: space-between;
+}
+.row-info label { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.row-info input[type="date"] { width: auto; min-width: 135px; }
+.row-info .action-buttons { display: flex; gap: 8px; flex-shrink: 0; }
+.section-title { font-weight: 600; margin: 20px 0 12px; color: var(--fg); }
+.hint { font-size: 12px; color: var(--fg); opacity: 0.6; }
+
+/* Collapse functionality */
+.btn-collapse {
+  appearance: none; background: transparent; border: none; padding: 4px;
+  width: 32px; height: 32px; cursor: pointer; border-radius: 50%;
+  margin-left: auto; display: flex; align-items: center; justify-content: center;
+}
+.btn-collapse:hover { background: var(--pill); }
+.btn-collapse svg { width: 24px; height: 24px; fill: var(--fg); opacity: 0.6; transition: transform .3s ease; }
+.card.is-collapsed .btn-collapse svg { transform: rotate(-180deg); }
+.card.is-collapsed .row-strain, .card.is-collapsed .row-info, .card.is-collapsed .card-b { display: none; }
+
+
+/* ====== BUTTONS & INPUTS ====== */
+button, .btn {
+  appearance: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+/* Primary CTA Button */
+#btnAdd, #btnAdd2, .btn-affiliate, .btn-whatsapp {
+  background: var(--cta);
+  border: 1px solid var(--cta);
+  color: var(--cta-fg) !important;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+#btnAdd, #btnAdd2 {
+  padding: 8px 16px;
+}
+#btnAdd:hover, #btnAdd2:hover, .btn-affiliate:hover, .btn-whatsapp:hover {
+  background: var(--cta-hover);
+  border-color: var(--cta-hover);
+}
+
+/* Secondary/Outline Button */
+button, .btn {
+  background: var(--bg);
+  color: var(--main);
+  border: 1px solid var(--main);
+}
+button:hover, .btn:hover {
+  border-color: var(--main-hover);
+  color: var(--main-hover);
+  background: #F0F7F6;
+}
+.dark button:hover, .dark .btn:hover { background: rgba(8, 71, 58, 0.2); }
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-icon:hover { background: var(--pill); }
+.btn-icon .material-icons { color: var(--main); font-size: 22px; }
+
+.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+.danger:hover {
+  color: var(--cta-fg);
+  background: var(--danger);
+}
+
+input[type="date"], input[type="number"], input[type="text"], textarea, select {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--fg);
+  background: var(--bg);
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--main);
+  box-shadow: 0 0 0 2px rgba(8, 71, 58, 0.1);
+}
+.dark input, .dark textarea, .dark select {
+  background: #2B2B2B;
+  border-color: var(--line);
+}
+
+/* ====== TABS ====== */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--pill);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+.tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  color: var(--fg);
+  opacity: 0.7;
+  padding: 6px 12px;
+}
+.tab.active {
+  background: var(--card);
+  border-radius: 6px;
+  color: var(--fg);
+  opacity: 1;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+.dark .tab.active { background: #3a3a3a; }
+
+/* ====== SPECIFIC COMPONENTS ====== */
+.pill {
+  font-size: 12px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  opacity: 0.8;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.empty {
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 48px;
+  text-align: center;
+  background: transparent;
+}
+.archived { opacity: .6; }
+.muted { opacity: 0.6; }
+
+/* Action Reminders */
+.actions-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  min-height: 40px;
+}
+.action-item {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  background: var(--bg);
+  border: 2px solid var(--main);
+  color: var(--main);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  gap: 8px;
+}
+.action-item .left { display: flex; align-items: center; gap: 10px; }
+.action-item .action-date { font-size: 11px; font-weight: 400; opacity: 0.7; padding-left: 10px; }
+.action-item.feed { border-color: #D97706; color: #D97706; }
+.action-item.flush { border-color: #3B82F6; color: #3B82F6; }
+.action-item.harvest { background: var(--main); color: var(--cta-fg); }
+.info-btn {
+  margin-left: 4px; font-weight: 700; border: 1px solid var(--line);
+  border-radius: 999px; width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg); color: var(--fg);
+}
+
+/* Timeline/Uploader */
+.uploader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px;
+  background: var(--pill);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+figure {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg);
+}
+figure img { display: block; width: 100%; height: auto; max-height: 300px; object-fit: cover; }
+figcaption { padding: 10px; display: flex; justify-content: space-between; gap: 10px; font-size: 14px; flex-wrap: wrap; }
+
+
+/* Progress Bar */
+.progress-wrapper { width: 100%; margin-top: 0; padding-top: 0; border-top: none; }
+.progress-date-labels { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.6; padding: 0 2px 4px; }
+.progress-bar-container { position: relative; width: 100%; margin-bottom: 6px; }
+.progress-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: var(--bg); }
+.progress-segment { height: 100%; }
+.seg-seed {background: var(--seg-seed)}
+.seg-veg {background: var(--seg-veg)}
+.seg-flow {background: var(--seg-flow)}
+.seg-flush {background: var(--seg-flush)}
+.progress-marker { position: absolute; top: -6px; width: 3px; height: 24px; background: var(--danger); border-radius: 2px; transform: translateX(-1.5px); z-index: 5; box-shadow: 0 0 5px var(--danger); }
+.progress-marker-label { position: absolute; top: -26px; font-size: 10px; font-weight: bold; background: var(--danger); color: #fff; padding: 2px 4px; border-radius: 4px; white-space: nowrap; }
+.progress-phase-labels-container { display: flex; font-size: 11px; padding: 0; color: var(--fg); opacity: 0.8; margin-top: 2px; }
+.progress-phase-label { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 3px; font-weight: 500; }
+
+/* Modals */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, .6);
+  display: none; align-items: center; justify-content: center;
+  z-index: 1000; backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  max-width: 640px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  border: 1px solid var(--line);
+}
+.modal-close {
+  position: absolute; top: 10px; right: 10px;
+  background: transparent; border: none; font-size: 24px;
+  line-height: 1; cursor: pointer; color: var(--fg); opacity: 0.5;
+}
+
+/* Gamification & Misc */
+.grower-status { display: none; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--fg); background: var(--pill); padding: 6px 12px; border-radius: 999px; margin-left: 16px; }
+@media (min-width: 769px) { .grower-status{display:flex} #btnProfileDesktop{display:flex!important} #btnProfileMenu{display:none!important} }
+.achievement-item { display: flex; align-items: center; gap: 16px; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--line); }
+.achievement-item.locked { opacity: .5; background: var(--pill); }
+.achievement-item.unlocked { background: var(--card); border-color: var(--main); }
+.achievement-item .icon { font-size: 32px; color: var(--main); }
+.achievement-item .details h4 { margin: 0 0 4px; color: var(--fg); }
+.achievement-item .details p { margin: 0; font-size: 14px; opacity: 0.7; }
+
+#toast {
+  position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+  background: var(--card); color: var(--fg);
+  padding: 14px 24px; border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  z-index: 2000; transition: bottom .5s ease-in-out;
+  font-weight: 600; border: 1px solid var(--line);
+}
+#toast.show { bottom: 20px; }
+
+/* Toggle Switch */
+.toggle-container { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; transition: .3s; border-radius: 24px; }
+.slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background: #fff; transition: .3s; border-radius: 50%; }
+.toggle-switch input:checked + .slider { background: var(--cta); }
+.toggle-switch input:checked + .slider:before { transform: translateX(20px); }
+.dark .slider { background: #555; }
+.dark .toggle-switch input:checked + .slider { background: var(--main); }
+</style>
+</head>
+<body>
+<header>
+<div class="container header-content">
+<h1 id="appTitle">
+<img class="app-logo" src="kweekmaatjelogo.png" alt="logo"/>
+<span id="appTitleText">Kweekmaatje</span>
+</h1>
+<div id="growerStatusDisplay" class="grower-status"></div>
+<div class="header-actions">
+<button id="btnAdd" data-i18n="newPlant">+ Nieuwe plant</button>
+<button id="btnProfileDesktop" class="btn-icon" title="Stoner Status" aria-label="Stoner Status" style="display:none">
+<span class="material-icons">emoji_events</span>
+</button>
+<div id="menuContent">
+<select id="langSelect" style="border-radius:16px;font-size:14px;padding:8px 10px;width:auto">
+<option value="nl">Nederlands</option><option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option><option value="es">Español</option>
+</select>
+<div class="toggle-container">
+<label id="darkModeLabel">Dark Mode</label>
+<label class="toggle-switch">
+<input type="checkbox" id="darkModeToggle"/><span class="slider"></span>
+</label>
+</div>
+<label class="row hint" style="gap:6px;margin:0;align-items:center">
+<input id="chkArchived" type="checkbox"/>
+<span data-i18n="showArchived">Toon voltooide cycli</span>
+</label>
+<button id="btnReset" class="danger" data-i18n="resetData">Reset data</button>
+<button id="btnProfileMenu" class="btn-icon" title="Stoner Status" aria-label="Stoner Status">
+<span class="material-icons">emoji_events</span>
+</button>
+<button id="btnHeaderShare" class="btn-icon" title="Delen" aria-label="Delen">
+<span class="material-icons">share</span></button>
+<button id="btnHelp" class="btn-icon" aria-label="Help & Info">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+</button>
+</div>
+<button id="btnMenuToggle" class="btn-icon" aria-label="Open menu">
+<svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</button>
+</div>
+</div>
+</header>
+<main class="container">
+<div id="empty" class="empty" style="display:none">
+<h2 style="margin:0;font-size:18px;color:var(--fg)" data-i18n="emptyTitle">Nog geen plantjes</h2>
+<p class="muted" data-i18n="emptyText">Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach</p>
+<button id="btnAdd2" data-i18n="newPlant">+ Nieuwe plant</button>
+</div>
+<div id="grid" class="grid"></div>
+<section id="archivedSection" style="display:none;margin-top:24px">
+<div class="section-title" data-i18n="archivedTitle">Voltooide Cycli</div>
+<div id="archivedGrid" class="grid archived"></div>
+</section>
+</main>
+<div id="helpModal" class="modal-overlay" style="display:none">
+<div class="modal-content">
+<button class="modal-close" aria-label="Sluiten">&times;</button>
+<h2 id="helpTitle" data-i18n="helpTitle">Hulp & Informatie</h2>
+<p data-i18n="helpIntro" style="font-style: italic;"> Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt. </p>
+<p id="helpText" data-i18n="helpText"> Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server. </p>
+<h3 data-i18n="disclaimerTitle">Disclaimer</h3>
+<p id="disclaimerText" data-i18n="disclaimerText"> De ontwikkelaar van deze app is niet verantwoordelijk voor jouw oogst. De app geeft slechts adviezen op basis van gemiddelden. Vertrouw altijd op je eigen waarnemingen. </p>
+<a id="whatsappBtn" href="https://wa.me/31655793636" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+<svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.46 3.48 1.34 4.94L2.05 22l5.25-1.42c1.4.78 2.96 1.21 4.59 1.21h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m.01 1.66c4.56 0 8.26 3.7 8.26 8.26 0 4.56-3.7 8.26-8.26 8.26h-.01c-1.47 0-2.89-.39-4.14-1.1L4.65 19.35l1.19-3.23c-.79-1.25-1.22-2.7-1.22-4.21 0-4.56 3.7-8.26 8.26-8.26M9.27 7.93c-.14-.23-.29-.24-.42-.24-.12 0-.27 0-.42.01-.15.01-.37.21-.57.42-.2.2-.72.7-.72 1.73s.74 2.01.84 2.15c.1.15 1.45 2.29 3.53 3.12.55.22.99.36 1.34.46.59.18 1.13.15 1.55.09.48.06 1.4-.68 1.6-1.36.2-.68.2-1.25.14-1.36-.06-.11-.21-.18-.42-.32-.21-.15-1.25-.62-1.45-.69-.2-.07-.35-.11-.5.11-.15.22-.55.69-.68.83-.12.15-.24.16-.44.1-.2-.05-1.02-.37-1.94-1.2-.72-.65-1.2-1.45-1.34-1.7-.14-.25-.02-.38.09-.5.1-.11.22-.27.34-.41.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.38s-.5-.6-.68-.82z"/></svg>
+<span data-i18n="contactDeveloper">Contact ontwikkelaar</span>
+</a>
+</div>
+</div>
+<div id="shareModal" class="modal-overlay" style="display:none">
+<div class="modal-content">
+<button class="modal-close" aria-label="Sluiten">&times;</button>
+<h2 data-i18n="shareTitle">Rapport delen</h2>
+<p id="shareExplain" data-i18n="shareExplain">Deel het statusrapport en vier het succes met je vrienden.</p>
+<div class="report-actions">
+<button id="btnShareNow" class="btn" data-i18n="shareNow">Delen</button>
+<button class="btn" data-close-modal data-i18n="close">Sluiten</button>
+</div>
+<p class="hint" id="shareFallbackMsg" style="display:none" data-i18n="shareFallback">Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.</p>
+</div>
+</div>
+<div id="helpModal2" class="modal-overlay" style="display:none">
+<div class="modal-content">
+<button class="modal-close" aria-label="Sluiten">&times;</button>
+<h2 id="infoTitle">Info</h2>
+<div id="infoBody"></div>
+</div>
+</div>
+<div id="stonerStatusModal" class="modal-overlay" style="display:none">
+<div class="modal-content">
+<button class="modal-close" aria-label="Sluiten">&times;</button>
+<h2 data-i18n="stonerStatusTitle">Je Stoner Status</h2>
+<div id="stonerStatusBody"></div>
+</div>
+</div>
+<div id="toast"></div>
+<script>
+/* ===== i18n ===== */
+const TRANSLATIONS={nl:{appName:"Kweekmaatje",newPlant:"+ Nieuwe plant",showArchived:"Toon voltooide cycli",emptyTitle:"Nog geen plantjes",emptyText:"Voeg je eerste plantje toe en activeer je persoonlijke kweekcoach",archivedTitle:"Voltooide Cycli",plant:"Plant",archivedCycle:"Cyclus Voltooien",unarchive:"Herstellen",delete:"Verwijderen",planted:"Geplant:",age:"Leeftijd:",weeks:"wk",days:"d",timeline:"Tijdlijn",reminders:"Herinneringen",notes:"Notities",date:"Datum:",noteOptional:"Opmerking (optioneel)",uploadPhoto:"Upload foto",noPhotos:"Nog geen foto's – voeg je eerste Week 0 foto toe hierboven.",remove:"Verwijder",water:"💧 Water",feed:"🥦 Voeding",startFlush:"💦 START FLUSH",harvest:"🪴 OOGSTEN",week:"Week",every:"Elke",daysPlural:"dagen",startInWeek:"Start in week",frequency:"Frequentie: elke",flushStartWeek:"Flush starten in week",targetHarvestWeek:"Doel oogstweek",strainGuideline:"Soort Richtlijn:",adjustNote:"Pas frequentie aan op potmaat, substraat en klimaat.",notesPlaceholder:"Notities over water, EC/PPM, pH, training, etc.",alertPhoto:"Kies eerst een foto.",alertDelete:"Verwijderen? Dit kan niet ongedaan worden gemaakt (alle foto's gaan mee).",alertMax:"Maximaal 12 plantjes ondersteund.",alertImport:"Kan bestand niet lezen:",darkMode:"Dark Mode",seedling:"Kiemfase",vegetative:"Groeifase",flowering:"Bloeifase",flush:"Spoelfase",today:"Vandaag",buyNow:"Nu kopen",resetData:"Reset data",confirmReset:"Weet je zeker dat je alle gegevens wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",growthReportTitle:"Groeirapport",shareTitle:"Rapport delen",shareExplain:"Deel het statusrapport en vier het succes met je vrienden.",shareNow:"Delen",close:"Sluiten",shareFallback:"Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.",contactDeveloper:"Contact ontwikkelaar",disclaimerTitle:"Disclaimer",disclaimerText:"De ontwikkelaar van deze app is niet verantwoordelijk voor jouw oogst. De app geeft slechts adviezen op basis van gemiddelden. Vertrouw altijd op je eigen waarnemingen.",helpTitle:"Hulp & Informatie",helpIntro:"Gedaan met gokken. Kies simpelweg je plant uit de lijst en de app stelt een waterdicht schema voor je op. Krijg herinneringen wanneer het tijd is om water te geven, te voeden of te spoelen, en volg elke fase met een eenvoudige visuele tijdlijn. Maak onderweg foto's om een groeilogboek bij te houden waar je met plezier op terugkijkt.",helpText:"Uw privacy en gegevensbeveiliging zijn gegarandeerd. Dit is een 100% frontend applicatie, wat betekent dat alle gegevens die u invoert (plantnamen, datums, notities, foto's) uitsluitend op uw eigen apparaat worden opgeslagen in de lokale opslag van uw browser. Er wordt geen data verzonden naar een server.",stonerStatusTitle:"Je Stoner Status",completedCycles:"Voltooide Cycli",achievements:"High-Scores",completedHarvestsLabel:"Oogsten Geknald",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Aanbevolen voor de Kiemfase",recommendedForVegetative:"Aanbevolen voor de Groeifase",recommendedForFlowering:"Aanbevolen voor de Bloeifase",recommendedForFlush:"Aanbevolen voor de Spoel- & Oogstfase",essentialToolsSeedling:"Essentiële tools voor de Kiemfase",essentialToolsVegetative:"Essentiële tools voor de Groeifase",essentialToolsFlowering:"Essentiële tools voor de Bloeifase",essentialToolsFlush:"Essentiële tools voor de Spoel- & Oogstfase",heatMat:"Warmtemat + Minikas",growthNutrients:"Groeivoeding",calMag:"Cal-Mag Supplement",fabricPots:"Stoffen Potten",ecMeter:"EC/PPM Meter",phMeter:"pH-meter",clipFan:"Clip-ventilator",plantTies:"Zachte Plantenbinders",carbonFilter:"Koolstoffilter + Ventilator",bloomNutrients:"Bloeivoeding",pkBooster:"PK Booster",scrogNet:"Plantennet / Trellis",flushHarvestGuide:"Spoel- & Oogstgids",flushingAgent:"Spoelmiddel (optioneel)",trimmingScissors:"Knipschaar",dryingRack:"Droogrek",curingJars:"Curing Potten",miniHygrometers:"Mini Hygrometers",humidityPacks:"Vochtigheidszakjes"},
+en:{appName:"Grow Buddy",newPlant:"+ New Plant",showArchived:"Show Completed Cycles",emptyTitle:"No Plants Yet",emptyText:"Add your first plant and activate your personal grow coach",archivedTitle:"Completed Cycles",plant:"Plant",archivedCycle:"Complete Cycle",unarchive:"Restore",delete:"Delete",planted:"Planted:",age:"Age:",weeks:"wks",days:"d",timeline:"Timeline",reminders:"Reminders",notes:"Notes",date:"Date:",noteOptional:"Note (optional)",uploadPhoto:"Upload Photo",noPhotos:"No photos yet – add your first Week 0 photo above.",remove:"Remove",water:"💧 Water",feed:"🥦 Feed",startFlush:"💦 START FLUSH",harvest:"🪴 HARVEST",week:"Week",every:"Every",daysPlural:"days",startInWeek:"Start in Week",frequency:"Frequency: every",flushStartWeek:"Start Flush in Week",targetHarvestWeek:"Target Harvest Week",strainGuideline:"Strain Guideline:",adjustNote:"Adjust frequency based on pot size, substrate, and climate.",notesPlaceholder:"Notes on watering, EC/PPM, pH, training, etc.",alertPhoto:"Please select a photo first.",alertDelete:"Delete? This cannot be undone (all photos will be deleted).",alertMax:"Maximum of 12 plants supported.",alertImport:"Cannot read file:",darkMode:"Dark Mode",seedling:"Seedling",vegetative:"Vegetative",flowering:"Flowering",flush:"Flush",today:"Today",buyNow:"Buy now",resetData:"Reset data",confirmReset:"Are you sure you want to delete all data? This cannot be undone.",growthReportTitle:"Growth Report",shareTitle:"Share report",shareExplain:"Share the status report and celebrate the progress with your friends.",shareNow:"Share",close:"Close",shareFallback:"Sharing not supported; downloading JPG instead.",contactDeveloper:"Contact developer",disclaimerTitle:"Disclaimer",disclaimerText:"The developer of this app is not responsible for your harvest. The app offers guidance based on averages. Always trust your own observations.",helpTitle:"Help & Information",helpIntro:"No more guesswork. Just pick your plant from the list and the app builds a foolproof schedule for you. Get reminders when it’s time to water, feed, or flush, and track every stage with an easy visual timeline. Snap photos along the way to keep a growth log you’ll actually enjoy looking back on.",helpText:"Your privacy and data security are guaranteed. This is a 100% frontend application, meaning all data you enter (plant names, dates, notes, photos) is stored exclusively on your own device in your browser's local storage. No data is sent to any server.",stonerStatusTitle:"Your Stoner Status",completedCycles:"Completed Cycles",achievements:"High-Scores",completedHarvestsLabel:"Harvests Nailed",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Recommended for the Seedling phase",recommendedForVegetative:"Recommended for the Vegetative phase",recommendedForFlowering:"Recommended for the Flowering phase",recommendedForFlush:"Recommended for the Flush & Harvest phase",essentialToolsSeedling:"Essential tools for the Seedling phase",essentialToolsVegetative:"Essential tools for the Vegetative phase",essentialToolsFlowering:"Essential tools for the Flowering phase",essentialToolsFlush:"Essential tools for the Flush & Harvest phase",heatMat:"Heat Mat + Mini Greenhouse",growthNutrients:"Growth Nutrients",calMag:"Cal-Mag Supplement",fabricPots:"Fabric Pots",ecMeter:"EC/PPM Meter",phMeter:"pH Meter",clipFan:"Clip Fan",plantTies:"Soft Plant Ties",carbonFilter:"Carbon Filter + Fan",bloomNutrients:"Bloom Nutrients",pkBooster:"PK Booster",scrogNet:"Scrog Net / Trellis",flushHarvestGuide:"Flush & Harvest Guide",flushingAgent:"Flushing Agent (optional)",trimmingScissors:"Trimming Scissors",dryingRack:"Drying Rack",curingJars:"Curing Jars",miniHygrometers:"Mini Hygrometers",humidityPacks:"Humidity Packs"},
+de:{appName:"Kraut Kumpel",newPlant:"+ Neue Pflanze",showArchived:"Abgeschlossene Zyklen anzeigen",emptyTitle:"Noch keine Pflanzen",emptyText:"Füge deine erste Pflanze hinzu und aktiviere deinen persönlichen Grow-Coach",archivedTitle:"Abgeschlossene Zyklen",plant:"Pflanze",archivedCycle:"Zyklus abschließen",unarchive:"Wiederherstellen",delete:"Löschen",planted:"Gepflanzt:",age:"Alter:",weeks:"Wo",days:"T",timeline:"Zeitachse",reminders:"Erinnerungen",notes:"Notizen",date:"Datum:",noteOptional:"Notiz (optional)",uploadPhoto:"Foto hochladen",noPhotos:"Noch keine Fotos – fügen Sie Ihr erstes Foto der Woche 0 oben hinzu.",remove:"Entfernen",water:"💧 Wasser",feed:"🥦 Nährstoffe",startFlush:"💦 SPÜLUNG STARTEN",harvest:"🪴 ERNTEN",week:"Woche",every:"Alle",daysPlural:"Tage",startInWeek:"Start in Woche",frequency:"Frequenz: alle",flushStartWeek:"Spülung starten in Woche",targetHarvestWeek:"Ziel Erntewoche",strainGuideline:"Sortenrichtlinie:",adjustNote:"Passen Sie die Häufigkeit an Topfgröße, Substrat und Klima an.",notesPlaceholder:"Notizen zu Bewässerung, EC/PPM, pH, Training, etc.",alertPhoto:"Bitte wählen Sie zuerst ein Foto aus.",alertDelete:"Löschen? Dies kann nicht rückgängig gemacht werden (alle Fotos werden gelöscht).",alertMax:"Maximal 12 Pflanzen werden unterstützt.",alertImport:"Datei kann nicht gelesen werden:",darkMode:"Dunkelmodus",seedling:"Keimling",vegetative:"Vegetativ",flowering:"Blüte",flush:"Spülen",today:"Heute",buyNow:"Jetzt kaufen",resetData:"Daten zurücksetzen",confirmReset:"Alle Daten löschen? Dies kann nicht rückgängig gemacht werden.",growthReportTitle:"Wachstumsbericht",shareTitle:"Bericht teilen",shareExplain:"Teile den Statusbericht und feiere die Erfolge mit deinen Freunden.",shareNow:"Teilen",close:"Schließen",shareFallback:"Teilen nicht unterstützt; JPG-Download.",contactDeveloper:"Entwickler kontaktieren",disclaimerTitle:"Haftungsausschluss",disclaimerText:"Der Entwickler dieser App ist nicht für deine Ernte verantwortlich. Die App gibt Empfehlungen auf Basis von Durchschnittswerten. Verlasse dich stets auf deine eigenen Beobachtungen.",helpTitle:"Hilfe & Informationen",helpIntro:"Kein Raten mehr. Wähle einfach deine Pflanze aus der Liste aus und die App erstellt einen zuverlässigen Zeitplan für dich. Erhalte Erinnerungen, wenn es Zeit zum Gießen, Düngen oder Spülen ist, und verfolge jede Phase mit einer einfachen visuellen Zeitleiste. Mache unterwegs Fotos, um ein Wachstumsprotokoll zu führen, auf das du gerne zurückblicken wirst.",helpText:"Ihre Privatsphäre und Datensicherheit sind gewährleistet. Dies ist eine 100%ige Frontend-Anwendung, was bedeutet, dass alle von Ihnen eingegebenen Daten (Pflanzennamen, Daten, Notizen, Fotos) ausschließlich auf Ihrem eigenen Gerät im lokalen Speicher Ihres Browsers gespeichert werden. Es werden keine Daten an einen Server gesendet.",stonerStatusTitle:"Dein Stoner-Status",completedCycles:"Abgeschlossene Zyklen",achievements:"High-Scores",completedHarvestsLabel:"Ernten gemeistert",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Empfohlen für die Keimlingsphase",recommendedForVegetative:"Empfohlen für die Wachstumsphase",recommendedForFlowering:"Empfohlen für die Blütephase",recommendedForFlush:"Empfohlen für die Spül- & Erntephase",essentialToolsSeedling:"Wesentliche Werkzeuge für die Keimlingsphase",essentialToolsVegetative:"Wesentliche Werkzeuge für die Wachstumsphase",essentialToolsFlowering:"Wesentliche Werkzeuge für die Blütephase",essentialToolsFlush:"Wesentliche Werkzeuge für die Spül- & Erntephase",heatMat:"Heizmatte + Minigewächshaus",growthNutrients:"Wachstumsdünger",calMag:"Cal-Mag Ergänzung",fabricPots:"Stofftöpfe",ecMeter:"EC/PPM-Messgerät",phMeter:"pH-Messgerät",clipFan:"Clip-Ventilator",plantTies:"Weiche Pflanzenbinder",carbonFilter:"Kohlefilter + Lüfter",bloomNutrients:"Blütedünger",pkBooster:"PK-Booster",scrogNet:"Pflanzennetz / Spalier",flushHarvestGuide:"Spül- & Ernte-Anleitung",flushingAgent:"Spülmittel (optional)",trimmingScissors:"Trimmschere",dryingRack:"Trockengestell",curingJars:"Aushärtegläser",miniHygrometers:"Mini-Hygrometer",humidityPacks:"Feuchtigkeitspacks"},
+fr:{appName:"Copain de Culture",newPlant:"+ Nouvelle Plante",showArchived:"Afficher les Cycles Terminés",emptyTitle:"Pas encore de Plantes",emptyText:"Ajoutez votre première plante et activez votre coach de culture personnel",archivedTitle:"Cycles Terminés",plant:"Plante",archivedCycle:"Terminer le Cycle",unarchive:"Restaurer",delete:"Supprimer",planted:"Planté(e):",age:"Âge:",weeks:"sem",days:"j",timeline:"Chronologie",reminders:"Rappels",notes:"Notes",date:"Date:",noteOptional:"Note (optionnel)",uploadPhoto:"Télécharger photo",noPhotos:"Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.",remove:"Retirer",water:"💧 Eau",feed:"🥦 Engrais",startFlush:"💦 DÉBUT RINÇAGE",harvest:"🪴 RÉCOLTER",week:"Semaine",every:"Tous les",daysPlural:"jours",startInWeek:"Début Semaine",frequency:"Fréquence : tous les",flushStartWeek:"Début Rinçage Semaine",targetHarvestWeek:"Semaine de Récolte Cible",strainGuideline:"Ligne directrice de la souche:",adjustNote:"Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.",notesPlaceholder:"Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.",alertPhoto:"Veuillez d'abord sélectionner une photo.",alertDelete:"Supprimer ? Ceci est irréversible (toutes les photos werden supprimées).",alertMax:"Maximum de 12 plantes prises en charge.",alertImport:"Impossible de lire le fichier :",darkMode:"Mode Sombre",seedling:"Germination",vegetative:"Végétative",flowering:"Floraison",flush:"Rinçage",today:"Aujourd'hui",buyNow:"Acheter",resetData:"Réinitialiser",confirmReset:"Supprimer toutes les données ? Ceci est irréversible.",growthReportTitle:"Rapport de croissance",shareTitle:"Partager le rapport",shareExplain:"Partage le rapport d’état et célèbre tes réussites avec tes amis.",shareNow:"Partager",close:"Fermer",shareFallback:"Le partage n'est pas pris en charge ; téléchargement du JPG à la place.",contactDeveloper:"Contacter le développeur",disclaimerTitle:"Avertissement",disclaimerText:"Le développeur de cette application n’est pas responsable de votre récolte. L’app fournit des conseils basés sur des moyennes. Fiez-vous always à vos propres observations.",helpTitle:"Aide & Informations",helpIntro:"Fini les devinettes. Choisissez simplement votre plante dans la liste et l'application élabore un programme infaillible pour vous. Recevez des rappels quand il est temps d'arroser, de nourrir ou de rincer, et suivez chaque étape avec une chronologie visuelle simple. Prenez des photos en cours de route pour tenir un journal de croissance que vous aimerez vraiment consulter.",helpText:"Votre confidentialité et la sécurité de vos données sont garanties. Il s'agit d'une application 100% frontend, ce qui signifie que allles données que vous saisissez (noms de plantes, dates, notes, photos) sont stockées exclusivement sur votre propre appareil dans le stockage local de votre navigateur. Aucune donnée n'est envoyée à un serveur.",stonerStatusTitle:"Ton Statut de Stoner",completedCycles:"Cycles Terminés",achievements:"High-Scores",completedHarvestsLabel:"Récoltes Réussies",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Recommandé pour la phase de Germination",recommendedForVegetative:"Recommandé pour la phase Végétative",recommendedForFlowering:"Recommandé pour la phase de Floraison",recommendedForFlush:"Recommandé pour la phase de Rinçage",essentialToolsSeedling:"Outils essentiels pour la phase de Germination",essentialToolsVegetative:"Outils essentiels pour la phase Végétative",essentialToolsFlowering:"Outils essentiels pour la phase de Floraison",essentialToolsFlush:"Outils essentiels pour la phase de Rinçage",heatMat:"Tapis Chauffant + Mini-serre",growthNutrients:"Nutriments de Croissance",calMag:"Supplément Cal-Mag",fabricPots:"Pots en Tissu",ecMeter:"Mètre EC/PPM",phMeter:"pH-mètre",clipFan:"Ventilateur à Pince",plantTies:"Attaches Souples",carbonFilter:"Filtre à Charbon + Extracteur",bloomNutrients:"Nutriments de Floraison",pkBooster:"Booster PK",scrogNet:"Filet de Scrog / Treillis",flushHarvestGuide:"Guide de Rinçage et Récolte",flushingAgent:"Agent de Rinçage (optionnel)",trimmingScissors:"Ciseaux de Taille",dryingRack:"Grille de Séchage",curingJars:"Bocaux de Curing",miniHygrometers:"Mini Hygromètres",humidityPacks:"Sachets d'Humidité"},
+es:{appName:"Compa de Cultivo",newPlant:"+ Nueva Planta",showArchived:"Mostrar Ciclos Completados",emptyTitle:"Todavía no hay Plantas",emptyText:"Añade tu primera planta y activa tu coach de cultivo personal",archivedTitle:"Ciclos Completados",plant:"Planta",archivedCycle:"Completar Ciclo",unarchive:"Restaurar",delete:"Eliminar",planted:"Plantada:",age:"Edad:",weeks:"sem",days:"d",timeline:"Línea de Tiempo",reminders:"Recordatorios",notes:"Notas",date:"Fecha:",noteOptional:"Nota (opcional)",uploadPhoto:"Subir foto",noPhotos:"Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.",remove:"Quitar",water:"💧 Agua",feed:"🥦 Nutrientes",startFlush:"💦 INICIAR LAVADO",harvest:"🪴 COSECHAR",week:"Semana",every:"Cada",daysPlural:"días",startInWeek:"Iniciar Semana",frequency:"Frecuencia: cada",flushStartWeek:"Iniciar Lavado Semana",targetHarvestWeek:"Semana de Cosecha Objetivo",strainGuideline:"Pauta de la Cepa:",adjustNote:"Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.",notesPlaceholder:"Notas sobre riego, EC/PPM, pH, entrenamiento, etc.",alertPhoto:"Por favor, selecciona una foto primero.",alertDelete:"¿Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).",alertMax:"Máximo de 12 plantas admitidas.",alertImport:"No se puede leer el archivo:",darkMode:"Modo Oscuro",seedling:"Plántula",vegetative:"Vegetativa",flowering:"Floración",flush:"Lavado",today:"Hoy",buyNow:"Comprar ahora",resetData:"Restablecer datos",confirmReset:"¿Eliminar todos los datos? Esto no se puede deshacer.",growthReportTitle:"Informe de crecimiento",shareTitle:"Compartir informe",shareExplain:"Comparte el informe de estado y celebra los logros con tus amis.",shareNow:"Compartir",close:"Cerrar",shareFallback:"Compartir no disponible; descargaremos el JPG.",contactDeveloper:"Contactar al desarrollador",disclaimerTitle:"Aviso",disclaimerText:"El desarrollador de esta app no es responsable de tu cosecha. La app ofrece consejos basados en promedios. Confía siempre en tus propias observaciones.",helpTitle:"Ayuda e Información",helpIntro:"Se acabaron las conjeturas. Simplemente elige tu planta de la lista y la aplicación creará un programa infaillible para ti. Recibe recordatorios cuando sea el momento de regar, abonar o hacer un lavado de raíces, y sigue cada etapa con una sencilla línea de tiempo visual. Haz fotos por el camino para llevar un diario de crecimiento que de verdad disfrutarás recordando.",helpText:"Su privacidad y seguridad de los datos están garantizadas. Esta es una aplicación 100% frontend, lo que significa que todos los datos que ingresa (nombres de plantas, fechas, notas, fotos) se almacenan exclusivamente en su propio dispositivo en el almacenamiento local de su navegador. No se envía ningún dato a ningún servidor.",stonerStatusTitle:"Tu Estatus de Stoner",completedCycles:"Ciclos Completados",achievements:"High-Scores",completedHarvestsLabel:"Cosechas Logradas",toastNewAchievement:"🏆 ¡High-Score!",recommendedForSeedling:"Recomendado para la fase de Plántula",recommendedForVegetative:"Recomendado para la fase Vegetativa",recommendedForFlowering:"Recomendado para la fase de Floración",recommendedForFlush:"Recomendado para la fase de Lavado y Cosecha",essentialToolsSeedling:"Herramientas esenciales para la fase de Plántula",essentialToolsVegetative:"Herramientas esenciales para la fase Vegetativa",essentialToolsFlowering:"Herramientas esenciales para la fase de Floración",essentialToolsFlush:"Herramientas esenciales para la fase de Lavado y Cosecha",heatMat:"Manta Térmica + Mini Invernadero",growthNutrients:"Nutrientes de Crecimiento",calMag:"Suplemento Cal-Mag",fabricPots:"Macetas de Tela",ecMeter:"Medidor de EC/PPM",phMeter:"Medidor de pH",clipFan:"Ventilador de Pinza",plantTies:"Ataduras Suaves",carbonFilter:"Filtro de Carbón + Extractor",bloomNutrients:"Nutrientes de Floración",pkBooster:"Potenciador PK",scrogNet:"Malla de Scrog / Enrejado",flushHarvestGuide:"Guía de Lavado y Cosecha",flushingAgent:"Agente de Lavado (opcional)",trimmingScissors:"Tijeras de Podar",dryingRack:"Rejilla de Secado",curingJars:"Botes de Curado",miniHygrometers:"Mini Higrómetros",humidityPacks:"Sobres de Humedad"}};
+/* ==== Reminder copy (per language & phase) ==== */
+const REMINDER_COPY={nl:{feed:{seedling:"<p><b>Voeding:</b> Nog geen voeding. Potgrond bevat genoeg; extra voeding kan wortels verbranden.</p>",vegetative:"<p><b>Voeding (groei):</b> Focus op stikstof (N). Begin licht en bouw langzaam op.</p>",flowering:"<p><b>Voeding (bloei):</b> Meer fosfor (P) en kalium (K), minder stikstof (N). Let op overvoeding.</p>",flush:"<p><b>Voeding:</b> Tijdens spoelen geen voeding meer gebruiken.</p>"},water:{seedling:"<p><b>Water:</b> Heel weinig; 100–250 ml. Alleen wanneer bovenlaag droog is.</p>",vegetative:"<p><b>Water:</b> Matig tot veel. Geef tot lichte drainage.</p>",flowering:"<p><b>Water:</b> Hoog verbruik; 1.5–3 L per beurt (afhankelijk van potmaat).</p>",flush:"<p><b>Water:</b> Alleen water om zouten uit te spoelen.</p>"},flush:"<p><b>Spoelen:</b> 1–2 weken voor oogst alleen water voor betere smaak.</p>",harvest:"<p><b>Oogst:</b> Check trichomen; droog en cure voor kwaliteit.</p>"},
+en:{feed:{seedling:"<p><b>Feeding:</b> None yet. Medium has enough; extra nutrients can burn roots.</p>",vegetative:"<p><b>Feeding (veg):</b> Emphasize nitrogen (N). Start light and increase gradually.</p>",flowering:"<p><b>Feeding (flower):</b> More phosphorus (P) & potassium (K), less N. Avoid overfeeding.</p>",flush:"<p><b>Feeding:</b> No nutrients during flush.</p>"},water:{seedling:"<p><b>Water:</b> Very little; 100–250 ml. Only when top layer is dry.</p>",vegetative:"<p><b>Water:</b> Moderate to high; water to slight runoff.</p>",flowering:"<p><b>Water:</b> Highest demand; often 1.5–3 L per watering.</p>",flush:"<p><b>Water:</b> Plain water to wash out salts.</p>"},flush:"<p><b>Flush:</b> 1–2 weeks pre-harvest with plain water.</p>",harvest:"<p><b>Harvest:</b> Check trichomes; dry & cure for best results.</p>"},
+de:{feed:{seedling:"<p><b>Düngen:</b> Noch nicht. Substrat enthält genug; Zusatz kann Wurzeln verbrennen.</p>",vegetative:"<p><b>Düngen (Wuchs):</b> Fokus auf Stickstoff (N). Langsam steigern.</p>",flowering:"<p><b>Düngen (Blüte):</b> Mehr Phosphor (P) & Kalium (K), weniger N.</p>",flush:"<p><b>Düngen:</b> Während des Spülens keine Nährstoffe.</p>"},water:{seedling:"<p><b>Wasser:</b> Sehr wenig; 100–250 ml. Nur bei trockener Oberfläche.</p>",vegetative:"<p><b>Wasser:</b> Mittel bis viel; bis leichte Drainage.</p>",flowering:"<p><b>Wasser:</b> Höchster Bedarf; oft 1.5–3 L.</p>",flush:"<p><b>Wasser:</b> Nur Wasser zum Ausspülen.</p>"},flush:"<p><b>Spülen:</b> 1–2 Wochen vor der Ernte nur Wasser.</p>",harvest:"<p><b>Ernte:</b> Trichome prüfen; trocknen & curen.</p>"},
+fr:{feed:{seedling:"<p><b>Engrais :</b> Pas encore. Le substrat suffit; excès peut brûler les racines.</p>",vegetative:"<p><b>Engrais (croissance) :</b> Accent sur l’azote (N). Augmenter progressivement.</p>",flowering:"<p><b>Engrais (floraison) :</b> Plus de phosphore (P) et potassium (K), moins de N.</p>",flush:"<p><b>Engrais :</b> Aucun pendant le rinçage.</p>"},water:{seedling:"<p><b>Eau :</b> Très peu; 100–250 ml. Seulement si le dessus est sec.</p>",vegetative:"<p><b>Eau :</b> Modérée à forte; jusqu’à léger ruissellement.</p>",flowering:"<p><b>Eau :</b> Demande maximale; 1,5–3 L.</p>",flush:"<p><b>Eau :</b> Eau claire pour rincer les sels.</p>"},flush:"<p><b>Rinçage :</b> 1–2 semaines avant récolte, eau claire.</p>",harvest:"<p><b>Récolte :</b> Vérifier les trichomes; séchage & affinage.</p>"},
+es:{feed:{seedling:"<p><b>Nutrientes:</b> Aún no. El sustrato tiene suficiente; el exceso quema raíces.</p>",vegetative:"<p><b>Nutrientes (crecimiento):</b> Énfasis en nitrógeno (N). Aumenta poco a poco.</p>",flowering:"<p><b>Nutrientes (floración):</b> Más fósforo (P) y potasio (K), menos N.</p>",flush:"<p><b>Nutrientes:</b> Ninguno durante el lavado.</p>"},water:{seedling:"<p><b>Agua:</b> Muy poca; 100–250 ml. Solo si la superficie está seca.</p>",vegetative:"<p><b>Agua:</b> Moderada a alta; hasta ligero drenaje.</p>",flowering:"<p><b>Agua:</b> Demanda máxima; 1.5–3 L.</p>",flush:"<p><b>Agua:</b> Solo agua para eliminar sales.</p>"},flush:"<p><b>Lavado:</b> 1–2 semanas antes de la cosecha con agua sola.</p>",harvest:"<p><b>Cosecha:</b> Revisa tricomas; secado y curado.</p>"} };
+const REPORT_INTRO={nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚",en:"Look how well my plants are doing! 🌱💚",de:"Schau mal, wie gut meine Pflanzen unterwegs sind! 🌱💚",fr:"Regardez comme mes plantes se portent bien ! 🌱💚",es:"¡Miren qué bien van mis plantas! 🌱💚",};
+/* ==== Gamification Data ==== */
+const HIGH_SCORES={'FIRST_HARVEST':{title:{nl:'De Ontmaagding',en:'The First Time',de:'Das erste Mal',fr:'La Première Fois',es:'La Primera Vez'},description:{nl:'Voltooi je allereerste kweekcyclus.',en:'Complete your very first grow cycle.',de:'Schließe deinen allerersten Grow-Zyklus ab.',fr:'Terminez votre tout premier cycle de culture.',es:'Completa tu primer ciclo de cultivo.'}},'HATTRICK_HERO':{title:{nl:'Hattrick Held',en:'Hattrick Hero',de:'Hattrick-Held',fr:'Héros du Triplé',es:'Héroe del Hattrick'},description:{nl:'Voltooi 3 succesvolle kweekcycli.',en:'Complete 3 successful grow cycles.',de:'Schließe 3 erfolgreiche Grow-Zyklen ab.',fr:'Terminez 3 cycles de culture réussis.',es:'Completa 3 ciclos de cultivo exitosos.'}},'AUTOPILOT':{title:{nl:'Autopilot Aan',en:'Autopilot Engaged',de:'Autopilot aktiviert',fr:'Pilote Automatique Engagé',es:'Piloto Automático Activado'},description:{nl:'Voltooi 5 kweekcycli.',en:'Complete 5 grow cycles.',de:'Schließe 5 Grow-Zyklen ab.',fr:'Terminez 5 cycles de culture.',es:'Completa 5 ciclos de cultivo.'}},'GOTTA_SMOKE_EM_ALL':{title:{nl:"Gotta Smoke 'Em All",en:"Gotta Smoke 'Em All",de:"Schnapp sie dir alle",fr:'Fumez-les Tous',es:'A Fumarlos Todos'},description:{nl:'Kweek 5 verschillende soorten wiet.',en:'Grow 5 different cannabis strains.',de:'Baue 5 verschiedene Cannabis-Sorten an.',fr:'Cultivez 5 variétés de cannabis différentes.',es:'Cultiva 5 cepas de cannabis diferentes.'}},'GANJA_GENERAL':{title:{nl:'De Ganja Generaal',en:'The Ganja General',de:'Der Ganja-General',fr:'Le Général Ganja',es:'El General Ganja'},description:{nl:'Voltooi 10 kweekcycli.',en:'Complete 10 grow cycles.',de:'Schließe 10 Grow-Zyklen ab.',fr:'Terminez 10 cycles de culture.',es:'Completa 10 ciclos de cultivo.'}}};
+/* ==== Recommended Products Data ==== */
+const AANBEVOLEN_PRODUCTEN={seedling:[{labelKey:'heatMat',url:'https://www.royalqueenseeds.com/growing/322-starter-kit-feminized.html'}],vegetative:[{labelKey:'growthNutrients',url:'https://www.royalqueenseeds.com/us/growing/355-easy-grow-booster-tablets.html'},{labelKey:'calMag',url:'https://www.royalqueenseeds.com/us/growing/568-easy-plus-micronutrients.html'},{labelKey:'fabricPots',url:'https://www.royalqueenseeds.com/us/growing/461-rqs-fabric-pot.html'},{labelKey:'ecMeter',url:'https://www.royalqueenseeds.com/growing/469-conductivity-tester.html'},{labelKey:'phMeter',url:'https://www.royalqueenseeds.com/growing/468-ph-tester.html'},{labelKey:'clipFan',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'},{labelKey:'plantTies',url:'https://www.royalqueenseeds.com/us/growing/533-bending-clips.html'},{labelKey:'carbonFilter',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'}],flowering:[{labelKey:'bloomNutrients',url:'https://www.royalqueenseeds.com/us/growing/356-easy-bloom-booster-tablet.html'},{labelKey:'pkBooster',url:'https://www.royalqueenseeds.com/us/growing/356-easy-bloom-booster-tablet.html'},{labelKey:'scrogNet',url:'https://www.royalqueenseeds.com/us/growing/534-scrog-netting.html'},{labelKey:'carbonFilter',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'}],flush:[{labelKey:'flushHarvestGuide',url:'https://www.royalqueenseeds.com/us/blog-top-tips-to-successfully-dry-and-cure-your-fresh-cannabis-buds-n682'},{labelKey:'flushingAgent',url:'https://www.royalqueenseeds.com/us/content/42-let-s-get-started'},{labelKey:'trimmingScissors',url:'https://www.royalqueenseeds.com/us/growing/467-curved-trimming-scissors.html'},{labelKey:'dryingRack',url:'https://www.royalqueenseeds.com/us/growing/550-rqs-herb-dryer.html'},{labelKey:'curingJars',url:'https://www.royalqueenseeds.com/growing/638-curing-vault.html'},{labelKey:'miniHygrometers',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'},{labelKey:'humidityPacks',url:'https://www.royalqueenseeds.com/us/growing/519-humidity-control-pack.html'}]};
+/* ==== Affiliate helpers ==== */
+const AFFIL_ID="";
+const STRAIN_URLS = {
+    'Onbekend/Algemeen': 'https://www.royalqueenseeds.com/34-autoflowering-cannabis-seeds',
+    'Sticky Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/714-sticky-queen-automatic.html',
+    'Mexican Rush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/713-mexican-rush-automatic.html',
+    'Blue Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/312-blue-cheese-automatic.html',
+    'Royal Haze Auto': 'https://www.royalqueenseeds.com/autoflowering-cannabis-seeds/131-royal-haze-automatic.html',
+    'Mimosa Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/537-mimosa-automatic.html',
+    'Royal Bluematic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/129-royal-bluematic.html',
+    'Royal Creamatic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/145-royal-creamatic.html',
+    'Green Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/489-green-gelato-automatic.html',
+    'Northern Light Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/125-northern-light-automatic.html',
+    'North Thunderfuck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-north-thunderfuck-automatic.html',
+    'Triple G Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/572-triple-g-automatic.html',
+    'Haze Berry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/362-haze-berry-automatic.html',
+    'Special Queen 1 Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-special-queen-1-automatic.html',
+    'Sweet ZZ Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/429-sweet-zz-automatic.html',
+    'Sweet Skunk Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/162-sweet-skunk-automatic.html',
+    'Cherry Pie Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/612-cherry-pie-automatic.html',
+    'Tropicana Cookies Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/650-tropicana-cookies-purple-automatic.html',
+    'Trainwreck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/513-trainwreck-automatic.html',
+    'Royal Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-cheese-automatic.html',
+    'Granddaddy Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/607-granddaddy-purple-automatic.html',
+    'Pink Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/639-pink-runtz-automatic.html',
+    'Grape Ape Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/608-grape-ape-automatic.html',
+    'White Widow Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/119-white-widow-automatic.html',
+    'NYC Sour D Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/665-nyc-sour-d-automatic.html',
+    'GOAT\'lato Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/666-goatlato-automatic.html',
+    'Corkscrew Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/712-corkscrew-automatic.html',
+    'Fat Banana Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/413-fat-banana-automatic.html',
+    'Cookies Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/507-cookies-gelato-automatic.html',
+    'Royal Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/575-royal-runtz-automatic.html',
+    'Royal Cookies Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/190-royal-cookies-automatic.html',
+    'Watermelon Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/544-watermelon-automatic.html',
+    'Apple Fritter Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/611-apple-fritter-automatic.html',
+    'Royal Critical Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/168-royal-critical-automatic.html',
+    'Sherbet Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/478-sherbet-queen-automatic.html',
+    'HulkBerry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/456-hulkberry-automatic.html',
+    'Purple Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/482-purple-queen-automatic.html',
+    'Royal Gorilla Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/421-royal-gorilla-automatic.html',
+    'Wedding Cake Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/588-wedding-cake-automatic.html',
+    'Royal Dwarf': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/130-royal-dwarf.html',
+    'Pink Mist Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/660-pink-mist-automatic.html',
+    'Easy Bud': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/124-easy-bud.html',
+    'Purple Lemonade Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/648-purple-lemonade-automatic.html',
+    'Quick One': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/126-quick-one.html',
+    'Diesel Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/180-diesel-automatic.html',
+    'Bubble Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/315-bubble-kush-automatic.html',
+    'Amnesia Haze Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/165-amnesia-haze-automatic.html',
+    'Do-Si-Dos Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/585-do-si-dos-automatic.html',
+    'Royal Jack Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/179-royal-jack-automatic.html',
+    'Purple Punch Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-purple-punch-automatic.html',
+    'Royal Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-kush-automatic.html',
+    'Royal AK Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/154-royal-ak-automatic.html'
+};
+const RQS_SEED_SLUGS = {
+    'Onbekend/Algemeen': 'unknown-generic',
+    'Sticky Queen Auto': 'sticky-queen-auto',
+    'Mexican Rush Auto': 'mexican-rush-auto',
+    'Blue Cheese Auto': 'blue-cheese-auto',
+    'Royal Haze Auto': 'royal-haze-auto',
+    'Mimosa Auto': 'mimosa-auto',
+    'Royal Bluematic': 'royal-bluematic',
+    'Royal Creamatic': 'royal-creamatic',
+    'Green Gelato Auto': 'green-gelato-auto',
+    'Northern Light Auto': 'northern-light-auto',
+    'North Thunderfuck Auto': 'north-thunderfuck-auto',
+    'Triple G Auto': 'triple-g-auto',
+    'Haze Berry Auto': 'haze-berry-auto',
+    'Special Queen 1 Auto': 'special-queen-1-auto',
+    'Sweet ZZ Auto': 'sweet-zz-auto',
+    'Sweet Skunk Auto': 'sweet-skunk-auto',
+    'Cherry Pie Auto': 'cherry-pie-auto',
+    'Tropicana Cookies Purple Auto': 'tropicana-cookies-purple-auto',
+    'Trainwreck Auto': 'trainwreck-auto',
+    'Royal Cheese Auto': 'royal-cheese-auto',
+    'Granddaddy Purple Auto': 'granddaddy-purple-auto',
+    'Pink Runtz Auto': 'pink-runtz-auto',
+    'Grape Ape Auto': 'grape-ape-auto',
+    'White Widow Auto': 'white-widow-auto',
+    'NYC Sour D Auto': 'nyc-sour-d-auto',
+    'GOAT\'lato Auto': 'goatlato-auto',
+    'Corkscrew Auto': 'corkscrew-auto',
+    'Fat Banana Auto': 'fat-banana-auto',
+    'Cookies Gelato Auto': 'cookies-gelato-auto',
+    'Royal Runtz Auto': 'royal-runtz-auto',
+    'Royal Cookies Auto': 'royal-cookies-auto',
+    'Watermelon Auto': 'watermelon-auto',
+    'Apple Fritter Auto': 'apple-fritter-auto',
+    'Royal Critical Auto': 'royal-critical-auto',
+    'Sherbet Queen Auto': 'sherbet-queen-auto',
+    'HulkBerry Auto': 'hulkberry-auto',
+    'Purple Queen Auto': 'purple-queen-auto',
+    'Royal Gorilla Auto': 'royal-gorilla-auto',
+    'Wedding Cake Auto': 'wedding-cake-auto',
+    'Royal Dwarf': 'royal-dwarf',
+    'Pink Mist Auto': 'pink-mist-auto',
+    'Easy Bud': 'easy-bud',
+    'Purple Lemonade Auto': 'purple-lemonade-auto',
+    'Quick One': 'quick-one',
+    'Diesel Auto': 'diesel-auto',
+    'Bubble Kush Auto': 'bubble-kush-auto',
+    'Amnesia Haze Auto': 'amnesia-haze-auto',
+    'Do-Si-Dos Auto': 'do-si-dos-auto',
+    'Royal Jack Auto': 'royal-jack-auto',
+    'Purple Punch Auto': 'purple-punch-auto',
+    'Royal Kush Auto': 'royal-kush-auto',
+    'Royal AK Auto': 'royal-ak-auto'
+};
+function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
+function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
+function getRqsSeedUrl(k){const url=STRAIN_URLS[k];if(!url)return null;return addAffil(url);}
+function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil('https://www.royalqueenseeds.com/growing/671-bio-grow-fertiliser.html');if(phase==='flowering')return addAffil('https://www.royalqueenseeds.com/growing/670-bio-bloom-fertiliser.html');return null;}
+/* ==== State & utils ==== */
+let currentLang=localStorage.getItem('appLang')||'nl';
+let isDarkMode=localStorage.getItem('isDarkMode')==='true';
+const uid=()=>Math.random().toString(36).slice(2,10);
+const todayISO=()=>new Date().toISOString().slice(0,10);
+const toISODate=d=>new Date(d).toISOString().slice(0,10);
+const fmtDate=d=>new Date(d).toLocaleDateString(currentLang);
+const fmtShortDate=d=>new Date(d).toLocaleDateString(currentLang,{day:'numeric',month:'short'});
+const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/86400000);
+const weekNumberSince=(start,at)=>Math.floor(daysBetween(start,at)/7);
+function t(k){return TRANSLATIONS[currentLang]?.[k]||TRANSLATIONS['nl']?.[k]||`[${k}]`;}
+/* ==== Strains (short) ==== */
+const RQS_STRAINS = {
+    'Onbekend/Algemeen': { displayName: { nl: 'Onbekend/Algemeen', en: 'Unknown/Generic', de: 'Unbekannt/Allgemein', fr: 'Inconnu/Générique', es: 'Desconocido/Genérico' }, schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 10 } },
+    'Sticky Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Mexican Rush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } },
+    'Blue Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Mimosa Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Bluematic': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Creamatic': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Green Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Northern Light Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'North Thunderfuck Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Triple G Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Haze Berry Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Special Queen 1 Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Sweet ZZ Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Sweet Skunk Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Cherry Pie Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Tropicana Cookies Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Trainwreck Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Royal Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Granddaddy Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Pink Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Grape Ape Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'White Widow Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'NYC Sour D Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'GOAT\'lato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Corkscrew Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Fat Banana Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Cookies Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Cookies Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Watermelon Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Apple Fritter Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal Critical Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Sherbet Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'HulkBerry Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Purple Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } },
+    'Royal Gorilla Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Wedding Cake Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Royal Dwarf': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Pink Mist Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } },
+    'Easy Bud': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Purple Lemonade Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Quick One': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Diesel Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } },
+    'Bubble Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } },
+    'Amnesia Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Do-Si-Dos Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Jack Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Purple Punch Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } },
+    'Royal Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } },
+    'Royal AK Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }
+};
+const getStrainDisplayName=key=>RQS_STRAINS[key]?.displayName?.[currentLang]||key;
+/* ==== Storage ==== */
+const LS_KEY='quickone_grow_tracker_v1_html';
+let state={plants:[],viewArchived:false,achievements:[]};
+function loadState(){try{const raw=localStorage.getItem(LS_KEY);state=raw?JSON.parse(raw):{plants:[],viewArchived:false,achievements:[]};(state.plants||[]).forEach(p=>{p.acknowledgedActions=p.acknowledgedActions||[];if(typeof p.isCollapsed==='undefined')p.isCollapsed=false;if(typeof p.archived==='undefined')p.archived=false;});state.achievements=state.achievements||[];}catch(e){state={plants:[],viewArchived:false,achievements:[]};}}
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+loadState();
+/* ==== Gamification Logic ==== */
+function getGrowerRank(N){const ranks=["Spruit Scout","Zaailing Zitter","Pot-Leerling","Top Talent","Chronic Kweker","Meester van Mary Jane","Ganja Grootmeester","De Cannabis Koning"];if(N>=15)return ranks[7];if(N>=10)return ranks[6];if(N>=7)return ranks[5];if(N>=5)return ranks[4];if(N>=3)return ranks[3];if(N===2)return ranks[2];if(N===1)return ranks[1];return ranks[0];}
+function showToast(message){const toast=document.getElementById('toast');if(!toast)return;toast.textContent=message;toast.classList.add('show');setTimeout(()=>{toast.classList.remove('show');},3500);}
+function checkAchievements(){const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const unlocked=state.achievements||[];const checkAndUnlock=(id,condition)=>{if(condition&&!unlocked.includes(id)){state.achievements.push(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['nl'];showToast(`${t('toastNewAchievement')} ${title}`);}};checkAndUnlock('FIRST_HARVEST',N>=1);checkAndUnlock('HATTRICK_HERO',N>=3);checkAndUnlock('AUTOPILOT',N>=5);const uniqueStrains=[...new Set(completedCycles.map(p=>p.strain))].length;checkAndUnlock('GOTTA_SMOKE_EM_ALL',uniqueStrains>=5);checkAndUnlock('GANJA_GENERAL',N>=10);}
+function openStonerStatusModal(){const modal=document.getElementById('stonerStatusModal');const body=document.getElementById('stonerStatusBody');if(!modal||!body)return;const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const rank=getGrowerRank(N);const unlocked=state.achievements||[];body.innerHTML=`<div style="text-align:center;margin-bottom:24px;padding:10px;background:var(--pill);border-radius:12px;"><h3>${rank}</h3><p class="muted">${N} ${t('completedCycles')}</p></div><h4 class="section-title" style="margin-top:0;">${t('achievements')}</h4><ul class="achievements-list">${Object.keys(HIGH_SCORES).map(id=>{const isUnlocked=unlocked.includes(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['nl'];const description=achievement.description[currentLang]||achievement.description['nl'];return`<li class="achievement-item ${isUnlocked?'unlocked':'locked'}"><span class="icon material-icons">${isUnlocked?'military_tech':'lock'}</span><div class="details"><h4>${title}</h4><p>${description}</p></div></li>`;}).join('')}</ul>`;modal.style.display='flex';}
+/* ==== Actions ==== */
+const createActionId=(type,date)=>`${type}-${toISODate(date)}`;
+function getPendingActions(plant,dateToCheck){
+const out=[];const start=new Date(plant.planted_at);const today=dateToCheck;if(today<start)return[];
+const harvestDate=new Date(start);
+harvestDate.setDate(start.getDate()+plant.schedule.targetHarvestWeek*7);
+for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
+const age=daysBetween(start,d);const wk=Math.floor(age/7);const s=plant.schedule;const arr=[];
+const isBeforeHarvest=d<harvestDate;
+if(isBeforeHarvest&&age>0&&s.waterEveryDays>0&&age%s.waterEveryDays===0)arr.push({type:'water',label:t('water'),date:new Date(d)});
+if(isBeforeHarvest&&wk<s.flushStartWeek&&wk>=s.feedStartWeek){const startFeed=s.feedStartWeek*7;if(s.feedEveryDays>0&&(age-startFeed)>=0&&(age-startFeed)%s.feedEveryDays===0)arr.push({type:'feed',label:t('feed'),date:new Date(d)});};
+if(wk===s.flushStartWeek&&age===s.flushStartWeek*7)arr.push({type:'flush',label:t('startFlush'),date:new Date(d)});
+if(age===s.targetHarvestWeek*7)arr.push({type:'harvest',label:t('harvest'),date:new Date(d)});
+arr.forEach(a=>{const id=createActionId(a.type,a.date);if(!plant.acknowledgedActions.includes(id))out.push(a);});
+}
+return out;
+}
+/* ==== App init ==== */
+document.addEventListener('DOMContentLoaded',()=>{
+document.getElementById('langSelect').value=currentLang;
+document.getElementById('langSelect').onchange=e=>{currentLang=e.target.value;localStorage.setItem('appLang',currentLang);translateUI();};
+document.getElementById('darkModeToggle').onchange=e=>setDarkMode(e.target.checked);
+const chk=document.getElementById('chkArchived');chk.checked=state.viewArchived;chk.onchange=e=>{state.viewArchived=e.target.checked;saveAndRender();};
+document.getElementById('btnAdd').onclick=addPlant;document.getElementById('btnAdd2').onclick=addPlant;
+document.getElementById('btnReset').onclick=()=>{if(confirm(t('confirmReset'))){localStorage.removeItem(LS_KEY);location.reload();}};
+document.getElementById('btnHeaderShare').onclick=openShareModal;
+document.getElementById('btnHelp').onclick=()=>document.getElementById('helpModal').style.display='flex';
+document.getElementById('btnProfileDesktop').onclick=openStonerStatusModal;document.getElementById('btnProfileMenu').onclick=openStonerStatusModal;
+// Modal closers
+document.querySelectorAll('.modal-close,[data-close-modal]').forEach(b=>b.addEventListener('click',()=>{const m=b.closest('.modal-overlay');if(m)m.style.display='none';}));
+document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.style.display='none';}));
+setDarkMode(isDarkMode);translateUI();setupMenu();
+// Safety: ook hier de share-knop in de popup koppelen
+const btnShareNow=document.getElementById('btnShareNow');
+if(btnShareNow) btnShareNow.addEventListener('click', shareReportJPG);
+});
+function setupMenu(){const t=document.getElementById('btnMenuToggle'), m=document.getElementById('menuContent'); if(t&&m){t.onclick=e=>{e.stopPropagation();m.classList.toggle('is-open');}; document.addEventListener('click',e=>{if(m.classList.contains('is-open')&&!m.contains(e.target))m.classList.remove('is-open');});}}
+function translateUI(){
+const name=TRANSLATIONS[currentLang]?.appName||'Kweekmaatje';
+document.title=name;
+const span=document.getElementById('appTitleText');
+if(span) span.textContent=name;
+document.getElementById('darkModeLabel').textContent=t('darkMode');
+document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'));});
+render();
+}
+function setDarkMode(enabled){isDarkMode=enabled;document.body.classList.toggle('dark',enabled);document.getElementById('darkModeToggle').checked=enabled;localStorage.setItem('isDarkMode',enabled);}
+/* ==== Plant ops ==== */
+function addPlant(){const active=state.plants.filter(p=>!p.archived).length;if(active>=12){alert(t('alertMax'));return;}
+const p={id:uid(),name:`${t('plant')} ${active+1}`,strain:'Onbekend/Algemeen',planted_at:todayISO(),notes:"",photos:[],acknowledgedActions:[],isCollapsed:false,archived:false,schedule:{...RQS_STRAINS['Onbekend/Algemeen'].schedule}};state.plants.unshift(p);saveAndRender();}
+function getPlant(id){return state.plants.find(p=>p.id===id);}
+function updatePlant(id,props){const p=getPlant(id);if(p){Object.assign(p,props);saveAndRender();}}
+function deletePlant(id){if(confirm(t('alertDelete'))){state.plants=state.plants.filter(p=>p.id!==id);saveAndRender();}}
+function toggleCollapse(id){const p=getPlant(id);if(p){p.isCollapsed=!p.isCollapsed;saveAndRender();}}
+function handleStrainChange(id,key){const s=RQS_STRAINS[key]?.schedule||RQS_STRAINS['Onbekend/Algemeen'].schedule;updatePlant(id,{strain:key,schedule:{...s}});}
+function saveAndRender(){checkAchievements();saveState();render();}
+window.addPlant=addPlant;window.updatePlant=updatePlant;window.deletePlant=deletePlant;window.toggleCollapse=toggleCollapse;window.handleStrainChange=handleStrainChange;
+/* ==== Phases ==== */
+function getPhaseForDate(plant,iso){const w=weekNumberSince(plant.planted_at, new Date(iso));
+if(w<2)return'seedling';
+if(w<4)return'vegetative';
+const fsw=plant.schedule.flushStartWeek||8;
+if(w<fsw)return'flowering';
+return'flush';}
+/* ==== Progress ==== */
+function createProgressBarHTML(plant){
+const s=plant.schedule,totalW=Math.max(1,s.targetHarvestWeek);
+const seedW=Math.min(2,totalW),vegW=Math.max(0,Math.min(4,totalW)-seedW),flowW=Math.max(0,Math.min(s.flushStartWeek,totalW)-(seedW+vegW)),flushW=Math.max(0,totalW-(seedW+vegW+flowW));
+const pct=w=>(w/totalW)*100;
+const start=new Date(plant.planted_at),end=new Date(start);end.setDate(end.getDate()+s.targetHarvestWeek*7);
+const elapsedDays=Math.max(0,daysBetween(start,new Date()));const progressPct=Math.max(0,Math.min(100,(elapsedDays/(s.targetHarvestWeek*7))*100));
+return `<div class="progress-wrapper">
+<div class="progress-date-labels"><span>${fmtDate(start)}</span><span>${fmtDate(end)}</span></div>
+<div class="progress-bar-container">
+<div class="progress-bar">
+<div class="progress-segment seg-seed" style="width:${pct(seedW)}%"></div>
+<div class="progress-segment seg-veg" style="width:${pct(vegW)}%"></div>
+<div class="progress-segment seg-flow" style="width:${pct(flowW)}%"></div>
+<div class="progress-segment seg-flush"style="width:${pct(flushW)}%"></div>
+</div>
+<div class="progress-marker" style="left:${progressPct}%"></div>
+<div class="progress-marker-label" style="left:${progressPct}%">${t('today')}</div>
+</div>
+<div class="progress-phase-labels-container">
+<div class="progress-phase-label" style="width:${pct(seedW)}%">${t('seedling')}</div>
+<div class="progress-phase-label" style="width:${pct(vegW)}%">${t('vegetative')}</div>
+<div class="progress-phase-label" style="width:${pct(flowW)}%">${t('flowering')}</div>
+<div class="progress-phase-label" style="width:${pct(flushW)}%">${t('flush')}</div>
+</div>
+</div>`;
+}
+/* ==== Recommended Gear Component ==== */
+function createRecommendedGearHTML(phase,titlePrefix){const products=AANBEVOLEN_PRODUCTEN[phase];if(!products||products.length===0){return'';}
+const titleKey=`${titlePrefix}${phase.charAt(0).toUpperCase()+phase.slice(1)}`;const titleHTML=`<div class="section-title">${t(titleKey)}</div>`;const buttonsHTML=products.map(p=>{const url=addAffil(p.url);const label=t(p.labelKey);return`<a href="${url}" target="_blank" rel="noopener nofollow" class="btn btn-affiliate">${label}</a>`;}).join('');return`<div style="margin-top:16px;">${titleHTML}<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">${buttonsHTML}</div></div>`;}
+/* ==== Reminder info popup ==== */
+function showReminderInfo(plantId,actionType,iso){
+const plant=getPlant(plantId),phase=getPhaseForDate(plant,iso),copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
+let html='';
+if(actionType==='feed'){html=(copy.feed&&copy.feed[phase])||'';const url=getRqsNutrientUrl(phase);if(url)html+=`<p style="margin-top:10px;"><a class="btn-affiliate" href="${url}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a></p>`;}
+else if(actionType==='water'){html=(copy.water&&copy.water[phase])||'';}
+else if(actionType==='flush'){html=copy.flush||'';}
+else if(actionType==='harvest'){html=copy.harvest||'';}
+const recommendedGearHTML=createRecommendedGearHTML(phase,'essentialTools');if(recommendedGearHTML){html+=`<hr style="border:0; border-top:1px solid var(--line); margin: 16px 0;">`+recommendedGearHTML;}
+document.getElementById('infoBody').innerHTML=html||'<p>—</p>';
+document.getElementById('helpModal2').style.display='flex';
+}
+window.showReminderInfo=showReminderInfo;
+/* ==== Render ==== */
+function renderHeaderStatus(){const display=document.getElementById('growerStatusDisplay');if(!display)return;const N=state.plants.filter(p=>p.archived).length;const rank=getGrowerRank(N);const label=t('completedHarvestsLabel');display.innerHTML=`${rank} | 🪴 ${N} ${label}`;}
+function render(){
+const active=state.plants.filter(p=>!p.archived), archived=state.plants.filter(p=>p.archived);
+const grid=document.getElementById('grid'), archivedGrid=document.getElementById('archivedGrid'), archivedSection=document.getElementById('archivedSection');
+grid.innerHTML=active.map(p=>{
+const ageDays=Math.max(0,daysBetween(p.planted_at,new Date())), w=Math.floor(ageDays/7), d=ageDays%7;
+const seedUrl=getRqsSeedUrl(p.strain);
+const buyBtn=seedUrl? `<a class="btn-affiliate" href="${seedUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
+return `<div class="card ${p.isCollapsed?'is-collapsed':''}" id="card_${p.id}">
+<div class="card-h">
+<div class="row-name">
+<input type="text" value="${p.name}" onchange="updatePlant('${p.id}',{name:this.value})"/>
+<button class="btn-collapse" onclick="toggleCollapse('${p.id}')"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
+</div>
+<div class="row-strain">
+<select onchange="handleStrainChange('${p.id}',this.value)">${Object.keys(RQS_STRAINS).map(s=>`<option value="${s}" ${p.strain===s?'selected':''}>${getStrainDisplayName(s)}</option>`).join('')}</select>
+${buyBtn}
+</div>
+<div class="row-info">
+<label><span class="muted">${t('planted')}</span> <input type="date" value="${p.planted_at}" onchange="updatePlant('${p.id}',{planted_at:this.value})"/></label>
+<span class="pill"><b>${t('age')}</b> ${w} ${t('weeks')} ${d} ${t('days')}</span>
+<div class="action-buttons">
+<button onclick="updatePlant('${p.id}',{archived:true})">${t('archivedCycle')}</button>
+<button class="danger" onclick="deletePlant('${p.id}')">${t('delete')}</button>
+</div>
+</div>
+${renderActionsBar(p)}
+${createProgressBarHTML(p)}
+</div>
+<div class="card-b">
+<div class="tabs">
+<button class="tab active" data-tab="timeline" onclick="switchTab(this,'${p.id}')">${t('timeline')}</button>
+<button class="tab" data-tab="reminders" onclick="switchTab(this,'${p.id}')">${t('reminders')}</button>
+<button class="tab" data-tab="notes" onclick="switchTab(this,'${p.id}')">${t('notes')}</button>
+</div>
+<div id="content_${p.id}" style="margin-top:12px;"></div>
+</div>
+</div>`;
+}).join('');
+archivedGrid.innerHTML=archived.map(p=>`<div class="card"><div class="card-h"><div class="row-name"><b>${p.name}</b> <span class="muted" style="margin-left:8px">(${getStrainDisplayName(p.strain)})</span></div><div class="row-info"><span>${t('planted')} ${fmtDate(p.planted_at)}</span><div class="action-buttons"><button onclick="updatePlant('${p.id}',{archived:false})">${t('unarchive')}</button><button class="danger" onclick="deletePlant('${p.id}')">${t('delete')}</button></div></div></div></div>`).join('');
+document.getElementById('empty').style.display=active.length===0?'block':'none';
+archivedSection.style.display=state.viewArchived&&archived.length>0?'block':'none';
+active.forEach(p=>{const card=document.getElementById(`card_${p.id}`);if(card&&!p.isCollapsed){const tab=card.querySelector('.tab.active');if(tab)switchTab(tab,p.id);}});
+renderHeaderStatus();
+}
+function renderActionsBar(plant,overrideDate=null){
+const actions=getPendingActions(plant,overrideDate||new Date());
+if(actions.length===0)return `<div class="actions-bar" id="actions_${plant.id}"></div>`;
+const html=actions.map(a=>{const id=createActionId(a.type,a.date);const iso=toISODate(a.date);return `<div class="action-item ${a.type}" onclick="acknowledgeAction('${plant.id}','${id}')"><div class="left"><span>${a.label}</span><button type="button" class="info-btn" onclick="event.stopPropagation();showReminderInfo('${plant.id}','${a.type}','${iso}')">?</button></div><span class="action-date">${fmtShortDate(a.date)}</span></div>`;}).join('');
+return `<div class="actions-bar" id="actions_${plant.id}">${html}</div>`;
+}
+window.render=render;
+/* ==== Tabs ==== */
+function switchTab(el,id){
+const card=el.closest('.card');card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+const tab=el.getAttribute('data-tab');const c=document.getElementById(`content_${id}`);const p=getPlant(id);
+if(tab==='timeline')c.innerHTML=renderTimeline(p);
+if(tab==='reminders')c.innerHTML=renderReminders(p);
+if(tab==='notes')c.innerHTML=renderNotes(p);
+}
+window.switchTab=switchTab;
+function renderTimeline(p){
+const byWeek=p.photos.reduce((acc,x)=>{const w=weekNumberSince(p.planted_at,x.date);(acc[w]||(acc[w]=[])).push(x);return acc;}, {});
+return `<div class="uploader">
+<label>${t('date')}</label><input type="date" id="photo_date_${p.id}" value="${todayISO()}"/>
+<label>${t('noteOptional')}</label><input type="text" id="photo_note_${p.id}" placeholder="W${weekNumberSince(p.planted_at,todayISO())}"/>
+<input type="file" id="photo_file_${p.id}" accept="image/*"/><button onclick="addPhoto('${p.id}')">${t('uploadPhoto')}</button>
+</div>
+<div style="margin-top:16px;">
+${Object.keys(byWeek).sort((a,b)=>a-b).map(w=>
+`<div class="section-title" style="margin-top:0;">Week ${w}</div>
+<div class="grid" style="gap:12px;margin-bottom:12px;">
+${byWeek[w].map(ph=>
+`<figure>
+<img src="${ph.data}" alt="Week ${w}"/>
+<figcaption>
+<div><div class="muted">${fmtDate(ph.date)}</div><div>${ph.note||''}</div></div>
+<button class="danger" style="padding:4px 8px;font-size:12px" onclick="removePhoto('${p.id}','${ph.id}')">${t('remove')}</button>
+</figcaption>
+</figure>`
+).join('')}
+</div>`).join('') || `<p class="muted" style="text-align:center;">${t('noPhotos')}</p>`}
+</div>`;
+}
+/* Reminders tab — with ? buttons */
+function renderReminders(p){
+const s=p.schedule;const phase=getPhaseForDate(p,todayISO());
+const nutrUrl=getRqsNutrientUrl(phase);
+const buyBtn=nutrUrl?`<a class="btn-affiliate" href="${nutrUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
+const settingsHTML=`<div style="display:flex;flex-direction:column;gap:10px;">
+<div class="field-group">
+<span>${t('water')}</span>
+<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','water','${todayISO()}')">?</button>:
+<span>${t('every')}</span>
+<input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${p.id}','waterEveryDays',this.value)"/>
+<span>${t('daysPlural')}</span>
+</div>
+<div class="field-group">
+<span>${t('feed')}</span>
+<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','feed','${todayISO()}')">?</button>:
+<span>${t('startInWeek')}</span>
+<input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${p.id}','feedStartWeek',this.value)"/>
+<span> | ${t('frequency')}</span>
+<input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${p.id}','feedEveryDays',this.value)"/>
+<span>${t('daysPlural')}</span>
+</div>
+<div class="field-group">
+<span>${t('startFlush')}</span>
+<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','flush','${todayISO()}')">?</button>:
+<span>${t('flushStartWeek')}</span>
+<input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${p.id}','flushStartWeek',this.value)"/>
+</div>
+<div class="field-group">
+<span>${t('targetHarvestWeek')}</span>: <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${p.id}','targetHarvestWeek',this.value)"/>
+</div>
+<div class="hint" style="margin-top:4px;"><b>${t('strainGuideline')}</b> — ${getStrainDisplayName(p.strain)}<br/>${t('adjustNote')}</div>
+<div style="margin-top:8px;">${buyBtn}</div>
+</div>`;
+const recommendedGearHTML=createRecommendedGearHTML(phase,'recommendedFor');return settingsHTML+recommendedGearHTML;}
+function renderNotes(p){return `<textarea style="width:100%;min-height:120px;" onchange="updatePlant('${p.id}',{notes:this.value})" placeholder="${t('notesPlaceholder')}">${p.notes||''}</textarea>`;}
+function updateSchedule(id,key,val){const p=getPlant(id);p.schedule[key]=parseInt(val,10);saveAndRender();}
+window.updateSchedule=updateSchedule;
+function addPhoto(id){
+const fi=document.getElementById(`photo_file_${id}`),date=document.getElementById(`photo_date_${id}`).value,note=document.getElementById(`photo_note_${id}`).value;
+if(!fi.files[0]){alert(t('alertPhoto'));return;}
+const r=new FileReader();r.onload=e=>{const p=getPlant(id);p.photos.push({id:uid(),date,note,data:e.target.result});p.photos.sort((a,b)=>new Date(a.date)-new Date(b.date));saveAndRender();};r.readAsDataURL(fi.files[0]);
+}
+window.addPhoto=addPhoto;
+function removePhoto(id,photoId){const p=getPlant(id);p.photos=p.photos.filter(x=>x.id!==photoId);saveAndRender();}
+window.removePhoto=removePhoto;
+function acknowledgeAction(id,actId){const p=getPlant(id);if(p&&!p.acknowledgedActions.includes(actId)){p.acknowledgedActions.push(actId);saveAndRender();}}
+window.acknowledgeAction=acknowledgeAction;
+/* ==== Share modal ==== */
+function openShareModal(){document.getElementById('shareModal').style.display='flex';document.getElementById('shareFallbackMsg').style.display=navigator.share?'none':'block';}
+window.openShareModal=openShareModal;
+/* ===== Rapport bouwen als Blob (JPEG) ===== */
+async function buildReportJPGBlob() {
+const active = state.plants.filter(p => !p.archived);
+const W = 1080, headerH = 260, rowH = 320, VPad = 32, HPad = 40;
+const H = headerH + (active.length * (rowH + VPad)) + VPad;
+const canvas = document.createElement('canvas');
+canvas.width = W;
+canvas.height = Math.max(headerH + VPad * 2, H);
+const ctx = canvas.getContext('2d');
+// Light mode kleuren
+const C = { bg:'#FFFFFF', fg:'#4D3A31', main:'#38761D', muted:'#90B47A', line:'#90B47A', segSeed:'#90B47A', segVeg:'#38761D', segFlow:'#A9C439', segFlush:'#C8D29B', danger:'#CC0000' };
+ctx.fillStyle = C.bg;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+const appName = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
+const intro = REPORT_INTRO[currentLang] || REPORT_INTRO['nl'];
+const dateStr = new Date().toLocaleString(currentLang, { year:'numeric', month:'long', day:'numeric' });
+// Logo
+const logo = await new Promise(res => {
+const img = new Image();
+img.crossOrigin = 'anonymous';
+img.onload = () => res(img);
+img.onerror = () => res(null);
+img.src = 'kweekmaatjelogo.png';
+});
+// Header
+let tx = HPad;
+if (logo) {
+ctx.drawImage(logo, HPad, 24, 56, 56);
+tx = HPad + 56 + 12;
+}
+ctx.fillStyle = C.main;
+ctx.font = 'bold 44px system-ui,Arial';
+ctx.fillText(appName, tx, 70);
+ctx.fillStyle = C.fg;
+ctx.font = '28px system-ui,Arial';
+ctx.fillText(intro, HPad, 120);
+ctx.fillStyle = C.muted;
+ctx.font = '20px system-ui,Arial';
+ctx.fillText(`${t('growthReportTitle')} • ${dateStr}`, HPad, 160);
+ctx.strokeStyle = C.line;
+ctx.lineWidth = 2;
+ctx.beginPath();
+ctx.moveTo(HPad, 190);
+ctx.lineTo(W - HPad, 190);
+ctx.stroke();
+function drawPB(x,y,w,h,plant){
+const s=plant.schedule,totalW=Math.max(1,s.targetHarvestWeek);
+const seedW=Math.min(2,totalW), vegW=Math.max(0,Math.min(4,totalW)-seedW), flowW=Math.max(0,Math.min(s.flushStartWeek,totalW)-(seedW+vegW)), flushW=Math.max(0,totalW-(seedW+vegW+flowW));
+const px = p => Math.round((p/totalW)*w);
+ctx.strokeStyle=C.line;
+ctx.lineWidth=2;
+ctx.strokeRect(x,y,w,h);
+let cur=x;
+const segs=[{w:px(seedW),c:C.segSeed},{w:px(vegW),c:C.segVeg},{w:px(flowW),c:C.segFlow},{w:px(flushW),c:C.segFlush}];
+segs.forEach(sg=>{
+if(sg.w>0){
+ctx.fillStyle=sg.c;
+ctx.fillRect(cur,y,sg.w,h);
+cur+=sg.w;
+}});
+const elapsed=Math.max(0,daysBetween(plant.planted_at,new Date()));
+const prog=Math.max(0,Math.min(1,elapsed/(s.targetHarvestWeek*7)));
+const mx=x+Math.round(w*prog);
+ctx.fillStyle=C.danger;
+ctx.fillRect(mx-1,y-6,3,h+12);
+ctx.fillStyle=C.danger;
+ctx.font='bold 12px system-ui,Arial';
+const lab=t('today');
+const tw=ctx.measureText(lab).width+8;
+const lx=Math.min(W-HPad-tw,Math.max(HPad,mx-tw/2));
+ctx.fillRect(lx,y-26,tw,18);
+ctx.fillStyle='#fff';
+ctx.fillText(lab,lx+4,y-12);
+ctx.fillStyle=C.muted;
+ctx.font='12px system-ui,Arial';
+const st=new Date(plant.planted_at), en=new Date(st); en.setDate(en.getDate()+s.targetHarvestWeek*7);
+ctx.fillText(fmtDate(st),x,y+h+16);
+const enTxt=fmtDate(en);
+const ew=ctx.measureText(enTxt).width;
+ctx.fillText(enTxt,x+w-ew,y+h+16);
+}
+async function drawLatest(x,y,w,h,plant){
+const arr=(plant.photos||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+const last=arr[arr.length-1];
+ctx.strokeStyle=C.line;
+ctx.lineWidth=2;
+ctx.strokeRect(x,y,w,h);
+if(!last){
+ctx.fillStyle='#fafafa';
+ctx.fillRect(x+2,y+2,w-4,h-4);
+ctx.fillStyle=C.muted;
+ctx.font='16px system-ui,Arial';
+const txt=t('noPhotos');
+const tw=ctx.measureText(txt).width;
+ctx.fillText(txt, x+(w-tw)/2, y+h/2);
+return;
+}
+await new Promise(r=>{
+const img=new Image();
+img.onload=()=>{
+const ir=img.width/img.height, br=w/h;
+let dw,dh,dx,dy;
+if(ir>br){ dh=h; dw=ir*dh; dx=x+(w-dw)/2; dy=y; }
+else { dw=w; dh=dw/ir; dx=x; dy=y+(h-dh)/2; }
+ctx.drawImage(img,dx,dy,dw,dh);
+r();
+};
+img.onerror=()=>r();
+img.src=last.data;
+});
+}
+// Rows
+let y = 220;
+for (const p of active) {
+ctx.fillStyle=C.fg;
+ctx.font='bold 26px system-ui,Arial';
+ctx.fillText(p.name, 40, y);
+ctx.fillStyle=C.muted;
+ctx.font='18px system-ui,Arial';
+ctx.fillText(getStrainDisplayName(p.strain), 40, y+26);
+drawPB(40, y+44, W-40*2-360, 18, p);
+/* eslint-disable no-await-in-loop */
+await drawLatest(W-40-320, y-10, 320, 180, p);
+/* eslint-enable no-await-in-loop */
+ctx.strokeStyle='#eee';
+ctx.lineWidth=1;
+ctx.beginPath();
+ctx.moveTo(40,y+rowH-8);
+ctx.lineTo(W-40,y+rowH-8);
+ctx.stroke();
+y += rowH;
+}
+// DataURL → Blob
+const dataURL = canvas.toDataURL('image/jpeg', 0.92);
+const arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]);
+let n = bstr.length;
+const u8arr = new Uint8Array(n);
+while(n--) u8arr[n] = bstr.charCodeAt(n);
+return new Blob([u8arr], { type: mime });
+}
+/* ===== Delen: popup-knop fix ===== */
+async function shareReportJPG() {
+const title = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
+const text = REPORT_INTRO[currentLang] || REPORT_INTRO['nl'];
+const supportsFileShare = !!(navigator.canShare && typeof File !== 'undefined');
+// Desktop/Pages: direct tekst delen (gesture blijft leven), dan JPG renderen + downloaden
+if (navigator.share && !supportsFileShare) {
+try {
+await navigator.share({ title, text });
+} catch(_) { /* user canceled: ok */ }
+try {
+const blob = await buildReportJPGBlob();
+const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = name;
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+} finally {
+document.getElementById('shareModal').style.display = 'none';
+}
+return;
+}
+// Mobiel / Level 2: eerst JPG bouwen en als file delen
+try {
+const blob = await buildReportJPGBlob();
+const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+if (supportsFileShare) {
+const file = new File([blob], name, { type: 'image/jpeg' });
+if (navigator.canShare({ files: [file] })) {
+await navigator.share({ files: [file], title, text });
+} else if (navigator.share) {
+await navigator.share({ title, text });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = name;
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+} else {
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = name;
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+}
+}
+} catch (err) {
+// Fallback: download
+try {
+const blob = await buildReportJPGBlob();
+const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = name;
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+} finally {
+document.getElementById('shareModal').style.display = 'none';
+}
+return;
+}
+document.getElementById('shareModal').style.display = 'none';
+}
+window.shareReportJPG=shareReportJPG;
+</script>
+</body>
+</html>
