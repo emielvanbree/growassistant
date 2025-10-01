@@ -437,10 +437,13 @@ function openStonerStatusModal(){const modal=document.getElementById('stonerStat
 const createActionId=(type,date)=>`${type}-${toISODate(date)}`;
 function getPendingActions(plant,dateToCheck){
 const out=[];const start=new Date(plant.planted_at);const today=dateToCheck;if(today<start)return[];
+const harvestDate=new Date(start);
+harvestDate.setDate(start.getDate()+plant.schedule.targetHarvestWeek*7);
 for(let d=new Date(start);d<=today;d.setDate(d.getDate()+1)){
 const age=daysBetween(start,d);const wk=Math.floor(age/7);const s=plant.schedule;const arr=[];
-if(age>0&&s.waterEveryDays>0&&age%s.waterEveryDays===0)arr.push({type:'water',label:t('water'),date:new Date(d)});
-if(wk<s.flushStartWeek&&wk>=s.feedStartWeek){const startFeed=s.feedStartWeek*7;if(s.feedEveryDays>0&&(age-startFeed)>=0&&(age-startFeed)%s.feedEveryDays===0)arr.push({type:'feed',label:t('feed'),date:new Date(d)});}
+const isBeforeHarvest=d<harvestDate;
+if(isBeforeHarvest&&age>0&&s.waterEveryDays>0&&age%s.waterEveryDays===0)arr.push({type:'water',label:t('water'),date:new Date(d)});
+if(isBeforeHarvest&&wk<s.flushStartWeek&&wk>=s.feedStartWeek){const startFeed=s.feedStartWeek*7;if(s.feedEveryDays>0&&(age-startFeed)>=0&&(age-startFeed)%s.feedEveryDays===0)arr.push({type:'feed',label:t('feed'),date:new Date(d)});};
 if(wk===s.flushStartWeek&&age===s.flushStartWeek*7)arr.push({type:'flush',label:t('startFlush'),date:new Date(d)});
 if(age===s.targetHarvestWeek*7)arr.push({type:'harvest',label:t('harvest'),date:new Date(d)});
 arr.forEach(a=>{const id=createActionId(a.type,a.date);if(!plant.acknowledgedActions.includes(id))out.push(a);});
