@@ -309,7 +309,6 @@ Start je eerste plant — geen account nodig, alles lokaal.
 </a>
 <script>
 /* ===== i18n ===== */
-/* -- CHANGE: Grote blok met juridische tekst, voor alle talen -- */
 const legalDisclaimerNL = `<p class="disclaimer">De originele en juridisch bindende versie van dit document is in het Engels. Deze vertaling wordt alleen voor het gemak aangeboden en er kunnen geen rechten aan worden ontleend.</p>`;
 const legalDisclaimerDE = `<p class="disclaimer">Die ursprüngliche und rechtsverbindliche Version dieses Dokuments ist in englischer Sprache. Diese Übersetzung wird nur zur Vereinfachung zur Verfügung gestellt und es können daraus keine Rechte abgeleitet werden.</p>`;
 const legalDisclaimerFR = `<p class="disclaimer">La version originale et juridiquement contraignante de ce document est en anglais. Cette traduction est fournie à titre de commodité uniquement et aucun droit ne peut en être dérivé.</p>`;
@@ -352,16 +351,118 @@ es:{feed:{seedling:"<p><b>Nutrientes:</b> Aún no. El sustrato tiene suficiente;
 const REPORT_INTRO={nl:"Kijk eens hoe goed mijn plantjes onderweg zijn! 🌱💚",en:"Look how well my plants are doing! 🌱💚",de:"Schau mal, wie gut meine Pflanzen unterwegs sind! 🌱💚",fr:"Regardez comme mes plantes se portent bien ! 🌱💚",es:"¡Miren qué bien van mis plantas! 🌱💚",};
 /* ==== Gamification Data ==== */
 const HIGH_SCORES={'FIRST_HARVEST':{title:{nl:'De Ontmaagding',en:'The First Time',de:'Das erste Mal',fr:'La Première Fois',es:'La Primera Vez'},description:{nl:'Voltooi je allereerste kweekcyclus.',en:'Complete your very first grow cycle.',de:'Schließe deinen allerersten Grow-Zyklus ab.',fr:'Terminez votre tout premier cycle de culture.',es:'Completa tu primer ciclo de cultivo.'}},'HATTRICK_HERO':{title:{nl:'Hattrick Held',en:'Hattrick Hero',de:'Hattrick-Held',fr:'Héros du Triplé',es:'Héroe del Hattrick'},description:{nl:'Voltooi 3 succesvolle kweekcycli.',en:'Complete 3 successful grow cycles.',de:'Schließe 3 erfolgreiche Grow-Zyklen ab.',fr:'Terminez 3 cycles de culture réussis.',es:'Completa 3 ciclos de cultivo exitosos.'}},'AUTOPILOT':{title:{nl:'Autopilot Aan',en:'Autopilot Engaged',de:'Autopilot aktiviert',fr:'Pilote Automatique Engagé',es:'Piloto Automático Activado'},description:{nl:'Voltooi 5 kweekcycli.',en:'Complete 5 grow cycles.',de:'Schließe 5 Grow-Zyklen ab.',fr:'Terminez 5 cycles de culture.',es:'Completa 5 ciclos de cultivo.'}},'GOTTA_SMOKE_EM_ALL':{title:{nl:"Gotta Smoke 'Em All",en:"Gotta Smoke 'Em All",de:"Schnapp sie dir alle",fr:'Fumez-les Tous',es:'A Fumarlos Todos'},description:{nl:'Kweek 5 verschillende soorten wiet.',en:'Grow 5 different cannabis strains.',de:'Baue 5 verschiedene Cannabis-Sorten an.',fr:'Cultivez 5 variétés de cannabis différentes.',es:'Cultiva 5 cepas de cannabis diferentes.'}},'GANJA_GENERAL':{title:{nl:'De Ganja Generaal',en:'The Ganja General',de:'Der Ganja-General',fr:'Le Général Ganja',es:'El General Ganja'},description:{nl:'Voltooi 10 kweekcycli.',en:'Complete 10 grow cycles.',de:'Schließe 10 Grow-Zyklen ab.',fr:'Terminez 10 cycles de culture.',es:'Completa 10 ciclos de cultivo.'}}};
-/* ==== Recommended Products Data ==== */
-const AANBEVOLEN_PRODUCTEN={seedling:[{labelKey:'heatMat',url:'https://www.royalqueenseeds.com/growing/322-starter-kit-feminized.html'}],vegetative:[{labelKey:'growthNutrients',url:'https://www.royalqueenseeds.com/us/growing/355-easy-grow-booster-tablets.html'},{labelKey:'calMag',url:'https://www.royalqueenseeds.com/us/growing/568-easy-plus-micronutrients.html'},{labelKey:'fabricPots',url:'https://www.royalqueenseeds.com/us/growing/461-rqs-fabric-pot.html'},{labelKey:'ecMeter',url:'https://www.royalqueenseeds.com/growing/469-conductivity-tester.html'},{labelKey:'phMeter',url:'https://www.royalqueenseeds.com/growing/468-ph-tester.html'},{labelKey:'clipFan',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'},{labelKey:'plantTies',url:'https://www.royalqueenseeds.com/us/growing/533-bending-clips.html'},{labelKey:'carbonFilter',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'}],flowering:[{labelKey:'bloomNutrients',url:'https://www.royalqueenseeds.com/us/growing/356-easy-bloom-booster-tablet.html'},{labelKey:'pkBooster',url:'https://www.royalqueenseeds.com/us/growing/356-easy-bloom-booster-tablet.html'},{labelKey:'scrogNet',url:'https://www.royalqueenseeds.com/us/growing/534-scrog-netting.html'},{labelKey:'carbonFilter',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'}],flush:[{labelKey:'flushHarvestGuide',url:'https://www.royalqueenseeds.com/us/blog-top-tips-to-successfully-dry-and-cure-your-fresh-cannabis-buds-n682'},{labelKey:'flushingAgent',url:'https://www.royalqueenseeds.com/us/content/42-let-s-get-started'},{labelKey:'trimmingScissors',url:'https://www.royalqueenseeds.com/us/growing/467-curved-trimming-scissors.html'},{labelKey:'dryingRack',url:'https://www.royalqueenseeds.com/us/growing/550-rqs-herb-dryer.html'},{labelKey:'curingJars',url:'https://www.royalqueenseeds.com/growing/638-curing-vault.html'},{labelKey:'miniHygrometers',url:'https://www.royalqueenseeds.com/grow-tent-kits/710-mars-hydro-100100180-grow-tent-kit.html'},{labelKey:'humidityPacks',url:'https://www.royalqueenseeds.com/us/growing/519-humidity-control-pack.html'}]};
-/* ==== Affiliate helpers ==== */
-const AFFIL_ID="";
-const STRAIN_URLS = { 'Onbekend/Algemeen': 'https://www.royalqueenseeds.com/34-autoflowering-cannabis-seeds', 'Sticky Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/714-sticky-queen-automatic.html', 'Mexican Rush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/713-mexican-rush-automatic.html', 'Blue Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/312-blue-cheese-automatic.html', 'Royal Haze Auto': 'https://www.royalqueenseeds.com/autoflowering-cannabis-seeds/131-royal-haze-automatic.html', 'Mimosa Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/537-mimosa-automatic.html', 'Royal Bluematic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/129-royal-bluematic.html', 'Royal Creamatic': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/145-royal-creamatic.html', 'Green Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/489-green-gelato-automatic.html', 'Northern Light Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/125-northern-light-automatic.html', 'North Thunderfuck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-north-thunderfuck-automatic.html', 'Triple G Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/572-triple-g-automatic.html', 'Haze Berry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/362-haze-berry-automatic.html', 'Special Queen 1 Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-special-queen-1-automatic.html', 'Sweet ZZ Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/429-sweet-zz-automatic.html', 'Sweet Skunk Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/162-sweet-skunk-automatic.html', 'Cherry Pie Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/612-cherry-pie-automatic.html', 'Tropicana Cookies Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/650-tropicana-cookies-purple-automatic.html', 'Trainwreck Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/513-trainwreck-automatic.html', 'Royal Cheese Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-cheese-automatic.html', 'Granddaddy Purple Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/607-granddaddy-purple-automatic.html', 'Pink Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/639-pink-runtz-automatic.html', 'Grape Ape Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/608-grape-ape-automatic.html', 'White Widow Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/119-white-widow-automatic.html', 'NYC Sour D Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/665-nyc-sour-d-automatic.html', 'GOAT\'lato Auto': 'https://www.royalqueenseeds.com/us/rqs-tyson-marijuana-seeds/666-goatlato-automatic.html', 'Corkscrew Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/712-corkscrew-automatic.html', 'Fat Banana Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/413-fat-banana-automatic.html', 'Cookies Gelato Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/507-cookies-gelato-automatic.html', 'Royal Runtz Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/575-royal-runtz-automatic.html', 'Royal Cookies Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/190-royal-cookies-automatic.html', 'Watermelon Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/544-watermelon-automatic.html', 'Apple Fritter Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/611-apple-fritter-automatic.html', 'Royal Critical Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/168-royal-critical-automatic.html', 'Sherbet Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/478-sherbet-queen-automatic.html', 'HulkBerry Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/456-hulkberry-automatic.html', 'Purple Queen Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/482-purple-queen-automatic.html', 'Royal Gorilla Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/421-royal-gorilla-automatic.html', 'Wedding Cake Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/588-wedding-cake-automatic.html', 'Royal Dwarf': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/130-royal-dwarf.html', 'Pink Mist Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/660-pink-mist-automatic.html', 'Easy Bud': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/124-easy-bud.html', 'Purple Lemonade Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/648-purple-lemonade-automatic.html', 'Quick One': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/126-quick-one.html', 'Diesel Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/180-diesel-automatic.html', 'Bubble Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/315-bubble-kush-automatic.html', 'Amnesia Haze Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/165-amnesia-haze-automatic.html', 'Do-Si-Dos Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/585-do-si-dos-automatic.html', 'Royal Jack Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/179-royal-jack-automatic.html', 'Purple Punch Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/570-purple-punch-automatic.html', 'Royal Kush Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/171-royal-kush-automatic.html', 'Royal AK Auto': 'https://www.royalqueenseeds.com/us/autoflowering-cannabis-seeds/154-royal-ak-automatic.html' };
-const RQS_SEED_SLUGS = { 'Onbekend/Algemeen': 'unknown-generic', 'Sticky Queen Auto': 'sticky-queen-auto', 'Mexican Rush Auto': 'mexican-rush-auto', 'Blue Cheese Auto': 'blue-cheese-auto', 'Royal Haze Auto': 'royal-haze-auto', 'Mimosa Auto': 'mimosa-auto', 'Royal Bluematic': 'royal-bluematic', 'Royal Creamatic': 'royal-creamatic', 'Green Gelato Auto': 'green-gelato-auto', 'Northern Light Auto': 'northern-light-auto', 'North Thunderfuck Auto': 'north-thunderfuck-auto', 'Triple G Auto': 'triple-g-auto', 'Haze Berry Auto': 'haze-berry-auto', 'Special Queen 1 Auto': 'special-queen-1-auto', 'Sweet ZZ Auto': 'sweet-zz-auto', 'Sweet Skunk Auto': 'sweet-skunk-auto', 'Cherry Pie Auto': 'cherry-pie-auto', 'Tropicana Cookies Purple Auto': 'tropicana-cookies-purple-auto', 'Trainwreck Auto': 'trainwreck-auto', 'Royal Cheese Auto': 'royal-cheese-auto', 'Granddaddy Purple Auto': 'granddaddy-purple-auto', 'Pink Runtz Auto': 'pink-runtz-auto', 'Grape Ape Auto': 'grape-ape-auto', 'White Widow Auto': 'white-widow-auto', 'NYC Sour D Auto': 'nyc-sour-d-auto', 'GOAT\'lato Auto': 'goatlato-auto', 'Corkscrew Auto': 'corkscrew-auto', 'Fat Banana Auto': 'fat-banana-auto', 'Cookies Gelato Auto': 'cookies-gelato-auto', 'Royal Runtz Auto': 'royal-runtz-auto', 'Royal Cookies Auto': 'royal-cookies-auto', 'Watermelon Auto': 'watermelon-auto', 'Apple Fritter Auto': 'apple-fritter-auto', 'Royal Critical Auto': 'royal-critical-auto', 'Sherbet Queen Auto': 'sherbet-queen-auto', 'HulkBerry Auto': 'hulkberry-auto', 'Purple Queen Auto': 'purple-queen-auto', 'Royal Gorilla Auto': 'royal-gorilla-auto', 'Wedding Cake Auto': 'wedding-cake-auto', 'Royal Dwarf': 'royal-dwarf', 'Pink Mist Auto': 'pink-mist-auto', 'Easy Bud': 'easy-bud', 'Purple Lemonade Auto': 'purple-lemonade-auto', 'Quick One': 'quick-one', 'Diesel Auto': 'diesel-auto', 'Bubble Kush Auto': 'bubble-kush-auto', 'Amnesia Haze Auto': 'amnesia-haze-auto', 'Do-Si-Dos Auto': 'do-si-dos-auto', 'Royal Jack Auto': 'royal-jack-auto', 'Purple Punch Auto': 'purple-punch-auto', 'Royal Kush Auto': 'royal-kush-auto', 'Royal AK Auto': 'royal-ak-auto' };
-function rqsLocalePath(){switch(currentLang){case'nl':return'nl/';case'de':return'de/';case'fr':return'fr/';case'es':return'es/';default:return'';}}
-function addAffil(url){return AFFIL_ID?url+(url.includes('?')?'&':'?')+AFFIL_ID:url;}
-function getRqsSeedUrl(k){const url=STRAIN_URLS[k];if(!url)return null;return addAffil(url);}
-function getRqsNutrientUrl(phase){if(phase==='vegetative')return addAffil('https://www.royalqueenseeds.com/growing/671-bio-grow-fertiliser.html');if(phase==='flowering')return addAffil('https://www.royalqueenseeds.com/growing/670-bio-bloom-fertiliser.html');return null;}
+
+// === REFACTORED AFFILIATE LINK LOGIC ===
+
+const AFFIL_ID = ""; // Add your affiliate ID here if you have one
+
+// This object now only contains the language-independent parts of the URL (the "slug")
+const RQS_PRODUCT_SLUGS = {
+    heatMat: { slug: '322-starter-kit-feminized.html', type: 'growing' },
+    growthNutrients: { slug: '355-easy-grow-booster-tablets.html', type: 'growing' },
+    calMag: { slug: '568-easy-plus-micronutrients.html', type: 'growing' },
+    fabricPots: { slug: '461-rqs-fabric-pot.html', type: 'growing' },
+    ecMeter: { slug: '469-conductivity-tester.html', type: 'growing' },
+    phMeter: { slug: '468-ph-tester.html', type: 'growing' },
+    clipFan: { slug: '710-mars-hydro-100100180-grow-tent-kit.html', type: 'grow-tent-kits' },
+    plantTies: { slug: '533-bending-clips.html', type: 'growing' },
+    carbonFilter: { slug: '710-mars-hydro-100100180-grow-tent-kit.html', type: 'grow-tent-kits' },
+    bloomNutrients: { slug: '356-easy-bloom-booster-tablet.html', type: 'growing' },
+    pkBooster: { slug: '356-easy-bloom-booster-tablet.html', type: 'growing' },
+    scrogNet: { slug: '534-scrog-netting.html', type: 'growing' },
+    flushHarvestGuide: { slug: 'blog-top-tips-to-successfully-dry-and-cure-your-fresh-cannabis-buds-n682', type: 'blog' },
+    flushingAgent: { slug: '42-let-s-get-started', type: 'content' },
+    trimmingScissors: { slug: '467-curved-trimming-scissors.html', type: 'growing' },
+    dryingRack: { slug: '550-rqs-herb-dryer.html', type: 'growing' },
+    curingJars: { slug: '638-curing-vault.html', type: 'growing' },
+    miniHygrometers: { slug: '710-mars-hydro-100100180-grow-tent-kit.html', type: 'grow-tent-kits' },
+    humidityPacks: { slug: '519-humidity-control-pack.html', type: 'growing' },
+};
+
+// Refactored AANBEVOLEN_PRODUCTEN to use the new slug object
+const AANBEVOLEN_PRODUCTEN = {
+    seedling: [{ labelKey: 'heatMat' }],
+    vegetative: [{ labelKey: 'growthNutrients' }, { labelKey: 'calMag' }, { labelKey: 'fabricPots' }, { labelKey: 'ecMeter' }, { labelKey: 'phMeter' }, { labelKey: 'clipFan' }, { labelKey: 'plantTies' }, { labelKey: 'carbonFilter' }],
+    flowering: [{ labelKey: 'bloomNutrients' }, { labelKey: 'pkBooster' }, { labelKey: 'scrogNet' }, { labelKey: 'carbonFilter' }],
+    flush: [{ labelKey: 'flushHarvestGuide' }, { labelKey: 'flushingAgent' }, { labelKey: 'trimmingScissors' }, { labelKey: 'dryingRack' }, { labelKey: 'curingJars' }, { labelKey: 'miniHygrometers' }, { labelKey: 'humidityPacks' }]
+};
+
+const RQS_SEED_SLUGS = { 'Onbekend/Algemeen': 'unknown-generic', 'Sticky Queen Auto': '714-sticky-queen-automatic.html', 'Mexican Rush Auto': '713-mexican-rush-automatic.html', 'Blue Cheese Auto': '312-blue-cheese-automatic.html', 'Royal Haze Auto': '131-royal-haze-automatic.html', 'Mimosa Auto': '537-mimosa-automatic.html', 'Royal Bluematic': '129-royal-bluematic.html', 'Royal Creamatic': '145-royal-creamatic.html', 'Green Gelato Auto': '489-green-gelato-automatic.html', 'Northern Light Auto': '125-northern-light-automatic.html', 'North Thunderfuck Auto': '570-north-thunderfuck-automatic.html', 'Triple G Auto': '572-triple-g-automatic.html', 'Haze Berry Auto': '362-haze-berry-automatic.html', 'Special Queen 1 Auto': '171-special-queen-1-automatic.html', 'Sweet ZZ Auto': '429-sweet-zz-automatic.html', 'Sweet Skunk Auto': '162-sweet-skunk-automatic.html', 'Cherry Pie Auto': '612-cherry-pie-automatic.html', 'Tropicana Cookies Purple Auto': '650-tropicana-cookies-purple-automatic.html', 'Trainwreck Auto': '513-trainwreck-automatic.html', 'Royal Cheese Auto': '171-royal-cheese-automatic.html', 'Granddaddy Purple Auto': '607-granddaddy-purple-automatic.html', 'Pink Runtz Auto': '639-pink-runtz-automatic.html', 'Grape Ape Auto': '608-grape-ape-automatic.html', 'White Widow Auto': '119-white-widow-automatic.html', 'NYC Sour D Auto': '665-nyc-sour-d-automatic.html', 'GOAT\'lato Auto': '666-goatlato-automatic.html', 'Corkscrew Auto': '712-corkscrew-automatic.html', 'Fat Banana Auto': '413-fat-banana-automatic.html', 'Cookies Gelato Auto': '507-cookies-gelato-automatic.html', 'Royal Runtz Auto': '575-royal-runtz-automatic.html', 'Royal Cookies Auto': '190-royal-cookies-automatic.html', 'Watermelon Auto': '544-watermelon-automatic.html', 'Apple Fritter Auto': '611-apple-fritter-automatic.html', 'Royal Critical Auto': '168-royal-critical-automatic.html', 'Sherbet Queen Auto': '478-sherbet-queen-automatic.html', 'HulkBerry Auto': '456-hulkberry-automatic.html', 'Purple Queen Auto': '482-purple-queen-automatic.html', 'Royal Gorilla Auto': '421-royal-gorilla-automatic.html', 'Wedding Cake Auto': '588-wedding-cake-automatic.html', 'Royal Dwarf': '130-royal-dwarf.html', 'Pink Mist Auto': '660-pink-mist-automatic.html', 'Easy Bud': '124-easy-bud.html', 'Purple Lemonade Auto': '648-purple-lemonade-automatic.html', 'Quick One': '126-quick-one.html', 'Diesel Auto': '180-diesel-automatic.html', 'Bubble Kush Auto': '315-bubble-kush-automatic.html', 'Amnesia Haze Auto': '165-amnesia-haze-automatic.html', 'Do-Si-Dos Auto': '585-do-si-dos-automatic.html', 'Royal Jack Auto': '179-royal-jack-automatic.html', 'Purple Punch Auto': '570-purple-punch-automatic.html', 'Royal Kush Auto': '171-royal-kush-automatic.html', 'Royal AK Auto': '154-royal-ak-automatic.html' };
+
+// This single function now builds ALL RQS links correctly.
+function buildRqsUrl(type, slug) {
+    if (!slug) return null;
+
+    let domain = '';
+    let paths = {};
+
+    switch(currentLang) {
+        case 'es':
+            domain = 'https://www.royalqueenseeds.es';
+            paths = {
+                auto: '/semillas-autoflorecientes/',
+                growing: '/guia-de-cultivo/',
+                'grow-tent-kits': '/kits-de-cultivo-de-interior/',
+                blog: '/blog/',
+                content: '/content/'
+            };
+            break;
+        case 'nl':
+            domain = 'https://www.royalqueenseeds.nl';
+            paths = {
+                auto: '/autoflowering-cannabis-zaden/',
+                growing: '/kweekgids/',
+                'grow-tent-kits': '/kweektent-kits/',
+                blog: '/blog/',
+                content: '/content/'
+            };
+            break;
+        case 'de':
+            domain = 'https://www.royalqueenseeds.de';
+            paths = {
+                auto: '/autoflowering-hanfsamen/',
+                growing: '/anbauanleitung/',
+                'grow-tent-kits': '/growbox-komplettsets/',
+                blog: '/blog/',
+                content: '/content/'
+            };
+            break;
+        case 'fr':
+            domain = 'https://www.royalqueenseeds.fr';
+            paths = {
+                auto: '/graines-autofloraison/',
+                growing: '/guide-de-culture/',
+                'grow-tent-kits': '/kits-de-culture-interieur/',
+                blog: '/blog/',
+                content: '/content/'
+            };
+            break;
+        default: // English (US) as default
+            domain = 'https://www.royalqueenseeds.com';
+            paths = {
+                auto: '/us/autoflowering-cannabis-seeds/',
+                growing: '/us/growing/',
+                'grow-tent-kits': '/us/grow-tent-kits/',
+                blog: '/us/blog/',
+                content: '/us/content/'
+            };
+            break;
+    }
+
+    const path = paths[type] || (type === 'unknown-generic' ? paths.auto : '');
+    if (type === 'unknown-generic') {
+        return domain + path;
+    }
+
+    return domain + path + slug;
+}
+
+function addAffil(url) {
+    if (!url) return null;
+    return AFFIL_ID ? url + (url.includes('?') ? '&' : '?') + AFFIL_ID : url;
+}
+
+
 /* ==== State & utils ==== */
 let currentLang=localStorage.getItem('appLang')||'nl';
 let isDarkMode=localStorage.getItem('isDarkMode')==='true';
@@ -444,7 +545,6 @@ const span=document.getElementById('appTitleText');
 if(span) span.textContent=name;
 document.getElementById('darkModeLabel').textContent=t('darkMode');
 document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.getAttribute('data-i18n'));});
-/* -- CHANGE: Vul de juridische tekst dynamisch in -- */
 document.getElementById('legal-content').innerHTML = t('termsAndPrivacyBody');
 render();
 }
@@ -532,12 +632,20 @@ return `<div class="progress-wrapper">
 }
 /* ==== Recommended Gear Component ==== */
 function createRecommendedGearHTML(phase,titlePrefix){const products=AANBEVOLEN_PRODUCTEN[phase];if(!products||products.length===0){return'';}
-const titleKey=`${titlePrefix}${phase.charAt(0).toUpperCase()+phase.slice(1)}`;const titleHTML=`<div class="section-title">${t(titleKey)}</div>`;const buttonsHTML=products.map(p=>{const url=addAffil(p.url);const label=t(p.labelKey);return`<a href="${url}" target="_blank" rel="noopener nofollow" class="btn btn-affiliate">${label}</a>`;}).join('');return`<div style="margin-top:16px;">${titleHTML}<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">${buttonsHTML}</div></div>`;}
+const titleKey=`${titlePrefix}${phase.charAt(0).toUpperCase()+phase.slice(1)}`;const titleHTML=`<div class="section-title">${t(titleKey)}</div>`;
+const buttonsHTML=products.map(p=>{
+    const productInfo = RQS_PRODUCT_SLUGS[p.labelKey];
+    if (!productInfo) return '';
+    const url = addAffil(buildRqsUrl(productInfo.type, productInfo.slug));
+    const label=t(p.labelKey);
+    return`<a href="${url}" target="_blank" rel="noopener nofollow" class="btn btn-affiliate">${label}</a>`;
+}).join('');
+return`<div style="margin-top:16px;">${titleHTML}<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">${buttonsHTML}</div></div>`;}
 /* ==== Reminder info popup ==== */
 function showReminderInfo(plantId,actionType,iso){
 const plant=getPlant(plantId),phase=getPhaseForDate(plant,iso),copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
 let html='';
-if(actionType==='feed'){html=(copy.feed&&copy.feed[phase])||'';const url=getRqsNutrientUrl(phase);if(url)html+=`<p style="margin-top:10px;"><a class="btn-affiliate" href="${url}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a></p>`;}
+if(actionType==='feed'){html=(copy.feed&&copy.feed[phase])||'';}
 else if(actionType==='water'){html=(copy.water&&copy.water[phase])||'';}
 else if(actionType==='flush'){html=copy.flush||'';}
 else if(actionType==='harvest'){html=copy.harvest||'';}
@@ -553,7 +661,7 @@ const active=state.plants.filter(p=>!p.archived), archived=state.plants.filter(p
 const grid=document.getElementById('grid'), archivedGrid=document.getElementById('archivedGrid'), archivedSection=document.getElementById('archivedSection');
 grid.innerHTML=active.map(p=>{
 const ageDays=Math.max(0,daysBetween(p.planted_at,new Date())), w=Math.floor(ageDays/7), d=ageDays%7;
-const seedUrl=getRqsSeedUrl(p.strain);
+const seedUrl = addAffil(buildRqsUrl('auto', RQS_SEED_SLUGS[p.strain]));
 const buyBtn=seedUrl? `<a class="btn-affiliate" href="${seedUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
 const allStrains = Object.keys(RQS_STRAINS);
 const otherStrains = allStrains.filter(s => !BESTSELLER_STRAINS.includes(s) && s !== 'Onbekend/Algemeen');
@@ -638,7 +746,8 @@ ${byWeek[w].map(ph=>
 }
 function renderReminders(p){
 const s=p.schedule;const phase=getPhaseForDate(p,todayISO());
-const nutrUrl=getRqsNutrientUrl(phase);
+const nutrInfo = RQS_PRODUCT_SLUGS['growthNutrients'];
+const nutrUrl = addAffil(buildRqsUrl(nutrInfo.type, nutrInfo.slug));
 const buyBtn=nutrUrl?`<a class="btn-affiliate" href="${nutrUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
 const settingsHTML=`<div style="display:flex;flex-direction:column;gap:10px;">
 <div class="field-group">
