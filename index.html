@@ -16,6 +16,7 @@
   --bg-start: #89f7fe;
   --bg-end: #66a6ff;
   --card: rgba(255, 255, 255, 0.65);
+  --menu-card-bg: rgba(255, 255, 255, 0.95);
   --card-border: rgba(255, 255, 255, 0.3);
   --text: #2c3e50;
   --primary: #38761D;
@@ -41,6 +42,7 @@
   --bg-start: #232526;
   --bg-end: #414345;
   --card: rgba(40, 40, 40, 0.65);
+  --menu-card-bg: rgba(30, 30, 30, 0.95);
   --card-border: rgba(255, 255, 255, 0.1);
   --text: #ecf0f1;
   --primary: #A9C439;
@@ -155,7 +157,7 @@ header {
   position: absolute; 
   top: calc(100% + 12px); 
   right: 0;
-  background: var(--card); 
+  background: var(--menu-card-bg); 
   border: 1px solid var(--card-border);
   border-radius: 18px; 
   box-shadow: var(--shadow);
@@ -470,7 +472,7 @@ main.container { padding: 20px 16px 60px; }
 
 /* ===== Gamification Styles ===== */
 .grower-status{display:none;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--text);background:var(--card);padding:8px 14px;border-radius:999px;margin-left:16px}
-@media (min-width:769px){.grower-status{display:flex} #btnProfileDesktop{display:flex!important} #btnProfileMenu{display:none!important}}
+@media (min-width:769px){.grower-status{display:flex}}
 .achievements-list{list-style:none;padding:0;margin-top:20px;max-height:40vh;overflow-y:auto}
 .achievement-item{display:flex;align-items:center;gap:16px;padding:12px;border-radius:16px;margin-bottom:8px;transition: all 0.2s ease; border: 1px solid transparent;}
 .achievement-item.locked{opacity:.6;background: rgba(0,0,0,0.05);}
@@ -541,12 +543,12 @@ footer { padding: 40px 16px 20px; text-align: center; }
 <div id="growerStatusDisplay" class="grower-status"></div>
 <div class="header-actions">
 <button id="btnAdd" class="btn-primary" data-i18n="newPlant">+ New Plant</button>
+<button id="btnProfileDesktop" class="btn-icon" title="Stoner Status" aria-label="Stoner Status">
+<span class="material-icons">emoji_events</span>
+</button>
 <div id="menuContent">
 <button id="btnHeaderShare" class="btn" style="width: 100%; justify-content: flex-start; gap: 8px;">
-<span class="material-icons">share</span><span data-i18n="shareTitle">Share</span>
-</button>
-<button id="btnProfileMenu" class="btn" style="width: 100%; justify-content: flex-start; gap: 8px;">
-<span class="material-icons">emoji_events</span><span data-i18n="stonerStatusTitle">Your Stoner Status</span>
+<span class="material-icons">share</span><span>Share</span>
 </button>
 <hr style="width:100%; border:0; border-top: 1px solid var(--line); margin: 4px 0;">
 <select id="langSelect" style="border-radius:16px;font-size:14px;padding:8px 10px;width:100%">
@@ -682,14 +684,14 @@ const TRANSLATIONS={
         archivedTitle:"Cycles Terminés",plant:"Plante",archivedCycle:"Terminer le Cycle",unarchive:"Restaurer",delete:"Supprimer",planted:"Planté(e):",age:"Âge:",weeks:"sem",days:"j",timeline:"Chronologie",reminders:"Rappels",notes:"Notes",date:"Date:",noteOptional:"Note (optionnel)",uploadPhoto:"Télécharger photo",noPhotos:"Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.",remove:"Retirer",water:"💧 Eau",feed:"🥦 Engrais",startFlush:"💦 DÉBUT RINÇAGE",harvest:"🪴 RÉCOLTER",week:"Semaine",every:"Tous les",daysPlural:"jours",startInWeek:"Début Semaine",frequency:"Fréquence : tous les",flushStartWeek:"Début Rinçage Semaine",targetHarvestWeek:"🪴 Semaine de Récolte Cible",strainGuideline:"Ligne directrice de la souche:",adjustNote:"Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.",notesPlaceholder:"Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.",alertPhoto:"Veuillez d'abord sélectionner une photo.",alertDelete:"Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).",alertMax:"Maximum de 12 plantes prises en charge.",alertImport:"Impossible de lire le fichier :",darkMode:"Mode Sombre",seedling:"Germination",vegetative:"Végétative",flowering:"Floraison",flush:"Rinçage",today:"Aujourd'hui",buyNow:"Acheter",resetData:"Réinitialiser",confirmReset:"Supprimer toutes les données ? Ceci est irréversible.",growthReportTitle:"Rapport de croissance",shareTitle:"Partager",shareExplain:"Partage le rapport d’état et célèbre tes réussites avec tes amis.",shareNow:"Partager",close:"Fermer",shareFallback:"Le partage n'est pas pris en charge ; téléchargement du JPG à la place.",stonerStatusTitle:"Ton Statut de Stoner",completedCycles:"Cycles Terminés",achievements:"High-Scores",completedHarvestsLabel:"Récoltes Réussies",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Recommandé pour la phase de Germination",recommendedForVegetative:"Recommandé pour la phase Végétative",recommendedForFlowering:"Recommandé pour la phase de Floraison",recommendedForFlush:"Recommandé pour la phase de Rinçage",essentialToolsSeedling:"Outils essentiels pour la phase de Germination",essentialToolsVegetative:"Outils essentiels pour la phase Végétative",essentialToolsFlowering:"Outils essentiels pour la phase de Floraison",essentialToolsFlush:"Outils essentiels pour la phase de Rinçage",heatMat:"Tapis Chauffant + Mini-serre",growthNutrients:"Nutriments de Croissance",calMag:"Supplément Cal-Mag",fabricPots:"Pots en Tissu",ecMeter:"Mètre EC/PPM",phMeter:"pH-mètre",clipFan:"Ventilateur à Pince",plantTies:"Attaches Souples",carbonFilter:"Filtre à Charbon + Extracteur",bloomNutrients:"Nutriments de Floraison",pkBooster:"Booster PK",scrogNet:"Filet de Scrog / Treillis",flushHarvestGuide:"Guide de Rinçage et Récolte",flushingAgent:"Agent de Rinçage (optionnel)",trimmingScissors:"Ciseaux de Taille",dryingRack:"Grille de Séchage",curingJars:"Bocaux de Curing",miniHygrometers:"Mini Hygromètres",humidityPacks:"Sachets d'Humidité"
     },
     es:{
-        appName:"Compa de Cultivo",newPlant:"+ Nueva Planta",showArchived:"Mostrar Ciclos Completados",emptyTitle:"Tu Coach de Cultivo Personal",emptyText:"Deja de adivinar. Siempre la acción correcta en el momento adecuado.",emptyBenefit1:"Comienza tu cultivo en 30 segundos",emptyBenefit2:"100% local y privado en tu dispositivo",emptyBenefit3:"Recordatorios y registro fotográfico visual",exitNudge:"Comienza tu primera planta — no se necesita cuenta, todo es local.",harvestSharePrompt:"Una de tus plantas está casi lista para la cosecha. ¡Comparte el informe y celebra con tus amigos!",
+        appName:"Compa de Cultivo",newPlant:"+ Nueva Planta",showArchived:"Mostrar Ciclos Completados",emptyTitle:"Tu Coach de Cultivo Personal",emptyText:"Deja de adivinar. Siempre la acción correcta en het momento adecuado.",emptyBenefit1:"Comienza tu cultivo en 30 segundos",emptyBenefit2:"100% local y privado en tu dispositivo",emptyBenefit3:"Recordatorios y registro fotográfico visual",exitNudge:"Comienza tu primera planta — no se necesita cuenta, todo es local.",harvestSharePrompt:"Una de tus plantas está casi lista para la cosecha. ¡Comparte el informe y celebra con tus amigos!",
         helpTitle:"Info & Términos", footerNotice: "© 2025 NightOwl Logics. Todos los derechos reservados. “Kweekmaatje” y todos los nombres, logotipos y activos relacionados son marcas comerciales de NightOwl Logics.", contactOnWhatsapp: "Contactar NightOwl Logics", termsAndPrivacyBody: legalDisclaimerES + legalTextEN,
         archivedTitle:"Ciclos Completados",plant:"Planta",archivedCycle:"Completar Ciclo",unarchive:"Restaurar",delete:"Eliminar",planted:"Plantada:",age:"Edad:",weeks:"sem",days:"d",timeline:"Línea de Tiempo",reminders:"Recordatorios",notes:"Notas",date:"Fecha:",noteOptional:"Nota (opcional)",uploadPhoto:"Subir foto",noPhotos:"Aún no hay fotos – añade tu primera foto de la Semana 0 arriba.",remove:"Quitar",water:"💧 Agua",feed:"🥦 Nutrientes",startFlush:"💦 INICIAR LAVADO",harvest:"🪴 COSECHAR",week:"Semana",every:"Cada",daysPlural:"días",startInWeek:"Iniciar Semana",frequency:"Frecuencia: cada",flushStartWeek:"Iniciar Lavado Semana",targetHarvestWeek:"🪴 Semana de Cosecha Objetivo",strainGuideline:"Pauta de la Cepa:",adjustNote:"Ajusta la frecuencia según el tamaño de la maceta, el sustrato y el clima.",notesPlaceholder:"Notas sobre riego, EC/PPM, pH, entrenamiento, etc.",alertPhoto:"Por favor, selecciona una foto primero.",alertDelete:"¿Eliminar? Esto no se puede deshacer (se eliminarán todas las fotos).",alertMax:"Máximo de 12 plantas admitidas.",alertImport:"No se puede leer el archivo:",darkMode:"Modo Oscuro",seedling:"Plántula",vegetative:"Vegetativa",flowering:"Floración",flush:"Lavado",today:"Hoy",buyNow:"Comprar ahora",resetData:"Restablecer datos",confirmReset:"¿Eliminar todos los datos? Esto no se puede deshacer.",growthReportTitle:"Informe de crecimiento",shareTitle:"Compartir",shareExplain:"Comparte el informe de estado y celebra los logros con tus amis.",shareNow:"Compartir",close:"Cerrar",shareFallback:"Compartir no disponible; descargaremos el JPG.",stonerStatusTitle:"Tu Estatus de Stoner",completedCycles:"Ciclos Completados",achievements:"High-Scores",completedHarvestsLabel:"Cosechas Logradas",toastNewAchievement:"🏆 ¡High-Score!",recommendedForSeedling:"Recomendado para la fase de Plántula",recommendedForVegetative:"Recomendado para la fase Vegetativa",recommendedForFlowering:"Recomendado para la fase de Floración",recommendedForFlush:"Recomendado para la fase de Lavado y Cosecha",essentialToolsSeedling:"Herramientas esenciales para la fase de Plántula",essentialToolsVegetative:"Herramientas esenciales para la fase Vegetativa",essentialToolsFlowering:"Herramientas esenciales para la fase de Floración",essentialToolsFlush:"Herramientas esenciales para la fase de Lavado y Cosecha",heatMat:"Manta Térmica + Mini Invernadero",growthNutrients:"Nutrientes de Crecimiento",calMag:"Suplemento Cal-Mag",fabricPots:"Macetas de Tela",ecMeter:"Medidor de EC/PPM",phMeter:"Medidor de pH",clipFan:"Ventilador de Pinza",plantTies:"Ataduras Suaves",carbonFilter:"Filtro de Carbón + Extractor",bloomNutrients:"Nutrientes de Floración",pkBooster:"Potenciador PK",scrogNet:"Malla de Scrog / Enrejado",flushHarvestGuide:"Guía de Lavado y Cosecha",flushingAgent:"Agente de Lavado (opcional)",trimmingScissors:"Tijeras de Podar",dryingRack:"Rejilla de Secado",curingJars:"Botes de Curado",miniHygrometers:"Mini Higrómetros",humidityPacks:"Sobres de Humedad"
     }
 };
 /* ==== Reminder copy (per language & phase) ==== */
 const REMINDER_COPY={nl:{feed:{seedling:"<p><b>Voeding:</b> Nog geen voeding. Potgrond bevat genoeg; extra voeding kan wortels verbranden.</p>",vegetative:"<p><b>Voeding (groei):</b> Focus op stikstof (N). Begin licht en bouw langzaam op.</p>",flowering:"<p><b>Voeding (bloei):</b> Meer fosfor (P) en kalium (K), minder stikstof (N). Let op overvoeding.</p>",flush:"<p><b>Voeding:</b> Tijdens spoelen geen voeding meer gebruiken.</p>"},water:{seedling:"<p><b>Water:</b> Heel weinig; 100–250 ml. Alleen wanneer bovenlaag droog is.</p>",vegetative:"<p><b>Water:</b> Matig tot veel. Geef tot lichte drainage.</p>",flowering:"<p><b>Water:</b> Hoog verbruik; 1.5–3 L per beurt (afhankelijk van potmaat).</p>",flush:"<p><b>Water:</b> Alleen water om zouten uit te spoelen.</p>"},flush:"<p><b>Spoelen:</b> 1–2 weken voor oogst alleen water voor betere smaak.</p>",harvest:"<p><b>Oogst:</b> Check trichomen; droog en cure voor kwaliteit.</p>"},
-en:{feed:{seedling:"<p><b>Feeding:</b> None yet. Medium has enough; extra nutrients can burn roots.</p>",vegetative:"<p><b>Feeding (veg):</b> Emphasize nitrogen (N). Start light and increase gradually.</p>",flowering:"<p><b>Feeding (flower):</b> More phosphorus (P) & potassium (K), less N. Avoid overfeeding.</p>",flush:"<p><b>Feeding:</b> No nutrients during flush.</p>"},water:{seedling:"<p><b>Water:</b> Very little; 100–250 ml. Only when top layer is dry.</p>",vegetative:"<p><b>Water:</b> Moderate to high; water to slight runoff.</p>",flowering:"<p><b>Water:</b> Highest demand; often 1.5–3 L per watering.</p>",flush:"<p><b>Water:</b> Plain water to wash out salts.</p>"},flush:"<p><b>Flush:</b> 1–2 weeks pre-harvest with plain water.</p>",harvest:"<p><b>Harvest:</b> Check trichomes; dry & cure for best results.</p>"},
+en:{feed:{seedling:"<p><b>Feeding:</b> None yet. Medium has enough; extra nutrients can burn roots.</p>",vegetative:"<p><b>Feeding (veg):</b> Emphasize nitrogen (N). Start light and increase gradually.</p>",flowering:"<p><b>Feeding (flower):</b> More phosphorus (P) & potassium (K), less N. Avoid overfeeding.</p>",flush:"<p><b>Feeding:</b> No nutrients during flush.</p>"},water:{seedling:"<p><b>Water:</b> Very little; 100–250 ml. Only when top layer is dry.</p>",vegetative:"<p><b>Water:</b> Moderate to high; water to slight runoff.</p>",flowering:"<p><b>Water:</b> Highest demand; often 1.5–3 L per watering.</p>",flush:"<p><b>Water:</b> Plain water to wash out salts.</p>"},flush:"<p><b>Flush:</b> 1–2 weken pre-harvest with plain water.</p>",harvest:"<p><b>Harvest:</b> Check trichomes; dry & cure for best results.</p>"},
 de:{feed:{seedling:"<p><b>Düngen:</b> Noch nicht. Substrat enthält genug; Zusatz kann Wurzeln verbrennen.</p>",vegetative:"<p><b>Düngen (Wuchs):</b> Fokus auf Stickstoff (N). Langsam steigern.</p>",flowering:"<p><b>Düngen (Blüte):</b> Mehr Phosphor (P) & Kalium (K), minder N.</p>",flush:"<p><b>Düngen:</b> Während des Spülens keine Nährstoffe.</p>"},water:{seedling:"<p><b>Wasser:</b> Sehr weinig; 100–250 ml. Nur bei trockener Oberfläche.</p>",vegetative:"<p><b>Wasser:</b> Mittel bis viel; bis leichte Drainage.</p>",flowering:"<p><b>Wasser:</b> Höchster Bedarf; oft 1.5–3 L.</p>",flush:"<p><b>Wasser:</b> Nur Wasser zum Ausspülen.</p>"},flush:"<p><b>Spülen:</b> 1–2 Wochen vor der Ernte nur Wasser.</p>",harvest:"<p><b>Ernte:</b> Trichome prüfen; trocknen & curen.</p>"},
 fr:{feed:{seedling:"<p><b>Engrais :</b> Pas encore. Le substrat suffit; excès peut brûler les racines.</p>",vegetative:"<p><b>Engrais (croissance) :</b> Accent sur l’azote (N). Augmenter progressivement.</p>",flowering:"<p><b>Engrais (floraison) :</b> Plus de phosphore (P) et potassium (K), moins de N.</p>",flush:"<p><b>Engrais :</b> Aucun pendant le rinçage.</p>"},water:{seedling:"<p><b>Eau :</b> Très peu; 100–250 ml. Seulement si le dessus est sec.</p>",vegetative:"<p><b>Eau :</b> Modérée à forte; jusqu’à léger ruissellement.</p>",flowering:"<p><b>Eau :</b> Demande maximale; 1,5–3 L.</p>",flush:"<p><b>Eau :</b> Eau claire pour rincer les sels.</p>"},flush:"<p><b>Rinçage :</b> 1–2 semaines avant récolte, eau claire.</p>",harvest:"<p><b>Récolte :</b> Vérifier les trichomes; séchage & affinage.</p>"},
 es:{feed:{seedling:"<p><b>Nutrientes:</b> Aún no. El sustrato tiene suficiente; el exceso quema raíces.</p>",vegetative:"<p><b>Nutrientes (crecimiento):</b> Énfasis en nitrógeno (N). Aumenta poco a poco.</p>",flowering:"<p><b>Nutrientes (floración):</b> Más fósforo (P) y potasio (K), menos N.</p>",flush:"<p><b>Nutrientes:</b> Ninguno durante el lavado.</p>"},water:{seedling:"<p><b>Agua:</b> Muy poca; 100–250 ml. Solo si la superficie está seca.</p>",vegetative:"<p><b>Agua:</b> Moderada a alta; hasta ligero drenaje.</p>",flowering:"<p><b>Agua:</b> Demanda máxima; 1.5–3 L.</p>",flush:"<p><b>Agua:</b> Solo agua para eliminar sales.</p>"},flush:"<p><b>Lavado:</b> 1–2 semanas antes de la cosecha con agua sola.</p>",harvest:"<p><b>Cosecha:</b> Revisa tricomas; secado y curado.</p>"} };
@@ -868,7 +870,7 @@ document.getElementById('btnAdd').onclick=addPlant;document.getElementById('btnA
 document.getElementById('btnReset').onclick=()=>{if(confirm(t('confirmReset'))){localStorage.removeItem(LS_KEY);location.reload();}};
 document.getElementById('btnHeaderShare').onclick=openShareModal;
 document.getElementById('btnHelp').onclick=()=>document.getElementById('helpModal').style.display='flex';
-document.getElementById('btnProfileMenu').onclick=openStonerStatusModal;
+document.getElementById('btnProfileDesktop').onclick=openStonerStatusModal;
 // Modal closers
 document.querySelectorAll('.modal-close,[data-close-modal]').forEach(b=>b.addEventListener('click',()=>{const m=b.closest('.modal-overlay');if(m)m.style.display='none';}));
 document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.style.display='none';}));
@@ -892,11 +894,16 @@ document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
     const translation = t(key);
     // Ensure we don't overwrite child nodes like icons
-    const textNode = Array.from(el.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+    const textNode = Array.from(el.childNodes).find(node => node.nodeType === 3 && node.textContent.trim().length > 0); // Node.TEXT_NODE
     if (textNode) {
         textNode.textContent = translation;
-    } else if (el.childNodes.length === 0 || el.tagName === 'BUTTON' || el.tagName === 'P' || el.tagName === 'H2' || el.tagName === 'LABEL') {
-         el.textContent = translation;
+    } else {
+         const spanChild = el.querySelector('span:not([class])');
+         if(spanChild) {
+            spanChild.textContent = translation;
+         } else if (el.childNodes.length === 0 || el.tagName === 'P' || el.tagName === 'H2' || el.tagName === 'LABEL' || el.tagName === 'BUTTON') {
+            el.textContent = translation;
+         }
     }
 });
 document.getElementById('legal-content').innerHTML = t('termsAndPrivacyBody');
@@ -997,7 +1004,7 @@ const buttonsHTML=products.map(p=>{
 return`<div style="margin-top:16px;">${titleHTML}<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">${buttonsHTML}</div></div>`;}
 /* ==== Reminder info popup ==== */
 function showReminderInfo(plantId,actionType,iso){
-    const plant=getPlant(id);
+    const plant=getPlant(plantId);
     const phase=getPhaseForDate(plant,iso);
     const copy=REMINDER_COPY[currentLang]||REMINDER_COPY['en'];
     let html='';
