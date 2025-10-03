@@ -1,160 +1,502 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <link rel="icon" type="image/png" href="kweekmaatjelogo.png">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
-<title>Kweekmaatje</title>
+<title>Grow Buddy</title>
 <style>
-/* ====== THEMA ====== */
-:root{ --bg:#F5F5F5;--fg:#4D3A31;--main:#38761D;--muted:#90B47A; --card:#FFFFFF;--line:#90B47A;--pill:#F5F5F5; --cta:#A9C439;--cta-hover:#7D932A;--danger:#CC0000;--radius:18px; --seg-seed:#90B47A;--seg-veg:#38761D;--seg-flow:#A9C439;--seg-flush:#C8D29B; }
-.dark{ --bg:#1A1A1A;--fg:#F5F5F5;--main:#A9C439;--muted:#90B47A; --card:#282828;--line:#3A3A3A;--pill:#212121; --cta:#A9C439;--cta-hover:#C5E358;--danger:#FF6666; color:var(--main); }
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;background:var(--bg);color:var(--main)}
-h1{margin:0;color:var(--fg);font-size:24px;display:flex;align-items:center;gap:8px}
-.app-logo{width:36px;height:36px;object-fit:contain;display:inline-block}
-.container{max-width:1080px;margin:0 auto;padding:12px 16px}
+/* ====== 🎨 PLAYFUL THEME 🎨 ====== */
+:root {
+  --bg-start: #89f7fe;
+  --bg-end: #66a6ff;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(255, 255, 255, 0.3);
+  --text: #2c3e50;
+  --primary: #38761D;
+  --primary-text: #fff;
+  --muted: #5a7b8c;
+  --line: #cce7ff;
+  --cta: #ff7e5f;
+  --cta-hover: #feb47b;
+  --cta-text: #ffffff;
+  --danger: #e74c3c;
+  --danger-hover: #c0392b;
+  --radius: 24px;
+  --font-family: 'Nunito', sans-serif;
+  --shadow: 0 8px 24px rgba(102, 166, 255, 0.2);
+
+  --seg-seed: #f7d794;
+  --seg-veg: #77dd77;
+  --seg-flow: #fdfd96;
+  --seg-flush: #89cff0;
+}
+
+.dark {
+  --bg-start: #232526;
+  --bg-end: #414345;
+  --card: rgba(40, 40, 40, 0.65);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text: #ecf0f1;
+  --primary: #A9C439;
+  --muted: #95a5a6;
+  --line: #3a5368;
+  --cta: #ff8a65;
+  --cta-hover: #ffab91;
+  --danger: #e74c3c;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ====== ✨ DYNAMIC & IMMERSIVE STYLES ✨ ====== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(-2deg); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    80% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background Animated Blobs for Fun! */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  opacity: 0.15;
+  z-index: -1;
+  animation: float 18s infinite linear;
+}
+body::before {
+  background: #ffffff;
+  transform: translate(-60%, -60%);
+}
+body::after {
+  background: var(--cta);
+  transform: translate(-40%, -40%);
+  animation-duration: 22s;
+  animation-direction: reverse;
+}
+
+h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: inline-block;
+  animation: float 8s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 12px 16px; }
+
 /* Header */
-header{position:sticky;top:0;z-index:10;background:rgba(245,245,245,.9);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--line)}
-.dark header{background:rgba(26,26,26,.9);border-bottom-color:var(--line)}
-.header-content{display:flex;gap:16px;align-items:center}
-.header-actions{display:flex;gap:8px;align-items:center;margin-left:auto;position:relative}
-#btnMenuToggle{display:none}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: saturate(1.5) blur(12px);
+  border-bottom: 1px solid var(--card-border);
+}
+.dark header { background: rgba(0,0,0,0.1); }
+.header-content { display: flex; gap: 16px; align-items: center; }
+.header-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; position: relative; }
+
+/* Mobile Menu */
+#btnMenuToggle { display: none; }
 @media (max-width:768px){
-#btnMenuToggle{display:flex}
-#menuContent{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:20;padding:12px;flex-direction:column;align-items:flex-end;gap:14px;width:260px}
-#menuContent.is-open{display:flex}
-#btnHeaderShareDesktop {display: none !important;}
+  #btnMenuToggle { display:flex; }
+  #menuContent {
+    display: none; position: absolute; top: calc(100% + 12px); right: 0;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 18px; box-shadow: var(--shadow);
+    z-index: 20; padding: 16px; flex-direction: column;
+    align-items: flex-end; gap: 14px; width: 260px;
+    backdrop-filter: blur(10px);
+    animation: popIn 0.3s ease-out;
+  }
+  #menuContent.is-open { display: flex; }
+  #btnHeaderShareDesktop { display: none !important; }
 }
 @media (min-width:769px){
-#menuContent{display:contents}
-#btnHeaderShare {display: none !important;}
+  #menuContent { display: contents; }
+  #btnHeaderShare { display: none !important; }
 }
-/* Buttons/inputs */
-button,.btn,.tab.active{appearance:none;border:1px solid var(--line);padding:8px 12px;border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.04);cursor:pointer;font-size:14px;color:var(--fg);background:#fff}
-.btn-icon{background:transparent;border:none;padding:4px;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
-.btn-icon:hover{background:var(--pill)}
-.btn-icon .material-icons{color:var(--main);font-size:22px}
-.dark button,.dark .btn,.dark .tab{background:var(--card);border-color:var(--line);color:var(--main)}
-.tab{background:transparent;border-color:transparent}
-.tab.active{background:#fff;border-color:var(--line);box-shadow:0 1px 0 rgba(0,0,0,.04);color:var(--fg);font-weight:600}
-.dark .tab.active{background:#2b2b2b;border-color:#444;color:var(--fg)}
-#btnAdd,#btnAdd2{background:var(--cta);border-color:var(--cta);color:#fff;font-weight:600}
-#btnAdd:hover,#btnAdd2:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
+
+/* Buttons & Inputs - Let's make them FUN! */
+button, .btn {
+  appearance: none;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px; /* Super rounded! */
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255,255,255,0.7);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+button:hover, .btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+button:active, .btn:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.dark button, .dark .btn { background: rgba(255,255,255,0.1); color: var(--text); }
+
+.btn-icon {
+  background: transparent;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.2); }
+.btn-icon .material-icons { color: var(--primary); font-size: 24px; }
+.dark .btn-icon .material-icons { color: var(--primary); }
+
+.tab { background: transparent; box-shadow: none; }
+.tab.active {
+  background: var(--card);
+  color: var(--primary);
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transform: scale(1.05);
+}
+.dark .tab.active { background: rgba(255,255,255,0.2); color: var(--primary); }
+
 .btn-primary {
-background:var(--cta);
-border-color:var(--cta);
-color:#fff !important;
-font-weight:600;
-transition: all 0.2s ease-in-out;
-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(45deg, var(--cta), var(--cta-hover));
+  color: var(--cta-text) !important;
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
-.btn-primary:hover {
-background:var(--cta-hover);
-border-color:var(--cta-hover);
-box-shadow: 0 4px 12px -2px rgba(0,0,0,0.25);
-transform: translateY(-2px);
+
+input, textarea, select {
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 8px 14px;
+  color: var(--text);
+  background: rgba(255,255,255,0.5);
+  width: 100%;
+  font-family: var(--font-family);
+  font-size: 15px;
+  transition: all 0.2s ease;
 }
-input[type="date"],input[type="number"],input[type="text"],textarea,select{border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:var(--main);background:#fff;width:100%}
-.dark input[type="date"],.dark input[type="number"],.dark input[type="text"],.dark textarea,.dark select{background:#333;color:var(--fg);border-color:#555}
-/* Layout/cards */
-main.container{padding:20px 16px 40px}
-.grid{display:grid;grid-template-columns:1fr;gap:20px}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--cta-hover);
+  border-color: var(--cta);
+  background: rgba(255,255,255,0.8);
+}
+.dark input, .dark textarea, .dark select {
+  background: rgba(0,0,0,0.2);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.1);
+}
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+    background: rgba(0,0,0,0.3);
+}
+
+/* Layout & Cards - Make them float! */
+main.container { padding: 20px 16px 60px; }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  animation: fadeIn 0.5s ease-out both;
+}
 @media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 2px 4px rgba(0,0,0,.05);overflow:hidden}
-.card-h{padding:14px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.btn-collapse{appearance:none;background:transparent;border:none;padding:4px;width:32px;height:32px;cursor:pointer;border-radius:50%;margin-left:auto;display:flex;align-items:center;justify-content:center}
-.btn-collapse:hover{background:var(--pill)}
-.btn-collapse svg{width:24px;height:24px;fill:var(--muted);transition:transform .3s ease}
-.card.is-collapsed .btn-collapse svg{transform:rotate(-180deg)}
-.card.is-collapsed .row-strain,.card.is-collapsed .row-info,.card.is-collapsed .card-b{display:none}
-.row-name{display:flex;gap:8px;width:100%;align-items:center}
-.row-name input{flex:1;border:none;outline:none;font-size:16px;font-weight:600;background:transparent;color:var(--fg);min-width:150px}
-.row-strain{display:flex;gap:8px;align-items:center;width:100%}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform-origin: center;
+}
+
+.card:hover {
+  box-shadow: 0 12px 28px rgba(102, 166, 255, 0.3);
+}
+.dark .card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+
+.card.is-collapsed { height: auto; }
+.card.is-collapsed .row-info, .card.is-collapsed .card-b, .card.is-collapsed .actions-bar {
+  display: none;
+}
+.btn-collapse svg { transition:transform .3s ease; }
+.card.is-collapsed .btn-collapse svg { transform:rotate(-180deg); }
+
+.card-h { padding: 20px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.row-name { display: flex; gap: 8px; width: 100%; align-items: center; }
+.row-name input {
+  flex: 1; border: none; outline: none;
+  font-size: 20px; font-weight: 800; background: transparent;
+  color: var(--text); min-width: 150px; padding: 4px;
+}
+.row-strain { display: flex; gap: 12px; align-items: center; width: 100%; }
 .row-strain select { flex: 1; }
-.row-info{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13px;color:var(--muted);width:100%;justify-content:space-between}
-.row-info label{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.row-info input[type="date"]{width:auto;min-width:135px}
-.row-info .action-buttons{display:flex;gap:8px;flex-shrink:0}
-.section-title{font-weight:600;margin:16px 0 8px;color:var(--fg)}
-.hint{font-size:12px;color:var(--muted)}
-.pill{font-size:12px;background:var(--pill);border:1px solid var(--line);color:var(--main);padding:2px 8px;border-radius:999px}
-.tabs{display:flex;gap:6px;background:var(--pill);border-radius:999px;padding:4px;margin-top:8px;flex-basis:100%}
-.card-b{border-top:1px solid var(--line);padding:14px}
-.uploader{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--pill);border:1px solid var(--line);border-radius:14px}
+
+.row-info {
+    display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+    font-size: 14px; color: var(--muted); width: 100%; justify-content: space-between;
+}
+.row-info input[type="date"] { width: auto; min-width: 135px; }
+.row-info .action-buttons { display: flex; gap: 8px; flex-shrink: 0; }
+
+.section-title { font-weight: 700; font-size: 18px; margin: 16px 0 8px; color: var(--text); }
+.hint { font-size: 13px; color: var(--muted); }
+.pill {
+  font-size: 13px;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.dark .pill { background: rgba(255,255,255,0.1); }
+.tabs { display: flex; gap: 6px; background: rgba(0,0,0,0.05); border-radius: 999px; padding: 4px; margin-top: 8px; flex-basis: 100%; }
+.dark .tabs { background: rgba(0,0,0,0.2); }
+.card-b { border-top: 1px solid var(--line); padding: 20px; }
+
+/* --- NEW: REMINDER TAB LAYOUT --- */
+.reminder-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px 10px;
+  align-items: center;
+}
+.reminder-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: end;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+}
+.dark .reminder-label {
+  color: var(--primary);
+}
+.reminder-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.reminder-controls input[type="number"] {
+  width: 65px;
+  text-align: center;
+}
+
+/* Empty State - Make it inviting! */
+.empty {
+  border: none;
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  animation: popIn 0.5s ease-out 0.2s both;
+}
+.empty h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.2;
+}
+.empty p { font-size: 20px; max-width: 450px; margin: 16px auto 0; color: var(--muted); }
+.empty .benefit-list {
+  list-style: none; padding: 0; margin: 32px 0; display: inline-flex;
+  flex-direction: column; align-items: flex-start; gap: 16px; text-align: left;
+}
+.empty .benefit-list li { display: flex; align-items: center; gap: 12px; font-size: 18px; color: var(--text); }
+.empty .benefit-list .material-icons { color: var(--primary); font-size: 28px; }
+.empty .btn-primary { margin-top: 24px; padding: 16px 32px; font-size: 20px; }
+
+/* Action Items - Make them pop! */
+.actions-bar {
+  width: 100%; display: flex; flex-direction: column; align-items: flex-start;
+  gap: 10px; border-bottom: 1px dashed var(--line); padding-bottom: 12px; min-height: 40px;
+}
+.action-item {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; background: var(--card); color: var(--text); font-weight: 700;
+  padding: 10px 16px; border-radius: 16px; cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); gap: 8px;
+  border-left: 5px solid;
+  transition: all 0.2s ease;
+}
+.action-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.action-item .left { display: flex; align-items: center; gap: 10px; }
+.action-item .action-date { font-size: 12px; font-weight: 400; color: var(--muted); padding-left: 10px; }
+
+.action-item.water { border-color: #89cff0; } /* Water Blue */
+.action-item.feed { border-color: #77dd77; } /* Feed Green */
+.action-item.flush { border-color: #fdfd96; } /* Flush Yellow */
+.action-item.harvest {
+  border-color: var(--cta);
+  background: linear-gradient(45deg, var(--cta), var(--cta-hover));
+  color: var(--cta-text);
+  font-weight: 800;
+}
+.action-item.harvest .action-date { color: rgba(255,255,255,0.7); }
+
+/* Progress Bar - More visual! */
+.progress-wrapper { width: 100%; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.progress-date-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding: 0 2px 6px; }
+.progress-bar-container { position: relative; width: 100%; margin-bottom: 6px; }
+.progress-bar { display: flex; height: 16px; border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border); background: rgba(255,255,255,0.5); }
+.progress-segment { height: 100%; }
+.seg-seed{background:var(--seg-seed)}.seg-veg{background:var(--seg-veg)}.seg-flow{background:var(--seg-flow)}.seg-flush{background:var(--seg-flush)}
+
+.progress-marker {
+  position: absolute; top: -8px; width: 4px; height: 32px;
+  background: var(--danger); border-radius: 2px;
+  transform: translateX(-2px); z-index: 5;
+  box-shadow: 0 0 8px var(--danger);
+  animation: pulse 2s infinite;
+}
+.progress-marker-label {
+  position: absolute; top: -30px; font-size: 11px; font-weight: bold;
+  background: var(--danger); color: #fff; padding: 3px 6px;
+  border-radius: 6px; white-space: nowrap; transform: translateX(-50%);
+}
+
+.progress-phase-labels-container { display: flex; font-size: 12px; padding: 0; color: var(--text); margin-top: 4px; font-weight: 600; }
+.progress-phase-label { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; }
+
+
+/* Modals - Softer feel */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); display: none; align-items: center;
+  justify-content: center; z-index: 1000; backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+}
+.modal-content {
+  background: var(--card); padding: 28px; border-radius: var(--radius);
+  max-width: 640px; width: 90%; position: relative;
+  box-shadow: var(--shadow); border: 1px solid var(--card-border);
+  animation: popIn 0.4s ease-out;
+}
+.modal-close {
+  position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.1);
+  border: none; font-size: 24px; line-height: 1; cursor: pointer;
+  color: var(--muted); width: 32px; height: 32px; border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(0,0,0,0.2);
+  color: var(--text);
+}
+
+/* Misc */
+.danger { background: var(--danger); color: var(--cta-text) !important; }
+.danger:hover { background: var(--danger-hover); }
+
+/* ===== Gamification Styles ===== */
+.grower-status{display:none;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--text);background:var(--card);padding:8px 14px;border-radius:999px;margin-left:16px}
+@media (min-width:769px){.grower-status{display:flex} #btnProfileDesktop{display:flex!important} #btnProfileMenu{display:none!important}}
+.achievements-list{list-style:none;padding:0;margin-top:20px;max-height:40vh;overflow-y:auto}
+.achievement-item{display:flex;align-items:center;gap:16px;padding:12px;border-radius:16px;margin-bottom:8px;transition: all 0.2s ease; border: 1px solid transparent;}
+.achievement-item.locked{opacity:.6;background: rgba(0,0,0,0.05);}
+.achievement-item.unlocked{background: linear-gradient(135deg, #77dd77, #a8e6cf); border-color: rgba(255,255,255,0.5);}
+.achievement-item .icon{font-size:36px;color:var(--primary)}
+.achievement-item.unlocked .icon { color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+.achievement-item .details h4{margin:0 0 4px;color:var(--text)}
+.achievement-item.unlocked .details h4 { color: white; font-weight: 700; }
+.achievement-item .details p{margin:0;font-size:14px;color:var(--muted)}
+.achievement-item.unlocked .details p { color: rgba(255,255,255,0.85); }
+#toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background: linear-gradient(45deg, var(--cta), var(--cta-hover));color:var(--cta-text);padding:16px 28px;border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:2000;transition:all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);font-weight:700;border:none; text-align: center;}
+#toast.show{bottom:20px; transform: translateX(-50%) scale(1); opacity: 1;}
+#toast:not(.show) { transform: translateX(-50%) scale(0.8); opacity: 0; }
+
+/* Unchanged Utility Styles */
+.uploader{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:rgba(0,0,0,0.05);border:1px solid var(--line);border-radius:14px}
 figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
 figure img{display:block;width:100%;height:auto;max-height:300px;object-fit:cover}
 figcaption{padding:10px;display:flex;justify-content:space-between;gap:10px;font-size:14px;flex-wrap:wrap}
 .muted{color:var(--muted)}
-.danger{color:var(--danger);border-color:var(--danger)!important}
-.danger:hover{background:rgba(204,0,0,.1)!important}
-.empty{border:2px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;background:#fff}
-.dark .empty { background: var(--card); }
-.benefit-list { list-style: none; padding: 0; margin: 24px 0; display: inline-flex; flex-direction: column; align-items: flex-start; gap: 12px; text-align: left; }
-.benefit-list li { display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--fg); }
-.benefit-list .material-icons { color: var(--main); }
-.empty .btn-primary { margin-top: 16px; padding: 12px 24px; font-size: 18px; }
 .archived{opacity:.6}
-.actions-bar{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:8px;min-height:40px}
-.action-item{display:flex;align-items:center;justify-content:space-between;width:100%;background:#fff;border:2px solid var(--cta);color:var(--cta);font-weight:600;padding:6px 12px;border-radius:12px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08);gap:8px}
-.action-item .left{display:flex;align-items:center;gap:10px}
-.action-item .action-date{font-size:11px;font-weight:400;color:var(--muted);padding-left:10px}
-.action-item.feed{border-color:#FFA500;color:#FFA500}
-.action-item.flush{border-color:#00BFFF;color:#00BFFF}
-.action-item.harvest{border-color:var(--cta);background:var(--cta);color:#fff}
-.info-btn{margin-left:4px;font-weight:700;border:1px solid var(--line);border-radius:999px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--fg)}
-.dark .info-btn{background:var(--card)}
-/* Progress */
-.progress-wrapper{width:100%;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
-.progress-date-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:0 2px 4px}
-.progress-bar-container{position:relative;width:100%;margin-bottom:6px}
-.progress-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#fff}
-.progress-segment{height:100%}
-.seg-seed{background:var(--seg-seed)}.seg-veg{background:var(--seg-veg)}.seg-flow{background:var(--seg-flow)}.seg-flush{background:var(--seg-flush)}
-.progress-marker{position:absolute;top:-6px;width:3px;height:24px;background:#CC0000;border-radius:2px;transform:translateX(-1.5px);z-index:5;box-shadow:0 0 5px #CC0000}
-.progress-marker-label{position:absolute;top:-26px;font-size:10px;font-weight:bold;background:#CC0000;color:#fff;padding:2px 4px;border-radius:4px;white-space:nowrap}
-.progress-phase-labels-container{display:flex;font-size:11px;padding:0;color:var(--main);margin-top:2px}
-.progress-phase-label{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;font-weight:500}
-/* Modals */
-.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
-.modal-content{background:var(--card);padding:24px;border-radius:var(--radius);max-width:640px;width:90%;position:relative;box-shadow:0 5px 15px rgba(0,0,0,.3);border:1px solid var(--line)}
-.modal-close{position:absolute;top:10px;right:10px;background:transparent;border:none;font-size:24px;line-height:1;cursor:pointer;color:var(--muted)}
-/* Misc */
 .btn-affiliate{background:var(--cta);border-color:var(--cta);color:#fff!important;padding:6px 10px;border-radius:12px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .btn-affiliate:hover{background:var(--cta-hover);border-color:var(--cta-hover)}
 .sticky-footer-container {
-position: sticky;
-bottom: -14px;
-margin: 20px -14px -14px -14px;
-padding: 14px;
-background: var(--card);
-border-top: 1px solid var(--line);
-box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
-z-index: 5;
+position: sticky; bottom: -20px; margin: 20px -20px -20px -20px;
+padding: 14px; background: var(--card); border-top: 1px solid var(--line);
+box-shadow: 0 -4px 12px rgba(0,0,0,0.05); z-index: 5;
 }
 .dark .sticky-footer-container { box-shadow: 0 -4px 12px rgba(0,0,0,0.2); }
-.btn-whatsapp{display:inline-flex;align-items:center;gap:10px;background-color:#25D366;color:#fff!important;padding:10px 16px;border-radius:16px;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
-.btn-whatsapp:hover{background-color:#1DA851}
-.btn-whatsapp svg{width:20px;height:20px;fill:#fff}
 .whatsapp-fab {
-position: fixed;
-bottom: 20px;
-right: 20px;
-width: 60px;
-height: 60px;
-background-color: #25D366;
-color: #FFF;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-z-index: 100;
-transition: transform 0.2s ease-in-out;
+position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+background-color: #25D366; color: #FFF; border-radius: 50%; display: flex;
+align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+z-index: 100; transition: transform 0.2s ease-in-out; text-decoration: none;
 }
-.whatsapp-fab:hover { transform: scale(1.1); }
+.whatsapp-fab:hover { transform: scale(1.1) rotate(10deg); }
 .whatsapp-fab svg { width: 32px; height: 32px; fill: #fff; }
 .toggle-container{display:flex;align-items:center;gap:8px;font-size:14px}
 .toggle-switch{position:relative;display:inline-block;width:44px;height:24px}
@@ -165,41 +507,31 @@ transition: transform 0.2s ease-in-out;
 .toggle-switch input:checked + .slider:before{transform:translateX(20px)}
 .dark .slider{background:#555}
 .dark .toggle-switch input:checked + .slider{background:var(--cta-hover)}
-/* ===== Gamification Styles ===== */
-.grower-status{display:none;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--fg);background:var(--pill);padding:6px 12px;border-radius:999px;margin-left:16px}
-@media (min-width:769px){.grower-status{display:flex} #btnProfileDesktop{display:flex!important} #btnProfileMenu{display:none!important}}
-.achievements-list{list-style:none;padding:0;margin-top:20px;max-height:40vh;overflow-y:auto}
-.achievement-item{display:flex;align-items:center;gap:16px;padding:12px;border-radius:12px;margin-bottom:8px;border:1px solid var(--line)}
-.achievement-item.locked{opacity:.5;background:var(--pill)}
-.achievement-item.unlocked{background:var(--card);border-color:var(--cta)}
-.achievement-item .icon{font-size:32px;color:var(--main)}
-.achievement-item .details h4{margin:0 0 4px;color:var(--fg)}
-.achievement-item .details p{margin:0;font-size:14px;color:var(--muted)}
-#toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--fg);padding:14px 24px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:2000;transition:bottom .5s ease-in-out;font-weight:600;border:1px solid var(--line)}
-#toast.show{bottom:20px}
-/* -- CHANGE: Footer styles -- */
 footer { padding: 40px 16px 20px; text-align: center; }
 .footer-notice { font-size: 11px; color: var(--muted); max-width: 600px; margin: 0 auto; line-height: 1.5; }
-/* -- CHANGE: Legal text styles -- */
-#legal-content { max-height: 70vh; overflow-y: auto; font-size: 14px; color: var(--fg); line-height: 1.6; }
-#legal-content h3 { font-size: 18px; margin: 24px 0 10px; color: var(--fg); }
-#legal-content h4 { font-size: 15px; margin: 16px 0 8px; color: var(--fg); }
+#legal-content { max-height: 70vh; overflow-y: auto; font-size: 14px; color: var(--text); line-height: 1.6; }
+#legal-content h3 { font-size: 18px; margin: 24px 0 10px; color: var(--text); }
+#legal-content h4 { font-size: 15px; margin: 16px 0 8px; color: var(--text); }
 #legal-content p, #legal-content li { color: var(--muted); }
-#legal-content .disclaimer { font-style: italic; background: var(--pill); padding: 10px; border-radius: 8px; }
-.dark #legal-content p, .dark #legal-content li { color: var(--fg); opacity: 0.8; }
+#legal-content .disclaimer { font-style: italic; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px; }
+.dark #legal-content p, .dark #legal-content li { color: var(--text); opacity: 0.8; }
+.btn-whatsapp{display:inline-flex;align-items:center;gap:10px;background-color:#25D366;color:#fff!important;padding:10px 16px;border-radius:16px;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
+.btn-whatsapp:hover{background-color:#1DA851}
+.btn-whatsapp svg{width:20px;height:20px;fill:#fff}
 </style>
 </head>
 <body>
+
 <header>
 <div class="container header-content">
 <h1 id="appTitle">
 <img class="app-logo" src="kweekmaatjelogo.png" alt="logo"/>
-<span id="appTitleText">Kweekmaatje</span>
+<span id="appTitleText">Grow Buddy</span>
 </h1>
 <div id="growerStatusDisplay" class="grower-status"></div>
 <div class="header-actions">
-<button id="btnHeaderShareDesktop" class="btn" data-i18n="shareTitle">Delen</button>
-<button id="btnAdd" class="btn-primary" data-i18n="newPlant">+ Nieuwe plant</button>
+<button id="btnHeaderShareDesktop" class="btn" data-i18n="shareTitle">Share</button>
+<button id="btnAdd" class="btn-primary" data-i18n="newPlant">+ New Plant</button>
 <button id="btnProfileDesktop" class="btn-icon" title="Stoner Status" aria-label="Stoner Status" style="display:none">
 <span class="material-icons">emoji_events</span>
 </button>
@@ -215,41 +547,41 @@ footer { padding: 40px 16px 20px; text-align: center; }
 </div>
 <label class="row hint" style="gap:6px;margin:0;align-items:center">
 <input id="chkArchived" type="checkbox"/>
-<span data-i18n="showArchived">Toon voltooide cycli</span>
+<span data-i18n="showArchived">Show completed cycles</span>
 </label>
 <button id="btnReset" class="danger" data-i18n="resetData">Reset data</button>
 <button id="btnProfileMenu" class="btn-icon" title="Stoner Status" aria-label="Stoner Status">
 <span class="material-icons">emoji_events</span>
 </button>
-<button id="btnHeaderShare" class="btn-icon" title="Delen" aria-label="Delen">
+<button id="btnHeaderShare" class="btn-icon" title="Share" aria-label="Share">
 <span class="material-icons">share</span></button>
 <button id="btnHelp" class="btn-icon" aria-label="Help & Info">
-<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
 </button>
 </div>
 <button id="btnMenuToggle" class="btn-icon" aria-label="Open menu">
-<svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+<svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
 </button>
 </div>
 </div>
 </header>
 <main class="container">
 <div id="empty" class="empty" style="display:none">
-<h2 style="margin:0;font-size:28px;color:var(--fg)" data-i18n="emptyTitle">Je eigen kweekcoach</h2>
-<p class="muted" data-i18n="emptyText" style="font-size:18px;max-width:450px;margin:12px auto 0;">Nooit meer gokken. Altijd de juiste actie op het juiste moment.</p>
+<h2 data-i18n="emptyTitle">Your Personal Grow Coach</h2>
+<p data-i18n="emptyText">Stop guessing. Always the right action at the right time.</p>
 <ul class="benefit-list">
-<li><span class="material-icons">rocket_launch</span><span data-i18n="emptyBenefit1">Start je kweek in 30 seconden</span></li>
-<li><span class="material-icons">lock</span><span data-i18n="emptyBenefit2">100% lokaal & privé op je apparaat</span></li>
-<li><span class="material-icons">insights</span><span data-i18n="emptyBenefit3">Herinneringen & visueel fotologboek</span></li>
+<li><span class="material-icons">rocket_launch</span><span data-i18n="emptyBenefit1">Start your grow in 30 seconds</span></li>
+<li><span class="material-icons">lock</span><span data-i18n="emptyBenefit2">100% local & private on your device</span></li>
+<li><span class="material-icons">insights</span><span data-i18n="emptyBenefit3">Reminders & visual photo log</span></li>
 </ul>
-<button id="btnAdd2" class="btn-primary" data-i18n="newPlant">+ Nieuwe plant</button>
+<button id="btnAdd2" class="btn-primary" data-i18n="newPlant">+ New Plant</button>
 <div id="nudge" style="display:none; margin-top: 24px; font-size: 14px; color: var(--muted);" data-i18n="exitNudge">
-Start je eerste plant — geen account nodig, alles lokaal.
+Start your first plant — no account needed, everything is local.
 </div>
 </div>
 <div id="grid" class="grid"></div>
 <section id="archivedSection" style="display:none;margin-top:24px">
-<div class="section-title" data-i18n="archivedTitle">Voltooide Cycli</div>
+<div class="section-title" data-i18n="archivedTitle">Completed Cycles</div>
 <div id="archivedGrid" class="grid archived"></div>
 </section>
 </main>
@@ -261,50 +593,50 @@ Start je eerste plant — geen account nodig, alles lokaal.
 
 <div id="helpModal" class="modal-overlay" style="display:none">
 <div class="modal-content">
-<button class="modal-close" aria-label="Sluiten">&times;</button>
-<h2 id="helpTitle" data-i18n="helpTitle">Hulp & Informatie</h2>
+<button class="modal-close" aria-label="Close">&times;</button>
+<h2 id="helpTitle" data-i18n="helpTitle">Help & Information</h2>
 <div id="legal-content"></div>
 </div>
 </div>
 <div id="shareModal" class="modal-overlay" style="display:none">
 <div class="modal-content">
-<button class="modal-close" aria-label="Sluiten">&times;</button>
-<h2 data-i18n="shareTitle">Rapport delen</h2>
-<p id="shareExplain" data-i18n="shareExplain">Deel het statusrapport en vier het succes met je vrienden.</p>
+<button class="modal-close" aria-label="Close">&times;</button>
+<h2 data-i18n="shareTitle">Share Report</h2>
+<p id="shareExplain" data-i18n="shareExplain">Share the status report and celebrate the success with your friends.</p>
 <div class="report-actions" style="display: flex; gap: 10px; margin-top: 16px;">
-<button id="btnShareNow" class="btn btn-primary" data-i18n="shareNow">Delen</button>
-<button class="btn" data-close-modal data-i18n="close">Sluiten</button>
+<button id="btnShareNow" class="btn btn-primary" data-i18n="shareNow">Share</button>
+<button class="btn" data-close-modal data-i18n="close">Close</button>
 </div>
-<p class="hint" id="shareFallbackMsg" style="display:none; margin-top: 16px;" data-i18n="shareFallback">Delen wordt niet ondersteund; we downloaden het JPG-rapport in plaats daarvan.</p>
+<p class="hint" id="shareFallbackMsg" style="display:none; margin-top: 16px;" data-i18n="shareFallback">Sharing not supported; we'll download the JPG report instead.</p>
 </div>
 </div>
 <div id="harvestShareModal" class="modal-overlay" style="display:none">
     <div class="modal-content">
-        <button class="modal-close" aria-label="Sluiten">&times;</button>
-        <h2 data-i18n="shareTitle">Rapport delen</h2>
+        <button class="modal-close" aria-label="Close">&times;</button>
+        <h2 data-i18n="shareTitle">Share Report</h2>
         <p id="harvestShareText" style="margin-top: 8px;"></p>
         <div class="report-actions" style="display: flex; gap: 10px; margin-top: 16px;">
-            <button id="btnHarvestShareNow" class="btn btn-primary" data-i18n="shareNow">Delen</button>
-            <button class="btn" data-close-modal data-i18n="close">Sluiten</button>
+            <button id="btnHarvestShareNow" class="btn btn-primary" data-i18n="shareNow">Share</button>
+            <button class="btn" data-close-modal data-i18n="close">Close</button>
         </div>
     </div>
 </div>
 <div id="helpModal2" class="modal-overlay" style="display:none">
 <div class="modal-content">
-<button class="modal-close" aria-label="Sluiten">&times;</button>
+<button class="modal-close" aria-label="Close">&times;</button>
 <h2 id="infoTitle">Info</h2>
 <div id="infoBody"></div>
 </div>
 </div>
 <div id="stonerStatusModal" class="modal-overlay" style="display:none">
 <div class="modal-content">
-<button class="modal-close" aria-label="Sluiten">&times;</button>
-<h2 data-i18n="stonerStatusTitle">Je Stoner Status</h2>
+<button class="modal-close" aria-label="Close">&times;</button>
+<h2 data-i18n="stonerStatusTitle">Your Stoner Status</h2>
 <div id="stonerStatusBody"></div>
 </div>
 </div>
 <div id="toast"></div>
-<a href="https://wa.me/31655793636?text=Hoi!%20Ik%20heb%20een%20vraag%20over%20Kweekmaatje." class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Vraag & Antwoord via WhatsApp">
+<a href="https://wa.me/31655793636?text=Hi!%20I%20have%20a%20question%20about%20Grow%20Buddy." class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Q&A via WhatsApp">
 <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.46 3.48 1.34 4.94L2.05 22l5.25-1.42c1.4.78 2.96 1.21 4.59 1.21h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m.01 1.66c4.56 0 8.26 3.7 8.26 8.26 0 4.56-3.7 8.26-8.26 8.26h-.01c-1.47 0-2.89-.39-4.14-1.1L4.65 19.35l1.19-3.23c-.79-1.25-1.22-2.7-1.22-4.21 0-4.56 3.7-8.26 8.26-8.26M9.27 7.93c-.14-.23-.29-.24-.42-.24-.12 0-.27 0-.42.01-.15.01-.37.21-.57.42-.2.2-.72.7-.72 1.73s.74 2.01.84 2.15c.1.15 1.45 2.29 3.53 3.12.55.22.99.36 1.34.46.59.18 1.13.15 1.55.09.48.06 1.4-.68 1.6-1.36.2-.68.2-1.25.14-1.36-.06-.11-.21-.18-.42-.32-.21-.15-1.25-.62-1.45-.69-.2-.07-.35-.11-.5.11-.15.22-.55.69-.68.83-.12.15-.24.16-.44.1-.2-.05-1.02-.37-1.94-1.2-.72-.65-1.2-1.45-1.34-1.7-.14-.25-.02-.38.09-.5.1-.11.22-.27.34-.41.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.38s-.5-.6-.68-.82z"/></svg>
 </a>
 <script>
@@ -333,7 +665,7 @@ const TRANSLATIONS={
     },
     fr:{
         appName:"Copain de Culture",newPlant:"+ Nouvelle Plante",showArchived:"Afficher les Cycles Terminés",emptyTitle:"Votre Coach de Culture Personnel",emptyText:"Fini de deviner. Toujours la bonne action au bon moment.",emptyBenefit1:"Commencez votre culture en 30 secondes",emptyBenefit2:"100% local et privé sur votre appareil",emptyBenefit3:"Rappels et journal photo visuel",exitNudge:"Commencez votre première plante — aucun compte requis, tout est local.",harvestSharePrompt:"Une de vos plantes est presque prête pour la récolte. Partagez le rapport et célébrez avec vos amis!",
-        helpTitle:"Infos & Conditions", footerNotice: "© 2025 NightOwl Logics. Tous droits réservés. « Kweekmaatje » et tous les noms, logos et actifs associés sont des marques commerciales de NightOwl Logics.", contactOnWhatsapp: "Contacter NightOwl Logics", termsAndPrivacyBody: legalDisclaimerFR + legalTextEN,
+        helpTitle:"Infos & Conditions", footerNotice: "© 2025 NightOwl Logics. Alle rechten voorbehouden. « Kweekmaatje » et tous les noms, logos et actifs associés sont des marques commerciales de NightOwl Logics.", contactOnWhatsapp: "Contacter NightOwl Logics", termsAndPrivacyBody: legalDisclaimerFR + legalTextEN,
         archivedTitle:"Cycles Terminés",plant:"Plante",archivedCycle:"Terminer le Cycle",unarchive:"Restaurer",delete:"Supprimer",planted:"Planté(e):",age:"Âge:",weeks:"sem",days:"j",timeline:"Chronologie",reminders:"Rappels",notes:"Notes",date:"Date:",noteOptional:"Note (optionnel)",uploadPhoto:"Télécharger photo",noPhotos:"Aucune photo pour l'instant – ajoutez votre première photo de la Semaine 0 ci-dessus.",remove:"Retirer",water:"💧 Eau",feed:"🥦 Engrais",startFlush:"💦 DÉBUT RINÇAGE",harvest:"🪴 RÉCOLTER",week:"Semaine",every:"Tous les",daysPlural:"jours",startInWeek:"Début Semaine",frequency:"Fréquence : tous les",flushStartWeek:"Début Rinçage Semaine",targetHarvestWeek:"Semaine de Récolte Cible",strainGuideline:"Ligne directrice de la souche:",adjustNote:"Ajustez la fréquence en fonction de la taille du pot, du substrat et du climat.",notesPlaceholder:"Notes sur l'arrosage, EC/PPM, pH, entraînement, etc.",alertPhoto:"Veuillez d'abord sélectionner une photo.",alertDelete:"Supprimer ? Ceci est irréversible (toutes les photos seront supprimées).",alertMax:"Maximum de 12 plantes prises en charge.",alertImport:"Impossible de lire le fichier :",darkMode:"Mode Sombre",seedling:"Germination",vegetative:"Végétative",flowering:"Floraison",flush:"Rinçage",today:"Aujourd'hui",buyNow:"Acheter",resetData:"Réinitialiser",confirmReset:"Supprimer toutes les données ? Ceci est irréversible.",growthReportTitle:"Rapport de croissance",shareTitle:"Partager",shareExplain:"Partage le rapport d’état et célèbre tes réussites avec tes amis.",shareNow:"Partager",close:"Fermer",shareFallback:"Le partage n'est pas pris en charge ; téléchargement du JPG à la place.",stonerStatusTitle:"Ton Statut de Stoner",completedCycles:"Cycles Terminés",achievements:"High-Scores",completedHarvestsLabel:"Récoltes Réussies",toastNewAchievement:"🏆 High-Score!",recommendedForSeedling:"Recommandé pour la phase de Germination",recommendedForVegetative:"Recommandé pour la phase Végétative",recommendedForFlowering:"Recommandé pour la phase de Floraison",recommendedForFlush:"Recommandé pour la phase de Rinçage",essentialToolsSeedling:"Outils essentiels pour la phase de Germination",essentialToolsVegetative:"Outils essentiels pour la phase Végétative",essentialToolsFlowering:"Outils essentiels pour la phase de Floraison",essentialToolsFlush:"Outils essentiels pour la phase de Rinçage",heatMat:"Tapis Chauffant + Mini-serre",growthNutrients:"Nutriments de Croissance",calMag:"Supplément Cal-Mag",fabricPots:"Pots en Tissu",ecMeter:"Mètre EC/PPM",phMeter:"pH-mètre",clipFan:"Ventilateur à Pince",plantTies:"Attaches Souples",carbonFilter:"Filtre à Charbon + Extracteur",bloomNutrients:"Nutriments de Floraison",pkBooster:"Booster PK",scrogNet:"Filet de Scrog / Treillis",flushHarvestGuide:"Guide de Rinçage et Récolte",flushingAgent:"Agent de Rinçage (optionnel)",trimmingScissors:"Ciseaux de Taille",dryingRack:"Grille de Séchage",curingJars:"Bocaux de Curing",miniHygrometers:"Mini Hygromètres",humidityPacks:"Sachets d'Humidité"
     },
     es:{
@@ -464,7 +796,7 @@ function addAffil(url) {
 
 
 /* ==== State & utils ==== */
-let currentLang=localStorage.getItem('appLang')||'nl';
+let currentLang=localStorage.getItem('appLang')||'en';
 let isDarkMode=localStorage.getItem('isDarkMode')==='true';
 let inactivityTimer = null;
 const uid=()=>Math.random().toString(36).slice(2,10);
@@ -474,7 +806,7 @@ const fmtDate=d=>new Date(d).toLocaleDateString(currentLang);
 const fmtShortDate=d=>new Date(d).toLocaleDateString(currentLang,{day:'numeric',month:'short'});
 const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/86400000);
 const weekNumberSince=(start,at)=>Math.floor(daysBetween(start,at)/7);
-function t(k){return TRANSLATIONS[currentLang]?.[k]||TRANSLATIONS['nl']?.[k]||`[${k}]`;}
+function t(k){return TRANSLATIONS[currentLang]?.[k]||TRANSLATIONS['en']?.[k]||`[${k}]`;}
 /* ==== Strains (short) ==== */
 const RQS_STRAINS = { 'Onbekend/Algemeen': { displayName: { nl: 'Onbekend/Algemeen', en: 'Unknown/Generic', de: 'Unbekannt/Allgemein', fr: 'Inconnu/Générique', es: 'Desconocido/Genérico' }, schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 10 } }, 'Sticky Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Mexican Rush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } }, 'Blue Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Royal Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Mimosa Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Royal Bluematic': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Royal Creamatic': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Green Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Northern Light Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'North Thunderfuck Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Triple G Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Haze Berry Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Special Queen 1 Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Sweet ZZ Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Sweet Skunk Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Cherry Pie Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Tropicana Cookies Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Trainwreck Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Royal Cheese Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Granddaddy Purple Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Pink Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Grape Ape Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'White Widow Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'NYC Sour D Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'GOAT\'lato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Corkscrew Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Fat Banana Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Cookies Gelato Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Royal Runtz Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Royal Cookies Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Watermelon Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } }, 'Apple Fritter Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Royal Critical Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Sherbet Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } }, 'HulkBerry Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } }, 'Purple Queen Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 7, targetHarvestWeek: 9 } }, 'Royal Gorilla Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Wedding Cake Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Royal Dwarf': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Pink Mist Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 11, targetHarvestWeek: 13 } }, 'Easy Bud': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Purple Lemonade Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Quick One': { schedule: { waterEveryDays: 2, feedStartWeek: 2, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Diesel Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 12, targetHarvestWeek: 14 } }, 'Bubble Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 9, targetHarvestWeek: 11 } }, 'Amnesia Haze Auto': { schedule: { waterEveryDays: 3, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Do-Si-Dos Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Royal Jack Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Purple Punch Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 8, targetHarvestWeek: 10 } }, 'Royal Kush Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } }, 'Royal AK Auto': { schedule: { waterEveryDays: 2, feedStartWeek: 3, feedEveryDays: 7, flushStartWeek: 10, targetHarvestWeek: 12 } } };
 const BESTSELLER_STRAINS = [ 'Northern Light Auto', 'Green Gelato Auto', 'White Widow Auto', 'Royal Haze Auto', 'Amnesia Haze Auto', 'Royal Gorilla Auto' ];
@@ -486,10 +818,10 @@ function loadState(){try{const raw=localStorage.getItem(LS_KEY);state=raw?JSON.p
 function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
 loadState();
 /* ==== Gamification Logic ==== */
-function getGrowerRank(N){const ranks=["Spruit Scout","Zaailing Zitter","Pot-Leerling","Top Talent","Chronic Kweker","Meester van Mary Jane","Ganja Grootmeester","De Cannabis Koning"];if(N>=15)return ranks[7];if(N>=10)return ranks[6];if(N>=7)return ranks[5];if(N>=5)return ranks[4];if(N>=3)return ranks[3];if(N===2)return ranks[2];if(N===1)return ranks[1];return ranks[0];}
+function getGrowerRank(N){const ranks=["Sprout Scout","Seedling Sitter","Pot Apprentice","Top Talent","Chronic Cultivator","Master of Mary Jane","Ganja Grandmaster","The Cannabis King"];if(N>=15)return ranks[7];if(N>=10)return ranks[6];if(N>=7)return ranks[5];if(N>=5)return ranks[4];if(N>=3)return ranks[3];if(N===2)return ranks[2];if(N===1)return ranks[1];return ranks[0];}
 function showToast(message){const toast=document.getElementById('toast');if(!toast)return;toast.textContent=message;toast.classList.add('show');setTimeout(()=>{toast.classList.remove('show');},3500);}
-function checkAchievements(){const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const unlocked=state.achievements||[];const checkAndUnlock=(id,condition)=>{if(condition&&!unlocked.includes(id)){state.achievements.push(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['nl'];showToast(`${t('toastNewAchievement')} ${title}`);}};checkAndUnlock('FIRST_HARVEST',N>=1);checkAndUnlock('HATTRICK_HERO',N>=3);checkAndUnlock('AUTOPILOT',N>=5);const uniqueStrains=[...new Set(completedCycles.map(p=>p.strain))].length;checkAndUnlock('GOTTA_SMOKE_EM_ALL',uniqueStrains>=5);checkAndUnlock('GANJA_GENERAL',N>=10);}
-function openStonerStatusModal(){const modal=document.getElementById('stonerStatusModal');const body=document.getElementById('stonerStatusBody');if(!modal||!body)return;const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const rank=getGrowerRank(N);const unlocked=state.achievements||[];body.innerHTML=`<div style="text-align:center;margin-bottom:24px;padding:10px;background:var(--pill);border-radius:12px;"><h3>${rank}</h3><p class="muted">${N} ${t('completedCycles')}</p></div><h4 class="section-title" style="margin-top:0;">${t('achievements')}</h4><ul class="achievements-list">${Object.keys(HIGH_SCORES).map(id=>{const isUnlocked=unlocked.includes(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['nl'];const description=achievement.description[currentLang]||achievement.description['nl'];return`<li class="achievement-item ${isUnlocked?'unlocked':'locked'}"><span class="icon material-icons">${isUnlocked?'military_tech':'lock'}</span><div class="details"><h4>${title}</h4><p>${description}</p></div></li>`;}).join('')}</ul>`;modal.style.display='flex';}
+function checkAchievements(){const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const unlocked=state.achievements||[];const checkAndUnlock=(id,condition)=>{if(condition&&!unlocked.includes(id)){state.achievements.push(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['en'];showToast(`${t('toastNewAchievement')} ${title}`);}};checkAndUnlock('FIRST_HARVEST',N>=1);checkAndUnlock('HATTRICK_HERO',N>=3);checkAndUnlock('AUTOPILOT',N>=5);const uniqueStrains=[...new Set(completedCycles.map(p=>p.strain))].length;checkAndUnlock('GOTTA_SMOKE_EM_ALL',uniqueStrains>=5);checkAndUnlock('GANJA_GENERAL',N>=10);}
+function openStonerStatusModal(){const modal=document.getElementById('stonerStatusModal');const body=document.getElementById('stonerStatusBody');if(!modal||!body)return;const completedCycles=state.plants.filter(p=>p.archived);const N=completedCycles.length;const rank=getGrowerRank(N);const unlocked=state.achievements||[];body.innerHTML=`<div style="text-align:center;margin-bottom:24px;padding:10px;background:var(--card);border-radius:12px;"><h3>${rank}</h3><p class="muted">${N} ${t('completedCycles')}</p></div><h4 class="section-title" style="margin-top:0;">${t('achievements')}</h4><ul class="achievements-list">${Object.keys(HIGH_SCORES).map(id=>{const isUnlocked=unlocked.includes(id);const achievement=HIGH_SCORES[id];const title=achievement.title[currentLang]||achievement.title['en'];const description=achievement.description[currentLang]||achievement.description['en'];return`<li class="achievement-item ${isUnlocked?'unlocked':'locked'}"><span class="icon material-icons">${isUnlocked?'military_tech':'lock'}</span><div class="details"><h4>${title}</h4><p>${description}</p></div></li>`;}).join('')}</ul>`;modal.style.display='flex';}
 /* ==== Actions ==== */
 const createActionId=(type,date)=>`${type}-${toISODate(date)}`;
 function getPendingActions(plant,dateToCheck){
@@ -539,7 +871,7 @@ if (state.plants.length === 0) {
 });
 function setupMenu(){const t=document.getElementById('btnMenuToggle'), m=document.getElementById('menuContent'); if(t&&m){t.onclick=e=>{e.stopPropagation();m.classList.toggle('is-open');}; document.addEventListener('click',e=>{if(m.classList.contains('is-open')&&!m.contains(e.target))m.classList.remove('is-open');});}}
 function translateUI(){
-const name=TRANSLATIONS[currentLang]?.appName||'Kweekmaatje';
+const name=TRANSLATIONS[currentLang]?.appName||'Grow Buddy';
 document.title=name;
 const span=document.getElementById('appTitleText');
 if(span) span.textContent=name;
@@ -671,7 +1003,7 @@ return `<div class="card ${p.isCollapsed?'is-collapsed':''}" id="card_${p.id}">
 <div class="card-h">
 <div class="row-name">
 <input type="text" value="${p.name}" onchange="updatePlant('${p.id}',{name:this.value})"/>
-<button class="btn-collapse" onclick="toggleCollapse('${p.id}')"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
+<button class="btn-collapse btn-icon" onclick="toggleCollapse('${p.id}')"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
 </div>
 <div class="row-strain">
 <select onchange="handleStrainChange('${p.id}',this.value)">${strainOptions}</select>
@@ -708,7 +1040,7 @@ renderHeaderStatus();
 function renderActionsBar(plant,overrideDate=null){
 const actions=getPendingActions(plant,overrideDate||new Date());
 if(actions.length===0)return `<div class="actions-bar" id="actions_${plant.id}"></div>`;
-const html=actions.map(a=>{const id=createActionId(a.type,a.date);const iso=toISODate(a.date);return `<div class="action-item ${a.type}" onclick="acknowledgeAction('${plant.id}','${id}')"><div class="left"><span>${a.label}</span><button type="button" class="info-btn" onclick="event.stopPropagation();showReminderInfo('${plant.id}','${a.type}','${iso}')">?</button></div><span class="action-date">${fmtShortDate(a.date)}</span></div>`;}).join('');
+const html=actions.map(a=>{const id=createActionId(a.type,a.date);const iso=toISODate(a.date);return `<div class="action-item ${a.type}" onclick="acknowledgeAction('${plant.id}','${id}')"><div class="left"><span>${a.label}</span><button type="button" class="btn-icon" style="width:24px;height:24px;margin-left:4px;" onclick="event.stopPropagation();showReminderInfo('${plant.id}','${a.type}','${iso}')">?</button></div><span class="action-date">${fmtShortDate(a.date)}</span></div>`;}).join('');
 return `<div class="actions-bar" id="actions_${plant.id}">${html}</div>`;
 }
 window.render=render;
@@ -744,38 +1076,56 @@ ${byWeek[w].map(ph=>
 </div>`).join('') || `<p class="muted" style="text-align:center;">${t('noPhotos')}</p>`}
 </div>`;
 }
+
+// --- CHANGE: REFACTORED RENDER REMINDERS FUNCTION ---
 function renderReminders(p){
 const s=p.schedule;const phase=getPhaseForDate(p,todayISO());
 const nutrInfo = RQS_PRODUCT_SLUGS['growthNutrients'];
 const nutrUrl = addAffil(buildRqsUrl(nutrInfo.type, nutrInfo.slug));
 const buyBtn=nutrUrl?`<a class="btn-affiliate" href="${nutrUrl}" target="_blank" rel="noopener nofollow">${t('buyNow')}</a>`:'';
-const settingsHTML=`<div style="display:flex;flex-direction:column;gap:10px;">
-<div class="field-group">
-<span>${t('water')}</span>
-<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','water','${todayISO()}')">?</button>:
-<span>${t('every')}</span>
-<input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${p.id}','waterEveryDays',this.value)"/>
-<span>${t('daysPlural')}</span>
-</div>
-<div class="field-group">
-<span>${t('feed')}</span>
-<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','feed','${todayISO()}')">?</button>:
-<span>${t('startInWeek')}</span>
-<input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${p.id}','feedStartWeek',this.value)"/>
-<span> | ${t('frequency')}</span>
-<input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${p.id}','feedEveryDays',this.value)"/>
-<span>${t('daysPlural')}</span>
-</div>
-<div class="field-group">
-<span>${t('startFlush')}</span>
-<button type="button" class="info-btn" title="?" onclick="showReminderInfo('${p.id}','flush','${todayISO()}')">?</button>:
-<span>${t('flushStartWeek')}</span>
-<input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${p.id}','flushStartWeek',this.value)"/>
-</div>
-<div class="field-group">
-<span>${t('targetHarvestWeek')}</span>: <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${p.id}','targetHarvestWeek',this.value)"/>
-</div>
-<div class="hint" style="margin-top:4px;"><b>${t('strainGuideline')}</b> — ${getStrainDisplayName(p.strain)}<br/>${t('adjustNote')}</div>
+const settingsHTML=`<div class="reminder-grid">
+  <div class="reminder-label">
+    <span>${t('water')}</span>
+    <button type="button" class="btn-icon" style="width:24px;height:24px;" title="?" onclick="showReminderInfo('${p.id}','water','${todayISO()}')">?</button>
+  </div>
+  <div class="reminder-controls">
+    <span>${t('every')}</span>
+    <input type="number" value="${s.waterEveryDays}" min="1" onchange="updateSchedule('${p.id}','waterEveryDays',this.value)"/>
+    <span>${t('daysPlural')}</span>
+  </div>
+
+  <div class="reminder-label">
+    <span>${t('feed')}</span>
+    <button type="button" class="btn-icon" style="width:24px;height:24px;" title="?" onclick="showReminderInfo('${p.id}','feed','${todayISO()}')">?</button>
+  </div>
+  <div class="reminder-controls">
+    <span>${t('startInWeek')}</span>
+    <input type="number" value="${s.feedStartWeek}" min="0" onchange="updateSchedule('${p.id}','feedStartWeek',this.value)"/>
+    <span style="border-left: 1px solid var(--line); height: 16px; margin: 0 4px;"></span>
+    <span>${t('frequency')}</span>
+    <input type="number" value="${s.feedEveryDays}" min="1" onchange="updateSchedule('${p.id}','feedEveryDays',this.value)"/>
+    <span>${t('daysPlural')}</span>
+  </div>
+
+  <div class="reminder-label">
+    <span>${t('startFlush')}</span>
+    <button type="button" class="btn-icon" style="width:24px;height:24px;" title="?" onclick="showReminderInfo('${p.id}','flush','${todayISO()}')">?</button>
+  </div>
+  <div class="reminder-controls">
+    <span>${t('flushStartWeek')}</span>
+    <input type="number" value="${s.flushStartWeek}" min="1" onchange="updateSchedule('${p.id}','flushStartWeek',this.value)"/>
+  </div>
+  
+  <div class="reminder-label">
+    <span>${t('targetHarvestWeek')}</span>
+  </div>
+  <div class="reminder-controls">
+    <input type="number" value="${s.targetHarvestWeek}" min="1" onchange="updateSchedule('${p.id}','targetHarvestWeek',this.value)"/>
+  </div>
+
+  <div class="hint" style="margin-top:8px; grid-column: 1 / -1; border-top: 1px dashed var(--line); padding-top: 12px;">
+    <b>${t('strainGuideline')}</b> — ${getStrainDisplayName(p.strain)}<br/>${t('adjustNote')}
+  </div>
 </div>`;
 const recommendedGearHTML=createRecommendedGearHTML(phase,'recommendedFor');
 const footerContent = `<div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
@@ -784,6 +1134,7 @@ const footerContent = `<div style="display:flex; justify-content:space-between; 
 </div>`;
 return settingsHTML + `<div class="sticky-footer-container">${footerContent}</div>`;
 }
+
 function renderNotes(p){return `<textarea style="width:100%;min-height:120px;" onchange="updatePlant('${p.id}',{notes:this.value})" placeholder="${t('notesPlaceholder')}">${p.notes||''}</textarea>`;}
 function updateSchedule(id,key,val){const p=getPlant(id);p.schedule[key]=parseInt(val,10);saveAndRender();}
 window.updateSchedule=updateSchedule;
@@ -810,11 +1161,11 @@ canvas.width = W;
 canvas.height = Math.max(headerH + VPad * 2, H);
 const ctx = canvas.getContext('2d');
 // Light mode kleuren
-const C = { bg:'#FFFFFF', fg:'#4D3A31', main:'#38761D', muted:'#90B47A', line:'#90B47A', segSeed:'#90B47A', segVeg:'#38761D', segFlow:'#A9C439', segFlush:'#C8D29B', danger:'#CC0000' };
+const C = { bg:'#FFFFFF', fg:'#2c3e50', main:'#38761D', muted:'#5a7b8c', line:'#cce7ff', segSeed:'#f7d794', segVeg:'#77dd77', segFlow:'#fdfd96', segFlush:'#89cff0', danger:'#e74c3c' };
 ctx.fillStyle = C.bg;
 ctx.fillRect(0,0,canvas.width,canvas.height);
-const appName = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
-const intro = REPORT_INTRO[currentLang] || REPORT_INTRO['nl'];
+const appName = TRANSLATIONS[currentLang]?.appName || 'Grow Buddy';
+const intro = REPORT_INTRO[currentLang] || REPORT_INTRO['en'];
 const dateStr = new Date().toLocaleString(currentLang, { year:'numeric', month:'long', day:'numeric' });
 // Logo
 const logo = await new Promise(res => {
@@ -831,13 +1182,13 @@ ctx.drawImage(logo, HPad, 24, 56, 56);
 tx = HPad + 56 + 12;
 }
 ctx.fillStyle = C.main;
-ctx.font = 'bold 44px system-ui,Arial';
+ctx.font = 'bold 44px Nunito, system-ui, Arial';
 ctx.fillText(appName, tx, 70);
 ctx.fillStyle = C.fg;
-ctx.font = '28px system-ui,Arial';
+ctx.font = '28px Nunito, system-ui, Arial';
 ctx.fillText(intro, HPad, 120);
 ctx.fillStyle = C.muted;
-ctx.font = '20px system-ui,Arial';
+ctx.font = '20px Nunito, system-ui, Arial';
 ctx.fillText(`${t('growthReportTitle')} • ${dateStr}`, HPad, 160);
 ctx.strokeStyle = C.line;
 ctx.lineWidth = 2;
@@ -866,7 +1217,7 @@ const mx=x+Math.round(w*prog);
 ctx.fillStyle=C.danger;
 ctx.fillRect(mx-1,y-6,3,h+12);
 ctx.fillStyle=C.danger;
-ctx.font='bold 12px system-ui,Arial';
+ctx.font='bold 12px Nunito, system-ui, Arial';
 const lab=t('today');
 const tw=ctx.measureText(lab).width+8;
 const lx=Math.min(W-HPad-tw,Math.max(HPad,mx-tw/2));
@@ -874,7 +1225,7 @@ ctx.fillRect(lx,y-26,tw,18);
 ctx.fillStyle='#fff';
 ctx.fillText(lab,lx+4,y-12);
 ctx.fillStyle=C.muted;
-ctx.font='12px system-ui,Arial';
+ctx.font='12px Nunito, system-ui, Arial';
 const st=new Date(plant.planted_at), en=new Date(st); en.setDate(en.getDate()+s.targetHarvestWeek*7);
 ctx.fillText(fmtDate(st),x,y+h+16);
 const enTxt=fmtDate(en);
@@ -891,7 +1242,7 @@ if(!last){
 ctx.fillStyle='#fafafa';
 ctx.fillRect(x+2,y+2,w-4,h-4);
 ctx.fillStyle=C.muted;
-ctx.font='16px system-ui,Arial';
+ctx.font='16px Nunito, system-ui, Arial';
 const txt=t('noPhotos');
 const tw=ctx.measureText(txt).width;
 ctx.fillText(txt, x+(w-tw)/2, y+h/2);
@@ -915,10 +1266,10 @@ img.src=last.data;
 let y = 220;
 for (const p of active) {
 ctx.fillStyle=C.fg;
-ctx.font='bold 26px system-ui,Arial';
+ctx.font='bold 26px Nunito, system-ui, Arial';
 ctx.fillText(p.name, 40, y);
 ctx.fillStyle=C.muted;
-ctx.font='18px system-ui,Arial';
+ctx.font='18px Nunito, system-ui, Arial';
 ctx.fillText(getStrainDisplayName(p.strain), 40, y+26);
 drawPB(40, y+44, W-40*2-360, 18, p);
 /* eslint-disable no-await-in-loop */
@@ -942,8 +1293,8 @@ return new Blob([u8arr], { type: mime });
 }
 /* ===== Delen: popup-knop fix ===== */
 async function shareReportJPG() {
-const title = TRANSLATIONS[currentLang]?.appName || 'Kweekmaatje';
-const text = REPORT_INTRO[currentLang] || REPORT_INTRO['nl'];
+const title = TRANSLATIONS[currentLang]?.appName || 'Grow Buddy';
+const text = REPORT_INTRO[currentLang] || REPORT_INTRO['en'];
 const supportsFileShare = !!(navigator.canShare && typeof File !== 'undefined');
 // Desktop/Pages: direct tekst delen (gesture blijft leven), dan JPG renderen + downloaden
 if (navigator.share && !supportsFileShare) {
@@ -952,7 +1303,7 @@ await navigator.share({ title, text });
 } catch(_) { /* user canceled: ok */ }
 try {
 const blob = await buildReportJPGBlob();
-const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+const name = title.replace(/\s+/g,'_') + '_report.jpg';
 const url = URL.createObjectURL(blob);
 const a = document.createElement('a');
 a.href = url;
@@ -969,7 +1320,7 @@ return;
 // Mobiel / Level 2: eerst JPG bouwen en als file delen
 try {
 const blob = await buildReportJPGBlob();
-const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+const name = title.replace(/\s+/g,'_') + '_report.jpg';
 if (supportsFileShare) {
 const file = new File([blob], name, { type: 'image/jpeg' });
 if (navigator.canShare({ files: [file] })) {
@@ -999,7 +1350,7 @@ URL.revokeObjectURL(url);
 // Fallback: download
 try {
 const blob = await buildReportJPGBlob();
-const name = title.replace(/\s+/g,'_') + '_rapport.jpg';
+const name = title.replace(/\s+/g,'_') + '_report.jpg';
 const url = URL.createObjectURL(blob);
 const a = document.createElement('a');
 a.href = url;
